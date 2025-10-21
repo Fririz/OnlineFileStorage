@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{11026BCF-3A78-4A1B-9BE9-FED86531161F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IdentityService", "IdentityService", "{CA5310D8-47E3-4AC7-9CA1-72063780525E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityService.API", "Services\IdentityService\IdentityService.API\IdentityService.API.csproj", "{919B2171-0C02-4445-974D-BC99D3FE364B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityService.Domain", "Services\IdentityService\IdentityService.Domain\IdentityService.Domain.csproj", "{B71136DC-CB75-435A-BDAB-3EF2FB38CA6E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityService.Application", "Services\IdentityService\IdentityService.Application\IdentityService.Application.csproj", "{0DB746C9-714B-4A65-A360-3F61191F50BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityService.Infrastructure", "Services\IdentityService\IdentityService.Infrastructure\IdentityService.Infrastructure.csproj", "{54117E9B-55A5-4C24-AA9A-74271BB16B64}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker-compose", "docker-compose", "{D6346E5B-578F-4BDF-A58B-BAA8D17B5DDB}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yaml = docker-compose.yaml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildingBlocks", "BuildingBlocks", "{C703A2BA-D708-4ED7-B9B4-150C3D4EF86F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Logging", "Logging", "{F2B98543-6821-4A63-BBC1-FEDDAF96B5A1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CA5310D8-47E3-4AC7-9CA1-72063780525E} = {11026BCF-3A78-4A1B-9BE9-FED86531161F}
+		{919B2171-0C02-4445-974D-BC99D3FE364B} = {CA5310D8-47E3-4AC7-9CA1-72063780525E}
+		{B71136DC-CB75-435A-BDAB-3EF2FB38CA6E} = {CA5310D8-47E3-4AC7-9CA1-72063780525E}
+		{0DB746C9-714B-4A65-A360-3F61191F50BF} = {CA5310D8-47E3-4AC7-9CA1-72063780525E}
+		{54117E9B-55A5-4C24-AA9A-74271BB16B64} = {CA5310D8-47E3-4AC7-9CA1-72063780525E}
+		{F2B98543-6821-4A63-BBC1-FEDDAF96B5A1} = {C703A2BA-D708-4ED7-B9B4-150C3D4EF86F}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{919B2171-0C02-4445-974D-BC99D3FE364B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{919B2171-0C02-4445-974D-BC99D3FE364B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{919B2171-0C02-4445-974D-BC99D3FE364B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{919B2171-0C02-4445-974D-BC99D3FE364B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B71136DC-CB75-435A-BDAB-3EF2FB38CA6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B71136DC-CB75-435A-BDAB-3EF2FB38CA6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B71136DC-CB75-435A-BDAB-3EF2FB38CA6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B71136DC-CB75-435A-BDAB-3EF2FB38CA6E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0DB746C9-714B-4A65-A360-3F61191F50BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DB746C9-714B-4A65-A360-3F61191F50BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DB746C9-714B-4A65-A360-3F61191F50BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DB746C9-714B-4A65-A360-3F61191F50BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54117E9B-55A5-4C24-AA9A-74271BB16B64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54117E9B-55A5-4C24-AA9A-74271BB16B64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54117E9B-55A5-4C24-AA9A-74271BB16B64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54117E9B-55A5-4C24-AA9A-74271BB16B64}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
