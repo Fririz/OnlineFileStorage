@@ -207,6 +207,35 @@
           }
         }
       },
+      "Serilog/4.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/net8.0/Serilog.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/Serilog.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Serilog.Enrichers.Environment/3.0.1": {
+        "type": "package",
+        "dependencies": {
+          "Serilog": "4.0.0"
+        },
+        "compile": {
+          "lib/net8.0/Serilog.Enrichers.Environment.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/Serilog.Enrichers.Environment.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "System.Diagnostics.DiagnosticSource/4.7.1": {
         "type": "package",
         "compile": {
@@ -544,6 +573,52 @@
         "ocelot_icon.png"
       ]
     },
+    "Serilog/4.0.0": {
+      "sha512": "2jDkUrSh5EofOp7Lx5Zgy0EB+7hXjjxE2ktTb1WVQmU00lDACR2TdROGKU0K1pDTBSJBN1PqgYpgOZF8mL7NJw==",
+      "type": "package",
+      "path": "serilog/4.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "icon.png",
+        "lib/net462/Serilog.dll",
+        "lib/net462/Serilog.xml",
+        "lib/net471/Serilog.dll",
+        "lib/net471/Serilog.xml",
+        "lib/net6.0/Serilog.dll",
+        "lib/net6.0/Serilog.xml",
+        "lib/net8.0/Serilog.dll",
+        "lib/net8.0/Serilog.xml",
+        "lib/netstandard2.0/Serilog.dll",
+        "lib/netstandard2.0/Serilog.xml",
+        "serilog.4.0.0.nupkg.sha512",
+        "serilog.nuspec"
+      ]
+    },
+    "Serilog.Enrichers.Environment/3.0.1": {
+      "sha512": "9BqCE4C9FF+/rJb/CsQwe7oVf44xqkOvMwX//CUxvUR25lFL4tSS6iuxE5eW07quby1BAyAEP+vM6TWsnT3iqw==",
+      "type": "package",
+      "path": "serilog.enrichers.environment/3.0.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "lib/net462/Serilog.Enrichers.Environment.dll",
+        "lib/net462/Serilog.Enrichers.Environment.xml",
+        "lib/net471/Serilog.Enrichers.Environment.dll",
+        "lib/net471/Serilog.Enrichers.Environment.xml",
+        "lib/net6.0/Serilog.Enrichers.Environment.dll",
+        "lib/net6.0/Serilog.Enrichers.Environment.xml",
+        "lib/net8.0/Serilog.Enrichers.Environment.dll",
+        "lib/net8.0/Serilog.Enrichers.Environment.xml",
+        "lib/netstandard2.0/Serilog.Enrichers.Environment.dll",
+        "lib/netstandard2.0/Serilog.Enrichers.Environment.xml",
+        "serilog-enricher-nuget.png",
+        "serilog.enrichers.environment.3.0.1.nupkg.sha512",
+        "serilog.enrichers.environment.nuspec"
+      ]
+    },
     "System.Diagnostics.DiagnosticSource/4.7.1": {
       "sha512": "j81Lovt90PDAq8kLpaJfJKV/rWdWuEk6jfV+MBkee33vzYLEUsy4gXK8laa9V2nZlLM9VM9yA/OOQxxPEJKAMw==",
       "type": "package",
@@ -574,7 +649,8 @@
   "projectFileDependencyGroups": {
     "net9.0": [
       "Microsoft.AspNetCore.OpenApi >= 9.0.8",
-      "Ocelot >= 24.0.1"
+      "Ocelot >= 24.0.1",
+      "Serilog.Enrichers.Environment >= 3.0.1"
     ]
   },
   "packageFolders": {
@@ -628,6 +704,10 @@
           "Ocelot": {
             "target": "Package",
             "version": "[24.0.1, )"
+          },
+          "Serilog.Enrichers.Environment": {
+            "target": "Package",
+            "version": "[3.0.1, )"
           }
         },
         "imports": [

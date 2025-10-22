@@ -3,6 +3,7 @@ using IdentityService.Domain.Entities;
 using IdentityService.Application.Contracts;
 using IdentityService.Application.DTO;
 using Microsoft.AspNetCore.Authorization;
+using Serilog;
 
 namespace IdentityService.API.Controllers;
 
@@ -18,7 +19,7 @@ public class AuthController : ControllerBase
     [HttpPost]
     [Route("register")]
     public async Task<IResult> Register(UserDto user)
-    {
+    { 
         return await _userWorker.RegisterUser(user);
     }
     [HttpPost]
@@ -45,7 +46,8 @@ public class AuthController : ControllerBase
     [Route("logout")]
     public IActionResult Logout()
     {
-        return Ok();
+        Response.Cookies.Delete("token");
+        return Ok(new { message = "Logout successful" });
     }
     
 }

@@ -31,6 +31,14 @@ public static class ApiServiceRegistration
 
                 ValidateIssuerSigningKey = true,
             };
+            options.Events = new JwtBearerEvents
+            {
+                OnMessageReceived = context =>
+                {
+                    context.Token = context.Request.Cookies["token"];
+                    return Task.CompletedTask;
+                }
+            };
         });
         services.AddAuthorization();
         services.AddControllers();

@@ -25,6 +25,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gateway", "Gateway", "{B872
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OcelotApiGateway", "Gateway\OcelotApiGateway\OcelotApiGateway.csproj", "{CE154E77-1104-4484-846C-A1BAC7FB4787}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logging", "BuildingBlocks\Logging\Logging\Logging.csproj", "{59039663-17F9-4CE3-B53C-F1E07BE374D1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,6 +40,7 @@ Global
 		{54117E9B-55A5-4C24-AA9A-74271BB16B64} = {CA5310D8-47E3-4AC7-9CA1-72063780525E}
 		{F2B98543-6821-4A63-BBC1-FEDDAF96B5A1} = {C703A2BA-D708-4ED7-B9B4-150C3D4EF86F}
 		{CE154E77-1104-4484-846C-A1BAC7FB4787} = {B872DDB3-7BC4-46EB-8B0E-C4E653114F2D}
+		{59039663-17F9-4CE3-B53C-F1E07BE374D1} = {F2B98543-6821-4A63-BBC1-FEDDAF96B5A1}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{919B2171-0C02-4445-974D-BC99D3FE364B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -60,5 +63,9 @@ Global
 		{CE154E77-1104-4484-846C-A1BAC7FB4787}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE154E77-1104-4484-846C-A1BAC7FB4787}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE154E77-1104-4484-846C-A1BAC7FB4787}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59039663-17F9-4CE3-B53C-F1E07BE374D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59039663-17F9-4CE3-B53C-F1E07BE374D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59039663-17F9-4CE3-B53C-F1E07BE374D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59039663-17F9-4CE3-B53C-F1E07BE374D1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

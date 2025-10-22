@@ -68,6 +68,10 @@
             "Microsoft.IdentityModel.Tokens": {
               "target": "Package",
               "version": "[8.14.0, )"
+            },
+            "Serilog.Enrichers.Environment": {
+              "target": "Package",
+              "version": "[3.0.1, )"
             }
           },
           "imports": [
@@ -130,6 +134,12 @@
       "frameworks": {
         "net9.0": {
           "targetAlias": "net9.0",
+          "dependencies": {
+            "Serilog.Enrichers.Environment": {
+              "target": "Package",
+              "version": "[3.0.1, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -215,6 +225,10 @@
             "Npgsql.EntityFrameworkCore.PostgreSQL": {
               "target": "Package",
               "version": "[9.0.4, )"
+            },
+            "Serilog.Enrichers.Environment": {
+              "target": "Package",
+              "version": "[3.0.1, )"
             }
           },
           "imports": [

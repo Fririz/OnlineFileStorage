@@ -52,6 +52,10 @@
             "Ocelot": {
               "target": "Package",
               "version": "[24.0.1, )"
+            },
+            "Serilog.Enrichers.Environment": {
+              "target": "Package",
+              "version": "[3.0.1, )"
             }
           },
           "imports": [

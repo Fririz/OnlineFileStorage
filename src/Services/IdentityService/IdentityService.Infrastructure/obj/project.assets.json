@@ -884,6 +884,35 @@
           }
         }
       },
+      "Serilog/4.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/net8.0/Serilog.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/Serilog.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Serilog.Enrichers.Environment/3.0.1": {
+        "type": "package",
+        "dependencies": {
+          "Serilog": "4.0.0"
+        },
+        "compile": {
+          "lib/net8.0/Serilog.Enrichers.Environment.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/Serilog.Enrichers.Environment.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "System.CodeDom/6.0.0": {
         "type": "package",
         "compile": {
@@ -1135,7 +1164,8 @@
           "FluentValidation.AspNetCore": "11.3.1",
           "IdentityService.Domain": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "9.0.10",
-          "Microsoft.IdentityModel.Tokens": "8.14.0"
+          "Microsoft.IdentityModel.Tokens": "8.14.0",
+          "Serilog.Enrichers.Environment": "3.0.1"
         },
         "compile": {
           "bin/placeholder/IdentityService.Application.dll": {}
@@ -1147,6 +1177,9 @@
       "IdentityService.Domain/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v9.0",
+        "dependencies": {
+          "Serilog.Enrichers.Environment": "3.0.1"
+        },
         "compile": {
           "bin/placeholder/IdentityService.Domain.dll": {}
         },
@@ -2895,6 +2928,52 @@
         "postgresql.png"
       ]
     },
+    "Serilog/4.0.0": {
+      "sha512": "2jDkUrSh5EofOp7Lx5Zgy0EB+7hXjjxE2ktTb1WVQmU00lDACR2TdROGKU0K1pDTBSJBN1PqgYpgOZF8mL7NJw==",
+      "type": "package",
+      "path": "serilog/4.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "icon.png",
+        "lib/net462/Serilog.dll",
+        "lib/net462/Serilog.xml",
+        "lib/net471/Serilog.dll",
+        "lib/net471/Serilog.xml",
+        "lib/net6.0/Serilog.dll",
+        "lib/net6.0/Serilog.xml",
+        "lib/net8.0/Serilog.dll",
+        "lib/net8.0/Serilog.xml",
+        "lib/netstandard2.0/Serilog.dll",
+        "lib/netstandard2.0/Serilog.xml",
+        "serilog.4.0.0.nupkg.sha512",
+        "serilog.nuspec"
+      ]
+    },
+    "Serilog.Enrichers.Environment/3.0.1": {
+      "sha512": "9BqCE4C9FF+/rJb/CsQwe7oVf44xqkOvMwX//CUxvUR25lFL4tSS6iuxE5eW07quby1BAyAEP+vM6TWsnT3iqw==",
+      "type": "package",
+      "path": "serilog.enrichers.environment/3.0.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "lib/net462/Serilog.Enrichers.Environment.dll",
+        "lib/net462/Serilog.Enrichers.Environment.xml",
+        "lib/net471/Serilog.Enrichers.Environment.dll",
+        "lib/net471/Serilog.Enrichers.Environment.xml",
+        "lib/net6.0/Serilog.Enrichers.Environment.dll",
+        "lib/net6.0/Serilog.Enrichers.Environment.xml",
+        "lib/net8.0/Serilog.Enrichers.Environment.dll",
+        "lib/net8.0/Serilog.Enrichers.Environment.xml",
+        "lib/netstandard2.0/Serilog.Enrichers.Environment.dll",
+        "lib/netstandard2.0/Serilog.Enrichers.Environment.xml",
+        "serilog-enricher-nuget.png",
+        "serilog.enrichers.environment.3.0.1.nupkg.sha512",
+        "serilog.enrichers.environment.nuspec"
+      ]
+    },
     "System.CodeDom/6.0.0": {
       "sha512": "CPc6tWO1LAer3IzfZufDBRL+UZQcj5uS207NHALQzP84Vp/z6wF0Aa0YZImOQY8iStY0A2zI/e3ihKNPfUm8XA==",
       "type": "package",
@@ -3324,7 +3403,8 @@
       "Microsoft.EntityFrameworkCore.Design >= 9.0.7",
       "Microsoft.Extensions.Configuration >= 9.0.10",
       "Microsoft.Extensions.DependencyInjection >= 9.0.10",
-      "Npgsql.EntityFrameworkCore.PostgreSQL >= 9.0.4"
+      "Npgsql.EntityFrameworkCore.PostgreSQL >= 9.0.4",
+      "Serilog.Enrichers.Environment >= 3.0.1"
     ]
   },
   "packageFolders": {
@@ -3395,6 +3475,10 @@
           "Npgsql.EntityFrameworkCore.PostgreSQL": {
             "target": "Package",
             "version": "[9.0.4, )"
+          },
+          "Serilog.Enrichers.Environment": {
+            "target": "Package",
+            "version": "[3.0.1, )"
           }
         },
         "imports": [

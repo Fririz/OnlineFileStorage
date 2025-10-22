@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "rwJqKyloEg4=",
+  "dgSpecHash": "gPsNFY0WQl8=",
   "success": true,
   "projectFilePath": "/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/IdentityService/IdentityService.Application/IdentityService.Application.csproj",
   "expectedPackageFiles": [
@@ -17,6 +17,8 @@
     "/Users/fririz/.nuget/packages/microsoft.identitymodel.protocols/8.0.1/microsoft.identitymodel.protocols.8.0.1.nupkg.sha512",
     "/Users/fririz/.nuget/packages/microsoft.identitymodel.protocols.openidconnect/8.0.1/microsoft.identitymodel.protocols.openidconnect.8.0.1.nupkg.sha512",
     "/Users/fririz/.nuget/packages/microsoft.identitymodel.tokens/8.14.0/microsoft.identitymodel.tokens.8.14.0.nupkg.sha512",
+    "/Users/fririz/.nuget/packages/serilog/4.0.0/serilog.4.0.0.nupkg.sha512",
+    "/Users/fririz/.nuget/packages/serilog.enrichers.environment/3.0.1/serilog.enrichers.environment.3.0.1.nupkg.sha512",
     "/Users/fririz/.nuget/packages/system.identitymodel.tokens.jwt/8.0.1/system.identitymodel.tokens.jwt.8.0.1.nupkg.sha512"
   ],
   "logs": []

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "4B+kP4uxNLc=",
+  "dgSpecHash": "6F5V46kfEB8=",
   "success": true,
   "projectFilePath": "/Users/fririz/RiderProjects/OnlineFileStorage/src/Gateway/OcelotApiGateway/OcelotApiGateway.csproj",
   "expectedPackageFiles": [
@@ -17,6 +17,8 @@
     "/Users/fririz/.nuget/packages/newtonsoft.json/13.0.3/newtonsoft.json.13.0.3.nupkg.sha512",
     "/Users/fririz/.nuget/packages/newtonsoft.json.bson/1.0.2/newtonsoft.json.bson.1.0.2.nupkg.sha512",
     "/Users/fririz/.nuget/packages/ocelot/24.0.1/ocelot.24.0.1.nupkg.sha512",
+    "/Users/fririz/.nuget/packages/serilog/4.0.0/serilog.4.0.0.nupkg.sha512",
+    "/Users/fririz/.nuget/packages/serilog.enrichers.environment/3.0.1/serilog.enrichers.environment.3.0.1.nupkg.sha512",
     "/Users/fririz/.nuget/packages/system.diagnostics.diagnosticsource/4.7.1/system.diagnostics.diagnosticsource.4.7.1.nupkg.sha512"
   ],
   "logs": []

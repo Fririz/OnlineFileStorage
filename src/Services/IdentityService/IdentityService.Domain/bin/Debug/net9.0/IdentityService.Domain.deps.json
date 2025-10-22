@@ -7,8 +7,30 @@
   "targets": {
     ".NETCoreApp,Version=v9.0": {
       "IdentityService.Domain/1.0.0": {
+        "dependencies": {
+          "Serilog.Enrichers.Environment": "3.0.1"
+        },
         "runtime": {
           "IdentityService.Domain.dll": {}
+        }
+      },
+      "Serilog/4.0.0": {
+        "runtime": {
+          "lib/net8.0/Serilog.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.0.0.0"
+          }
+        }
+      },
+      "Serilog.Enrichers.Environment/3.0.1": {
+        "dependencies": {
+          "Serilog": "4.0.0"
+        },
+        "runtime": {
+          "lib/net8.0/Serilog.Enrichers.Environment.dll": {
+            "assemblyVersion": "3.0.0.0",
+            "fileVersion": "3.0.0.0"
+          }
         }
       }
     }
@@ -18,6 +40,20 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "Serilog/4.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-2jDkUrSh5EofOp7Lx5Zgy0EB+7hXjjxE2ktTb1WVQmU00lDACR2TdROGKU0K1pDTBSJBN1PqgYpgOZF8mL7NJw==",
+      "path": "serilog/4.0.0",
+      "hashPath": "serilog.4.0.0.nupkg.sha512"
+    },
+    "Serilog.Enrichers.Environment/3.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-9BqCE4C9FF+/rJb/CsQwe7oVf44xqkOvMwX//CUxvUR25lFL4tSS6iuxE5eW07quby1BAyAEP+vM6TWsnT3iqw==",
+      "path": "serilog.enrichers.environment/3.0.1",
+      "hashPath": "serilog.enrichers.environment.3.0.1.nupkg.sha512"
     }
   }
 }
