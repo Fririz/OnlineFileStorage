@@ -1,0 +1,12 @@
+/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/IdentityService/IdentityService.Domain/bin/Debug/net9.0/IdentityService.Domain.deps.json
+/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/IdentityService/IdentityService.Domain/bin/Debug/net9.0/IdentityService.Domain.dll
+/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/IdentityService/IdentityService.Domain/bin/Debug/net9.0/IdentityService.Domain.pdb
+/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/IdentityService/IdentityService.Domain/obj/Debug/net9.0/IdentityService.Domain.GeneratedMSBuildEditorConfig.editorconfig
+/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/IdentityService/IdentityService.Domain/obj/Debug/net9.0/IdentityService.Domain.AssemblyInfoInputs.cache
+/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/IdentityService/IdentityService.Domain/obj/Debug/net9.0/IdentityService.Domain.AssemblyInfo.cs
+/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/IdentityService/IdentityService.Domain/obj/Debug/net9.0/IdentityService.Domain.csproj.CoreCompileInputs.cache
+/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/IdentityService/IdentityService.Domain/obj/Debug/net9.0/IdentityService.Domain.sourcelink.json
+/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/IdentityService/IdentityService.Domain/obj/Debug/net9.0/IdentityService.Domain.dll
+/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/IdentityService/IdentityService.Domain/obj/Debug/net9.0/refint/IdentityService.Domain.dll
+/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/IdentityService/IdentityService.Domain/obj/Debug/net9.0/IdentityService.Domain.pdb
+/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/IdentityService/IdentityService.Domain/obj/Debug/net9.0/ref/IdentityService.Domain.dll

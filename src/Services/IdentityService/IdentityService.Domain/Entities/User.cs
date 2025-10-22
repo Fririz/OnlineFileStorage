@@ -9,30 +9,29 @@ public class User : EntityBase
     {
         
     }
-    public User(string username, string email, string passwordHash, Role roleOfUser)
+    public User(string username, string passwordHash, Role roleOfUser)
     {
         Id = Guid.NewGuid();
         CreatedDate = DateTime.UtcNow;
         Username = username;
-        Email = email;
         PasswordHash = passwordHash;
         RoleOfUser = roleOfUser;
     }
+    public User(string username, string passwordHash)
+    {
+        Id = Guid.NewGuid();
+        CreatedDate = DateTime.UtcNow;
+        Username = username;
+        PasswordHash = passwordHash;
+    }
     public string Username { get; private set; }
-    public string Email { get;  private set; } 
     public string PasswordHash { get;  private set; }
-    public Role RoleOfUser { get; private set; }
+    public Role RoleOfUser { get; private set; } = Role.User;
     
     public void ChangeUsername(string newUsername)
     {
         Username = newUsername;
     }
-
-    public void ChangeEmail(string newEmail)
-    {
-        Email = newEmail;
-    }
-
     public void ChangePasswordHash(string newPasswordHash)
     {
         PasswordHash = newPasswordHash;

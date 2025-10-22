@@ -1,4 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
+using IdentityService.Domain.Entities;
+using IdentityService.Application.Contracts;
+using IdentityService.Application.DTO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace IdentityService.API.Controllers;
 
@@ -6,19 +10,37 @@ namespace IdentityService.API.Controllers;
 [Route("api/[controller]")]
 public class AuthController : ControllerBase
 {
+    private readonly IUserWorker _userWorker;
+    public AuthController(IUserWorker userWorker)
+    {
+        _userWorker = userWorker;
+    }
     [HttpPost]
     [Route("register")]
-    public IActionResult Register()
+    public async Task<IResult> Register(UserDto user)
     {
-        return Ok();
+        return await _userWorker.RegisterUser(user);
     }
     [HttpPost]
     [Route("login")]
-    public IActionResult Login()
+    public async Task<IActionResult> Login([FromBody] UserDto user)
     {
-        return Ok();
+        var token = await _userWorker.Login(user);
+        if (token == null)
+        {
+            return Unauthorized("Invalid username or password.");
+        }
+        var cookieOptions = new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = true,
+            Expires = DateTime.UtcNow.AddHours(1)
+        };
+        Response.Cookies.Append("token", token, cookieOptions);
+        return Ok(new { message = "Login successful" });
     }
 
+    [Authorize]
     [HttpPost]
     [Route("logout")]
     public IActionResult Logout()

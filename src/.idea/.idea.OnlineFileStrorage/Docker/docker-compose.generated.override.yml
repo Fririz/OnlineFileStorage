@@ -1,0 +1,21 @@
+# This is a generated file. Not intended for manual editing.
+services:
+  identity-service:
+    build:
+      context: "/Users/fririz/RiderProjects/OnlineFileStorage/src"
+      dockerfile: "Services/IdentityService/IdentityService.API/Dockerfile"
+      target: "base"
+    command: []
+    entrypoint:
+    - "dotnet"
+    - "/app/bin/Debug/net9.0/IdentityService.API.dll"
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+    image: "identityservice.api:dev"
+    ports: []
+    volumes:
+    - "/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/IdentityService/IdentityService.API:/app:rw"
+    - "/Users/fririz/RiderProjects/OnlineFileStorage/src:/src:rw"
+    - "/Users/fririz/.nuget/packages:/home/app/.nuget/packages"
+    working_dir: "/app"

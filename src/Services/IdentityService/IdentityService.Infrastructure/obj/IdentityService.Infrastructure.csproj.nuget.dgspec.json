@@ -4,14 +4,100 @@
     "/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/IdentityService/IdentityService.Infrastructure/IdentityService.Infrastructure.csproj": {}
   },
   "projects": {
-    "/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/IdentityService/IdentityService.Infrastructure/IdentityService.Infrastructure.csproj": {
+    "/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/IdentityService/IdentityService.Application/IdentityService.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/IdentityService/IdentityService.Infrastructure/IdentityService.Infrastructure.csproj",
-        "projectName": "IdentityService.Infrastructure",
-        "projectPath": "/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/IdentityService/IdentityService.Infrastructure/IdentityService.Infrastructure.csproj",
+        "projectUniqueName": "/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/IdentityService/IdentityService.Application/IdentityService.Application.csproj",
+        "projectName": "IdentityService.Application",
+        "projectPath": "/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/IdentityService/IdentityService.Application/IdentityService.Application.csproj",
         "packagesPath": "/Users/fririz/.nuget/packages/",
-        "outputPath": "/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/IdentityService/IdentityService.Infrastructure/obj/",
+        "outputPath": "/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/IdentityService/IdentityService.Application/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/fririz/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net9.0"
+        ],
+        "sources": {
+          "/usr/local/share/dotnet/library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net9.0": {
+            "targetAlias": "net9.0",
+            "projectReferences": {
+              "/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/IdentityService/IdentityService.Domain/IdentityService.Domain.csproj": {
+                "projectPath": "/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/IdentityService/IdentityService.Domain/IdentityService.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.300"
+      },
+      "frameworks": {
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "dependencies": {
+            "BCrypt.Net-Next": {
+              "target": "Package",
+              "version": "[4.0.3, )"
+            },
+            "FluentValidation": {
+              "target": "Package",
+              "version": "[12.0.0, )"
+            },
+            "FluentValidation.AspNetCore": {
+              "target": "Package",
+              "version": "[11.3.1, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[9.0.10, )"
+            },
+            "Microsoft.IdentityModel.Tokens": {
+              "target": "Package",
+              "version": "[8.14.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.304/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/IdentityService/IdentityService.Domain/IdentityService.Domain.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/IdentityService/IdentityService.Domain/IdentityService.Domain.csproj",
+        "projectName": "IdentityService.Domain",
+        "projectPath": "/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/IdentityService/IdentityService.Domain/IdentityService.Domain.csproj",
+        "packagesPath": "/Users/fririz/.nuget/packages/",
+        "outputPath": "/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/IdentityService/IdentityService.Domain/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/fririz/.nuget/NuGet/NuGet.Config"
@@ -44,6 +130,93 @@
       "frameworks": {
         "net9.0": {
           "targetAlias": "net9.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.304/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/IdentityService/IdentityService.Infrastructure/IdentityService.Infrastructure.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/IdentityService/IdentityService.Infrastructure/IdentityService.Infrastructure.csproj",
+        "projectName": "IdentityService.Infrastructure",
+        "projectPath": "/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/IdentityService/IdentityService.Infrastructure/IdentityService.Infrastructure.csproj",
+        "packagesPath": "/Users/fririz/.nuget/packages/",
+        "outputPath": "/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/IdentityService/IdentityService.Infrastructure/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/fririz/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net9.0"
+        ],
+        "sources": {
+          "/usr/local/share/dotnet/library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net9.0": {
+            "targetAlias": "net9.0",
+            "projectReferences": {
+              "/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/IdentityService/IdentityService.Application/IdentityService.Application.csproj": {
+                "projectPath": "/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/IdentityService/IdentityService.Application/IdentityService.Application.csproj"
+              },
+              "/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/IdentityService/IdentityService.Domain/IdentityService.Domain.csproj": {
+                "projectPath": "/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/IdentityService/IdentityService.Domain/IdentityService.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.300"
+      },
+      "frameworks": {
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[9.0.7, )"
+            },
+            "Microsoft.Extensions.Configuration": {
+              "target": "Package",
+              "version": "[9.0.10, )"
+            },
+            "Microsoft.Extensions.DependencyInjection": {
+              "target": "Package",
+              "version": "[9.0.10, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[9.0.4, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
