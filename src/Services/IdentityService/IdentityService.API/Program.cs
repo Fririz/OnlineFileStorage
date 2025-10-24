@@ -6,7 +6,7 @@ using Serilog;
 using Logging;
 using IdentityService.Application;
 using IdentityService.Infrastructure;
-
+// 1. Убираем using Microsoft.IdentityModel.Logging;
 
 namespace IdentityService.API;
 
@@ -14,7 +14,9 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        Console.WriteLine("1111 World!");
+        // 2. Убираем отладочные флаги PII
+        
+        Console.WriteLine("114441 World!");
         var builder = WebApplication.CreateBuilder(args);
         
         builder.Services.AddInfrastructureServices(builder.Configuration);
@@ -27,16 +29,16 @@ public class Program
         
         var app = builder.Build();
 
-        // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
             app.MapOpenApi();
         }
+        app.UseRouting();
+        app.UseAuthentication();
+        app.UseAuthorization();
+        app.UseSerilogRequestLogging();
         
         app.MapControllers();
-        app.UseAuthorization();
-        app.UseAuthentication();
-        app.UseSerilogRequestLogging();
         app.Run();
     }
 }

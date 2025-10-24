@@ -189,6 +189,10 @@
             "Serilog.Enrichers.Environment": {
               "target": "Package",
               "version": "[3.0.1, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[8.14.0, )"
             }
           },
           "imports": [

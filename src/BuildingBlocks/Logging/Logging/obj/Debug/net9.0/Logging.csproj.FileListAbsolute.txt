@@ -1,0 +1,13 @@
+/Users/fririz/RiderProjects/OnlineFileStorage/src/BuildingBlocks/Logging/Logging/bin/Debug/net9.0/Logging.deps.json
+/Users/fririz/RiderProjects/OnlineFileStorage/src/BuildingBlocks/Logging/Logging/bin/Debug/net9.0/Logging.dll
+/Users/fririz/RiderProjects/OnlineFileStorage/src/BuildingBlocks/Logging/Logging/bin/Debug/net9.0/Logging.pdb
+/Users/fririz/RiderProjects/OnlineFileStorage/src/BuildingBlocks/Logging/Logging/obj/Debug/net9.0/Logging.csproj.AssemblyReference.cache
+/Users/fririz/RiderProjects/OnlineFileStorage/src/BuildingBlocks/Logging/Logging/obj/Debug/net9.0/Logging.GeneratedMSBuildEditorConfig.editorconfig
+/Users/fririz/RiderProjects/OnlineFileStorage/src/BuildingBlocks/Logging/Logging/obj/Debug/net9.0/Logging.AssemblyInfoInputs.cache
+/Users/fririz/RiderProjects/OnlineFileStorage/src/BuildingBlocks/Logging/Logging/obj/Debug/net9.0/Logging.AssemblyInfo.cs
+/Users/fririz/RiderProjects/OnlineFileStorage/src/BuildingBlocks/Logging/Logging/obj/Debug/net9.0/Logging.csproj.CoreCompileInputs.cache
+/Users/fririz/RiderProjects/OnlineFileStorage/src/BuildingBlocks/Logging/Logging/obj/Debug/net9.0/Logging.sourcelink.json
+/Users/fririz/RiderProjects/OnlineFileStorage/src/BuildingBlocks/Logging/Logging/obj/Debug/net9.0/Logging.dll
+/Users/fririz/RiderProjects/OnlineFileStorage/src/BuildingBlocks/Logging/Logging/obj/Debug/net9.0/refint/Logging.dll
+/Users/fririz/RiderProjects/OnlineFileStorage/src/BuildingBlocks/Logging/Logging/obj/Debug/net9.0/Logging.pdb
+/Users/fririz/RiderProjects/OnlineFileStorage/src/BuildingBlocks/Logging/Logging/obj/Debug/net9.0/ref/Logging.dll

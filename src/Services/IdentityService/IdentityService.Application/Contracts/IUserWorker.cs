@@ -7,5 +7,5 @@ namespace IdentityService.Application.Contracts;
 public interface IUserWorker
 {
     public Task<IResult> RegisterUser(UserDto userDto);
-    public Task<string?> Login(UserDto userDto);
+    public Task<string?> LoginUser(UserDto userDto);
 }

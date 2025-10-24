@@ -11,16 +11,16 @@ namespace IdentityService.Application;
 public class UserWorker : IUserWorker
 {
     private readonly IUserRepository _userRepository;
-    private readonly IJwtTokenGenerator _jwtTokenGenerator;
+    private readonly IJwtTokenWorker _jwtTokenWorker;
     private readonly IPasswordWorker _passwordWorker;
     private readonly ILogger _logger;
     public UserWorker(IUserRepository userRepository, 
-        IJwtTokenGenerator jwtTokenGenerator, 
+        IJwtTokenWorker jwtTokenWorker, 
         IPasswordWorker passwordWorker,
         ILogger<UserWorker> logger)
     {
         _userRepository = userRepository;
-        _jwtTokenGenerator = jwtTokenGenerator;
+        _jwtTokenWorker = jwtTokenWorker;
         _passwordWorker = passwordWorker;
         _logger = logger;
     }
@@ -39,7 +39,7 @@ public class UserWorker : IUserWorker
 
     }
 
-    public async Task<string?> Login(UserDto userDto)
+    public async Task<string?> LoginUser(UserDto userDto)
     {
         var user = await _userRepository.GetUserByUsernameAsync(userDto.Username);
         if (user == null || !_passwordWorker.CheckPassword(userDto.Password, user.PasswordHash))
@@ -48,6 +48,6 @@ public class UserWorker : IUserWorker
             return null;
         }
         _logger.LogInformation($"User {user.Username} logged in successfully.");
-        return _jwtTokenGenerator.GenerateToken(user);
+        return _jwtTokenWorker.GenerateToken(user);
     }
 }

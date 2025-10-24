@@ -16,8 +16,8 @@ public static class ApplicationServiceRegistration
         services.AddFluentValidationAutoValidation(); 
         services.AddValidatorsFromAssemblyContaining<UserRegisterDtoValidator>();
         services.AddScoped<IUserWorker, UserWorker>();
-        services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
         services.AddScoped<IPasswordWorker, PasswordWorker>();
+        services.AddScoped<IJwtTokenWorker, JwtTokenWorker>();
         return services;
     }
 }

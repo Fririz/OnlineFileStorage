@@ -10,12 +10,12 @@ services:
     - "dotnet"
     - "/app/bin/Debug/net9.0/IdentityService.API.dll"
     environment:
-      ASPNETCORE_ENVIRONMENT: "Development"
       DOTNET_USE_POLLING_FILE_WATCHER: "true"
     image: "identityservice.api:dev"
     ports: []
     volumes:
     - "/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/IdentityService/IdentityService.API:/app:rw"
     - "/Users/fririz/RiderProjects/OnlineFileStorage/src:/src:rw"
+    - "/Users/fririz/.microsoft/usersecrets:/home/app/.microsoft/usersecrets"
     - "/Users/fririz/.nuget/packages:/home/app/.nuget/packages"
     working_dir: "/app"

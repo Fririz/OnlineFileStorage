@@ -20,10 +20,4 @@
       <PackageReference Include="Serilog.Enrichers.Environment" Version="3.0.1" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Content Include="..\IdentityService.API\appsettings.json">
-        <Link>appsettings.json</Link>
-      </Content>
-    </ItemGroup>
-
 </Project>

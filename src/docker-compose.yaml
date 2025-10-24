@@ -6,6 +6,8 @@ services:
     ports:
       - "8080:8080"
     restart: unless-stopped
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
     depends_on:
       postgres-identity-service:
         condition: service_started

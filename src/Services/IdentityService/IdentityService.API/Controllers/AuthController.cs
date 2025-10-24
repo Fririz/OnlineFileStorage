@@ -3,7 +3,6 @@ using IdentityService.Domain.Entities;
 using IdentityService.Application.Contracts;
 using IdentityService.Application.DTO;
 using Microsoft.AspNetCore.Authorization;
-using Serilog;
 
 namespace IdentityService.API.Controllers;
 
@@ -12,9 +11,13 @@ namespace IdentityService.API.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly IUserWorker _userWorker;
-    public AuthController(IUserWorker userWorker)
+    private readonly IJwtTokenWorker _jwtTokenWorker;
+    private readonly ILogger _logger;
+    public AuthController(IUserWorker userWorker, IJwtTokenWorker jwtTokenWorker, ILogger<AuthController> logger)
     {
         _userWorker = userWorker;
+        _jwtTokenWorker = jwtTokenWorker;
+        _logger = logger;
     }
     [HttpPost]
     [Route("register")]
@@ -26,7 +29,7 @@ public class AuthController : ControllerBase
     [Route("login")]
     public async Task<IActionResult> Login([FromBody] UserDto user)
     {
-        var token = await _userWorker.Login(user);
+        var token = await _userWorker.LoginUser(user);
         if (token == null)
         {
             return Unauthorized("Invalid username or password.");
@@ -34,20 +37,32 @@ public class AuthController : ControllerBase
         var cookieOptions = new CookieOptions
         {
             HttpOnly = true,
-            Secure = true,
-            Expires = DateTime.UtcNow.AddHours(1)
+            SameSite = SameSiteMode.Lax,      // нужна для cross-site POST
+            Path = "/",                        // чтобы уходила на все маршруты
         };
         Response.Cookies.Append("token", token, cookieOptions);
         return Ok(new { message = "Login successful" });
     }
-
+    
     [Authorize]
-    [HttpPost]
+    [HttpGet]
     [Route("logout")]
     public IActionResult Logout()
     {
+ 
+
         Response.Cookies.Delete("token");
-        return Ok(new { message = "Logout successful" });
+        _logger.LogInformation($"User {User.Identity!.Name} logged out successfully.");
+        return Ok(new { message = "Logout successful. User: " + User.Identity.Name });
+    }
+    [HttpGet]
+    [Route("tokenCheck")]
+    public bool TokenCheck()
+    {
+        string? token = Request.Cookies["token"];
+        if (token != null)
+            return _jwtTokenWorker.CheckToken(token);
+        return false;
     }
     
 }
