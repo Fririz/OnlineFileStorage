@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using IdentityService.Domain.Entities;
 using IdentityService.Application.Contracts;
 using IdentityService.Application.DTO;
+using IdentityService.Application.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 
 namespace IdentityService.API.Controllers;
@@ -21,9 +22,24 @@ public class AuthController : ControllerBase
     }
     [HttpPost]
     [Route("register")]
-    public async Task<IResult> Register(UserDto user)
-    { 
-        return await _userWorker.RegisterUser(user);
+    public async Task<IActionResult> Register(UserDto user)
+    {
+        Guid id;
+        try
+        {
+            id = await _userWorker.RegisterUser(user);
+        }
+        catch (UserAlreadyExistsException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Unexpected error with user registration");
+            return StatusCode(500, "An internal server error occurred.");
+        }
+
+        return Ok(id);
     }
     [HttpPost]
     [Route("login")]

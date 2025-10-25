@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using IdentityService.Domain.Entities;
 using Microsoft.AspNetCore.Http;
+using IdentityService.Application.Exceptions;
+using IdentityService.Domain.Enums;
 using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace IdentityService.Application;
@@ -24,18 +26,18 @@ public class UserWorker : IUserWorker
         _passwordWorker = passwordWorker;
         _logger = logger;
     }
-    public async Task<IResult> RegisterUser(UserDto userDto)
+    public async Task<Guid> RegisterUser(UserDto userDto)
     {
         if(await _userRepository.CheckUserExistenceAsync(userDto.Username))
         {
             _logger.LogInformation($"User {userDto.Username} already exists.");
-            return Results.BadRequest<string>("User with this username already exists.");
+            throw new UserAlreadyExistsException(userDto.Username);
         }
-
-        var user = new User(userDto.Username, _passwordWorker.HashPassword(userDto.Password));
+        
+        var user = User.CreateUser(userDto.Username, _passwordWorker.HashPassword(userDto.Password), Role.User);
         await _userRepository.AddUserAsync(user);
         _logger.LogInformation($"User {user.Username} registered successfully.");
-        return Results.Ok(user.Id);
+        return user.Id;
 
     }
 

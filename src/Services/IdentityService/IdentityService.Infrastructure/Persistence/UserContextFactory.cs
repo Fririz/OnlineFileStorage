@@ -12,7 +12,6 @@ public class UserContextFactory : IDesignTimeDbContextFactory<UserContext>
 
         var optionsBuilder = new DbContextOptionsBuilder<UserContext>();
         
-        // Используем то же имя строки подключения, что и в вашем коде
         var connectionString = "Host=localhost;Port=5432;Database=identityServiceDb;Username=postgres;Password=admin";
         
         optionsBuilder.UseNpgsql(connectionString);

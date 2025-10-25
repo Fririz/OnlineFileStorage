@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using IdentityService.Domain.Entities;
+using IdentityService.Domain.Enums;
 
 namespace IdentityService.Infrastructure.Persistence;
 
@@ -13,9 +14,15 @@ public class UserContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<User>()
-            .HasIndex(u => u.Username)
-            .IsUnique();
+        modelBuilder.Entity<User>(entity =>
+        {
+            entity.HasIndex(u => u.Username)
+                .IsUnique();
+            
+            entity.Property(u => u.RoleOfUser)
+                .HasConversion<string>();
+        });
+
 
     }
     public DbSet<User> Users { get; set; }

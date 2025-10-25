@@ -6,6 +6,6 @@ namespace IdentityService.Application.Contracts;
 
 public interface IUserWorker
 {
-    public Task<IResult> RegisterUser(UserDto userDto);
+    public Task<Guid> RegisterUser(UserDto userDto);
     public Task<string?> LoginUser(UserDto userDto);
 }

@@ -11,7 +11,25 @@ services:
     depends_on:
       postgres-identity-service:
         condition: service_started
-        
+  fileapiservice:
+    build:
+      context: .
+      dockerfile: Services/FileApiService/FileApiService.API/Dockerfile
+    ports:
+      - "8082:8082"
+    
+    restart: unless-stopped
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:8082
+  
+  ocelot:
+    build:
+      context: .
+      dockerfile: Gateway/OcelotApiGateway/Dockerfile
+    ports:
+      - "6000:8080"
+    restart: unless-stopped
         
   postgres-identity-service:
     image: postgres:13.2-alpine
