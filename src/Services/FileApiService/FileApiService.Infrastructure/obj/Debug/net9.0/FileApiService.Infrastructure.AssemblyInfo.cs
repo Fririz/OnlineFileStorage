@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FileApiService.Infrastructure")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f23d1ae97ce4f74548b95a1b2f38c515bee45608")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+afb60d6e37b4e1e6c7d4bf3a4f54f723d97f3b4d")]
 [assembly: System.Reflection.AssemblyProductAttribute("FileApiService.Infrastructure")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FileApiService.Infrastructure")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

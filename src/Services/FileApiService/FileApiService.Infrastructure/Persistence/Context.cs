@@ -3,16 +3,20 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FileApiService.Infrastructure.Persistence;
 
-public class ItemContext : DbContext
+public class Context : DbContext
 {
-    public ItemContext(DbContextOptions<ItemContext> options) : base(options)
+    public Context(DbContextOptions<Context> options) : base(options)
     {
         
     }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        
+        //AccessRights
+        modelBuilder.Entity<AccessRights>()
+            .HasIndex(ar => new { ar.UserId, ar.ItemId })
+            .IsUnique();
+        //Item
         modelBuilder.Entity<Item>().HasQueryFilter(i => !i.IsDeleted);
         
         modelBuilder.Entity<Item>()
@@ -37,4 +41,5 @@ public class ItemContext : DbContext
 
     }
     public DbSet<Item> Items { get; set; }
+    public DbSet<AccessRights> AccessRights { get; set; }
 }
