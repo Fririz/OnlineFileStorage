@@ -14,33 +14,49 @@ public class AuthController : ControllerBase
     private readonly IUserWorker _userWorker;
     private readonly IJwtTokenWorker _jwtTokenWorker;
     private readonly ILogger _logger;
-    public AuthController(IUserWorker userWorker, IJwtTokenWorker jwtTokenWorker, ILogger<AuthController> logger)
+    
+    private readonly IHostEnvironment _env;
+
+    public AuthController(IUserWorker userWorker, IJwtTokenWorker jwtTokenWorker, ILogger<AuthController> logger, IHostEnvironment env)
     {
         _userWorker = userWorker;
         _jwtTokenWorker = jwtTokenWorker;
         _logger = logger;
+        _env = env; 
     }
+
     [HttpPost]
     [Route("register")]
     public async Task<IActionResult> Register(UserDto user)
     {
-        Guid id;
         try
         {
-            id = await _userWorker.RegisterUser(user);
+            await _userWorker.RegisterUser(user);
         }
         catch (UserAlreadyExistsException ex)
         {
-            return BadRequest(ex.Message);
+            return BadRequest(new { message = ex.Message }); 
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Unexpected error with user registration");
-            return StatusCode(500, "An internal server error occurred.");
+            return StatusCode(500, new { message = "An internal server error occurred." });
         }
 
-        return Ok(id);
+        var token = await _userWorker.LoginUser(user);
+        if (token == null)
+        {
+            return Unauthorized(new { message = "Invalid credentials after registration." });
+        }
+        
+        
+        Response.Cookies.Append("token", token, GetCookieOptions());
+        
+        _logger.LogInformation("User {Username} registered and logged in successfully.", user.Username);
+        
+        return Ok(new { message = "Registration successful" });
     }
+
     [HttpPost]
     [Route("login")]
     public async Task<IActionResult> Login([FromBody] UserDto user)
@@ -48,37 +64,48 @@ public class AuthController : ControllerBase
         var token = await _userWorker.LoginUser(user);
         if (token == null)
         {
-            return Unauthorized("Invalid username or password.");
+            return Unauthorized(new { message = "Invalid username or password." });
         }
-        var cookieOptions = new CookieOptions
-        {
-            HttpOnly = true,
-            SameSite = SameSiteMode.Lax,      // нужна для cross-site POST
-            Path = "/",                        // чтобы уходила на все маршруты
-        };
-        Response.Cookies.Append("token", token, cookieOptions);
+        
+        Response.Cookies.Append("token", token, GetCookieOptions());
+        
+        _logger.LogInformation("User {Username} logged in successfully.", user.Username);
+        
         return Ok(new { message = "Login successful" });
     }
     
-    [Authorize]
+    [Authorize] 
     [HttpGet]
     [Route("logout")]
     public IActionResult Logout()
     {
- 
-
+        var username = User.Identity?.Name ?? "unknown";
         Response.Cookies.Delete("token");
-        _logger.LogInformation($"User {User.Identity!.Name} logged out successfully.");
-        return Ok(new { message = "Logout successful. User: " + User.Identity.Name });
+        _logger.LogInformation($"User {username} logged out successfully.");
+        return Ok(new { message = $"Logout successful. User: {username}" });
     }
+
     [HttpGet]
     [Route("tokenCheck")]
-    public bool TokenCheck()
+    public IActionResult TokenCheck()
     {
         string? token = Request.Cookies["token"];
-        if (token != null)
-            return _jwtTokenWorker.CheckToken(token);
-        return false;
+        if (token != null && _jwtTokenWorker.CheckToken(token))
+        {
+            return Ok(true);
+        }
+        return Ok(false);
     }
     
+    private CookieOptions GetCookieOptions()
+    {
+        return new CookieOptions
+        {
+            HttpOnly = true,
+            SameSite = SameSiteMode.None,
+            Secure = false,
+            Expires = DateTime.UtcNow.AddDays(1), 
+            Path = "/", 
+        };
+    }
 }

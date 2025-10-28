@@ -40,6 +40,15 @@ services:
     ports:
       - "5432:5432"
         
+#  postgres-fileapi-service:
+#    image: postgres:13.2-alpine
+#    environment:
+#      POSTGRES_USER: postgres
+#      POSTGRES_PASSWORD: admin
+#      POSTGRES_DB: fileApiServiceDb
+#    ports:
+#      - "5433:5433"
+#        
         
   pg-admin:
     image: dpage/pgadmin4

@@ -24,7 +24,7 @@ public static class ApiServiceRegistration
             options.DefaultChallengeScheme = "MyCookieAuth";
             options.DefaultScheme = "MyCookieAuth"; 
         })
-            .AddJwtBearer("MyCookieAuth", options => // 3. Настраиваем нашу именованную схему
+            .AddJwtBearer("MyCookieAuth", options =>
             {
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
@@ -42,7 +42,6 @@ public static class ApiServiceRegistration
                     ClockSkew = TimeSpan.Zero
                 };
                 
-                // 4. Оставляем чистый обработчик OnMessageReceived
                 options.Events = new JwtBearerEvents
                 {
                     OnMessageReceived = context =>

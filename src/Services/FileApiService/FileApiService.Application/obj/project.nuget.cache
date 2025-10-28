@@ -1,8 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "al9S/WxqMlQ=",
+  "dgSpecHash": "RaDQo5gvKVs=",
   "success": true,
   "projectFilePath": "/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileApiService/FileApiService.Application/FileApiService.Application.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "/Users/fririz/.nuget/packages/microsoft.extensions.configuration/9.0.10/microsoft.extensions.configuration.9.0.10.nupkg.sha512",
+    "/Users/fririz/.nuget/packages/microsoft.extensions.configuration.abstractions/9.0.10/microsoft.extensions.configuration.abstractions.9.0.10.nupkg.sha512",
+    "/Users/fririz/.nuget/packages/microsoft.extensions.dependencyinjection/9.0.10/microsoft.extensions.dependencyinjection.9.0.10.nupkg.sha512",
+    "/Users/fririz/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/9.0.10/microsoft.extensions.dependencyinjection.abstractions.9.0.10.nupkg.sha512",
+    "/Users/fririz/.nuget/packages/microsoft.extensions.primitives/9.0.10/microsoft.extensions.primitives.9.0.10.nupkg.sha512"
+  ],
   "logs": []
 }

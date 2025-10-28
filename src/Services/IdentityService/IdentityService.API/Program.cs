@@ -16,9 +16,8 @@ public class Program
     {
         // 2. Убираем отладочные флаги PII
         
-        Console.WriteLine("114441 World!");
+        Console.WriteLine("fff World!");
         var builder = WebApplication.CreateBuilder(args);
-        
         builder.Services.AddInfrastructureServices(builder.Configuration);
         builder.Services.AddApiServices(builder.Configuration);
         builder.Services.AddApplicationServices(builder.Configuration);

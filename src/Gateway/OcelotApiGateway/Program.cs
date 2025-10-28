@@ -12,25 +12,35 @@ namespace OcelotApiGateway;
 
 public class Program
 {
-    public static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
         
-        // Получаем доступ к конфигурации
         var configuration = builder.Configuration;
 
         // Add services to the container.
         builder.Services.AddAuthorization();
         builder.Configuration.AddJsonFile("ocelot.json", optional: false, reloadOnChange: true);
         builder.Services.AddOcelot();
+        
+        builder.Services.AddCors(o => o.AddPolicy("MyPolicy", policy =>
+        {
+            policy.WithOrigins(
+                    "http://localhost:3000",   
+                    "http://127.0.0.1:3000",   
+                    "http://192.168.1.102:3000"
+                   )
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials(); 
+        }));
+
         builder.Host.UseSerilog((context, config) =>
         {
+            config.MinimumLevel.Debug(); 
             SeriLogger.Configure(context, config);
         });
     
-        // --- НАЧАЛО БЛОКА АУТЕНТИФИКАЦИИ (ИЗМЕНЕНО) ---
-        
-        // 1. Читаем те же самые настройки JWT, что и в identity-service
         var validIssuer = configuration["Jwt:Issuer"]
             ?? throw new InvalidOperationException("Jwt:Issuer is not set");
         var validAudience = configuration["Jwt:Audience"]
@@ -46,19 +56,14 @@ public class Program
                 {
                     ValidateIssuer = true,
                     ValidIssuer = validIssuer,
-
                     ValidateAudience = true,
                     ValidAudience = validAudience,
-
                     ValidateLifetime = true,
-
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
-
                     ValidateIssuerSigningKey = true,
                     ClockSkew = TimeSpan.Zero
                 };
                 
-                // 4. Читаем токен из Cookie
                 options.Events = new Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerEvents
                 {
                     OnMessageReceived = context =>
@@ -91,11 +96,16 @@ public class Program
             });
         
         var app = builder.Build();
+
+        app.UseRouting();
+        
+        app.UseCors("MyPolicy"); 
         
         app.UseAuthentication();
         app.UseAuthorization();
 
-        app.UseOcelot().Wait();
-        app.Run();
+        await app.UseOcelot();
+        await app.RunAsync();
     }
 }
+

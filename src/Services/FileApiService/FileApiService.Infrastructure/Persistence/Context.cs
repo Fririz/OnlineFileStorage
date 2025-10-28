@@ -12,7 +12,7 @@ public class Context : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        //AccessRights
+        //AccessRightsRepository
         modelBuilder.Entity<AccessRights>()
             .HasIndex(ar => new { ar.UserId, ar.ItemId })
             .IsUnique();

@@ -7,10 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Repository\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.10" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.10">
         <PrivateAssets>all</PrivateAssets>
@@ -22,6 +18,8 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\IdentityService\IdentityService.Application\IdentityService.Application.csproj" />
+      <ProjectReference Include="..\FileApiService.Application\FileApiService.Application.csproj" />
       <ProjectReference Include="..\FileApiService.Domain\FileApiService.Domain.csproj" />
     </ItemGroup>
 

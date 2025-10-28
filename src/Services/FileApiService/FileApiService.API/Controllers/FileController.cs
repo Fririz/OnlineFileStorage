@@ -6,11 +6,12 @@ namespace FileApiService.API.Controllers;
 public class FileController : ControllerBase
 {
     [HttpGet]
-    [Route("GetFile")]
-    public ActionResult<string> Get()
+    [Route("GetFile/{id}")]
+    public ActionResult<string> GetFile(Guid id)
     {
-        string id = HttpContext.Request.Headers["Id"];
-        string name = HttpContext.Request.Headers["Nickname"];
-        return id + " " + name;
+        return Ok("File");
+        // string id = HttpContext.Request.Headers["Id"];
+        // string name = HttpContext.Request.Headers["Nickname"];
+        // return id + " " + name;
     }
 }

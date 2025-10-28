@@ -5,7 +5,6 @@
       "DownstreamPathTemplate": "/api/auth/login",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
-
         { "Host": "identity-service", "Port": 8080 }
       ],
       "UpstreamPathTemplate": "/api/auth/login",
@@ -15,23 +14,21 @@
       "DownstreamPathTemplate": "/api/auth/register",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
-
         { "Host": "identity-service", "Port": 8080 }
       ],
       "UpstreamPathTemplate": "/api/auth/register",
-      "UpstreamHttpMethod": [ "POST" ]
+      "UpstreamHttpMethod": [ "POST", "OPTIONS"]
     },
-    
     {
       "DownstreamPathTemplate": "/api/auth/logout",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
-
         { "Host": "identity-service", "Port": 8080 }
       ],
       "UpstreamPathTemplate": "/api/auth/logout",
       "UpstreamHttpMethod": [ "GET" ]
     },
+
     //FileApiService
     {
       "DownstreamPathTemplate": "/api/File/GetFile",
@@ -39,7 +36,7 @@
       "DownstreamHostAndPorts": [
         { "Host": "fileapiservice", "Port": 8082 }
       ],
-      "UpstreamPathTemplate": "/api/File/getFile",
+      "UpstreamPathTemplate": "/api/File/GetFile/",
       "UpstreamHttpMethod": [ "POST", "GET" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer",
@@ -48,7 +45,7 @@
     }
   ],
   "GlobalConfiguration": {
-      "BaseUrl": "http://localhost:6000"
+    "BaseUrl": "http://localhost:6000"
   }
 }
 
