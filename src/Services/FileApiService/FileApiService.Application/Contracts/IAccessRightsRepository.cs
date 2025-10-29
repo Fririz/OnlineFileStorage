@@ -1,6 +1,8 @@
+using FileApiService.Domain.Entities;
+
 namespace FileApiService.Application.Contracts;
 
-public interface IAccessRightsRepository
+public interface IAccessRightsRepository : IRepositoryBase<AccessRights>
 {
     
 }

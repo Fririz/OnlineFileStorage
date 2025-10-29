@@ -8,12 +8,7 @@
         { "Host": "identity-service", "Port": 8080 }
       ],
       "UpstreamPathTemplate": "/api/auth/login",
-      "UpstreamHttpMethod": [ "GET", "POST" ]
-    },
-    {
-      // Пустой OPTIONS для /api/auth/login, чтобы app.UseCors мог его обработать
-      "UpstreamPathTemplate": "/api/auth/login",
-      "UpstreamHttpMethod": [ "OPTIONS" ]
+      "UpstreamHttpMethod": [ "GET", "POST", "OPTIONS"]
     },
     {
       "DownstreamPathTemplate": "/api/auth/register",
@@ -22,12 +17,7 @@
         { "Host": "identity-service", "Port": 8080 }
       ],
       "UpstreamPathTemplate": "/api/auth/register",
-      "UpstreamHttpMethod": [ "POST" ]
-    },
-    {
-      // Пустой OPTIONS для /api/auth/register
-      "UpstreamPathTemplate": "/api/auth/register",
-      "UpstreamHttpMethod": [ "OPTIONS" ]
+      "UpstreamHttpMethod": ["POST", "OPTIONS"]
     },
     {
       "DownstreamPathTemplate": "/api/auth/logout",
@@ -39,11 +29,15 @@
       "UpstreamHttpMethod": [ "GET" ]
     },
     {
-      // Пустой OPTIONS для /api/auth/logout
-      "UpstreamPathTemplate": "/api/auth/logout",
-      "UpstreamHttpMethod": [ "OPTIONS" ]
+      "DownstreamPathTemplate": "/api/auth/GetCurrentUser",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [{
+        "Host": "identity-service",
+        "Port": 8080
+      }],
+      "UpstreamPathTemplate": "/api/auth/GetCurrentUser",
+      "UpstreamHttpMethod": [ "GET" , "OPTIONS"]
     },
-
     //FileApiService
     {
       "DownstreamPathTemplate": "/api/File/GetFile",
@@ -52,23 +46,15 @@
         { "Host": "fileapiservice", "Port": 8082 }
       ],
       "UpstreamPathTemplate": "/api/File/GetFile/",
-      "UpstreamHttpMethod": [ "POST", "GET" ],
+      "UpstreamHttpMethod": [ "POST", "GET", "OPTIONS" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       }
-    },
-    {
-      // КЛЮЧЕВОЕ ИСПРАВЛЕНИЕ:
-      // Этот "пустой" OPTIONS маршрут ПЕРЕХВАТЫВАЕТ preflight-запрос
-      // и НЕ ИМЕЕТ AuthenticationOptions, 
-      // позволяя app.UseCors() ответить до проверки токена.
-      "UpstreamPathTemplate": "/api/File/GetFile/",
-      "UpstreamHttpMethod": [ "OPTIONS" ]
     }
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "http://localhost:6000"
+    "BaseUrl": "http://localhost:6002"
   }
 }
 

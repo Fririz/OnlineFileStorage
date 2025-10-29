@@ -1161,7 +1161,8 @@
         "dependencies": {
           "FileApiService.Domain": "1.0.0",
           "Microsoft.Extensions.Configuration": "9.0.10",
-          "Microsoft.Extensions.DependencyInjection": "9.0.10"
+          "Microsoft.Extensions.DependencyInjection": "9.0.10",
+          "Microsoft.Extensions.Logging": "9.0.10"
         },
         "compile": {
           "bin/placeholder/FileApiService.Application.dll": {}

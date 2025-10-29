@@ -26,9 +26,9 @@ public class Program
         builder.Services.AddCors(o => o.AddPolicy("MyPolicy", policy =>
         {
             policy.WithOrigins(
-                    "http://localhost:3000",   
-                    "http://127.0.0.1:3000",   
-                    "http://192.168.1.102:3000"
+                    "http://localhost:5173",   
+                    "http://127.0.0.1:5173",   
+                    "http://192.168.1.102:5173"
                    )
                 .AllowAnyMethod()
                 .AllowAnyHeader()

@@ -6,7 +6,7 @@ using FileApiService.Application.Contracts;
 
 namespace FileApiService.Infrastructure.Repository;
 
-public class RepositoryBase<T> : IRepositoryBase<T> where T : EntityBase
+public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : EntityBase
 {
     protected readonly Context _context;
     
@@ -39,5 +39,14 @@ public class RepositoryBase<T> : IRepositoryBase<T> where T : EntityBase
     {
         _context.Set<T>().Remove(entity);
         await _context.SaveChangesAsync(cancellationToken);
+    }
+    public async Task DeleteByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        var entity = await _context.Set<T>().FindAsync(new object[] { id }, cancellationToken);
+        if (entity != null)
+        {
+            await DeleteAsync(entity, cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
+        }
     }
 }

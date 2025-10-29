@@ -28,7 +28,7 @@ services:
       context: .
       dockerfile: Gateway/OcelotApiGateway/Dockerfile
     ports:
-      - "6000:8080"
+      - "6002:8080"
     restart: unless-stopped
         
   postgres-identity-service:

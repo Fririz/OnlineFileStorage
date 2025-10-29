@@ -3,7 +3,7 @@ using IdentityService.Application.DTO;
 
 namespace IdentityService.Application.Validators;
 
-public class UserRegisterDtoValidator : AbstractValidator<UserDto>
+public class UserRegisterDtoValidator : AbstractValidator<UserAuthDto>
 {
     public UserRegisterDtoValidator()
     {

@@ -21,8 +21,6 @@ public class Item : EntityBase
     [MaxLength(255)] 
     public string Name { get; private set; }
     
-    //Fields only for files:
-    
     [MaxLength(1024)] 
     public string? StorageObjectId { get; private set; } 
 

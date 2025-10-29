@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "U3Pp8HFoxnc=",
+  "success": true,
+  "projectFilePath": "/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileStorageService/FileStorageService.API/FileStorageService.API.csproj",
+  "expectedPackageFiles": [
+    "/Users/fririz/.nuget/packages/microsoft.aspnetcore.openapi/9.0.8/microsoft.aspnetcore.openapi.9.0.8.nupkg.sha512",
+    "/Users/fririz/.nuget/packages/microsoft.openapi/1.6.17/microsoft.openapi.1.6.17.nupkg.sha512"
+  ],
+  "logs": []
+}

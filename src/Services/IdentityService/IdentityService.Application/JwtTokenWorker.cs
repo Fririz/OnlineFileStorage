@@ -78,25 +78,32 @@ public class JwtTokenWorker : IJwtTokenWorker
         return _handler.WriteToken(token);
     }
 
-    public bool CheckToken(string token)
+    public ClaimsPrincipal? GetPrincipalFromToken(string? token)
     {
         if (string.IsNullOrWhiteSpace(token))
-            return false;
+            return null;
 
         try
         {
-            _handler.ValidateToken(token, _validationParameters, out SecurityToken _);
-            return true;
+            var principal = _handler.ValidateToken(token, _validationParameters, out SecurityToken validatedToken);
+
+            if (validatedToken is not JwtSecurityToken)
+            {
+                _logger.LogWarning("Validated token is not a JwtSecurityToken.");
+                return null;
+            }
+
+            return principal;
         }
         catch (SecurityTokenException ex)
         {
             _logger.LogWarning(ex, "JWT validation error: {Message}", ex.Message);
-            return false;
+            return null; // Токен плохой (просрочен, неверная подпись)
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Unexpected error with jwt parsing");
-            return false;
+            return null; // Другая ошибка
         }
     }
 }

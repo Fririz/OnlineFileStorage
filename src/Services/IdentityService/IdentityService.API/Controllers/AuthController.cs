@@ -1,3 +1,5 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using IdentityService.Domain.Entities;
 using IdentityService.Application.Contracts;
@@ -27,7 +29,7 @@ public class AuthController : ControllerBase
 
     [HttpPost]
     [Route("register")]
-    public async Task<IActionResult> Register(UserDto user)
+    public async Task<IActionResult> Register(UserAuthDto user)
     {
         try
         {
@@ -59,7 +61,7 @@ public class AuthController : ControllerBase
 
     [HttpPost]
     [Route("login")]
-    public async Task<IActionResult> Login([FromBody] UserDto user)
+    public async Task<IActionResult> Login([FromBody] UserAuthDto user)
     {
         var token = await _userWorker.LoginUser(user);
         if (token == null)
@@ -86,23 +88,37 @@ public class AuthController : ControllerBase
     }
 
     [HttpGet]
-    [Route("tokenCheck")]
-    public IActionResult TokenCheck()
+    [Route("GetCurrentUser")]
+    public IActionResult GetCurrentUser()
     {
         string? token = Request.Cookies["token"];
-        if (token != null && _jwtTokenWorker.CheckToken(token))
+
+        var principal = _jwtTokenWorker.GetPrincipalFromToken(token);
+
+        if (principal == null)
         {
-            return Ok(true);
+            return Unauthorized();
         }
-        return Ok(false);
+        var user = new UserTokenCheckDto()
+        {
+            Id = principal.FindFirstValue(ClaimTypes.NameIdentifier),
+            Username = principal.FindFirstValue(ClaimTypes.Name) 
+        };
+
+        if (user.Id == null || user.Username == null)
+        {
+            _logger.LogError("Token validated but required claims (sub, name) are missing.");
+            return Unauthorized();
+        }
+
+        return Ok(user);
     }
-    
     private CookieOptions GetCookieOptions()
     {
         return new CookieOptions
         {
             HttpOnly = true,
-            SameSite = SameSiteMode.None,
+            SameSite = SameSiteMode.Lax,
             Secure = false,
             Expires = DateTime.UtcNow.AddDays(1), 
             Path = "/", 

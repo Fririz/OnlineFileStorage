@@ -26,7 +26,7 @@ public class UserWorker : IUserWorker
         _passwordWorker = passwordWorker;
         _logger = logger;
     }
-    public async Task<Guid> RegisterUser(UserDto userDto)
+    public async Task<Guid> RegisterUser(UserAuthDto userDto)
     {
         if(await _userRepository.CheckUserExistenceAsync(userDto.Username))
         {
@@ -41,7 +41,7 @@ public class UserWorker : IUserWorker
 
     }
 
-    public async Task<string?> LoginUser(UserDto userDto)
+    public async Task<string?> LoginUser(UserAuthDto userDto)
     {
         var user = await _userRepository.GetUserByUsernameAsync(userDto.Username);
         if (user == null || !_passwordWorker.CheckPassword(userDto.Password, user.PasswordHash))
