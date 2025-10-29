@@ -43,6 +43,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileStorageService.API", "S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileStorageService.Infrastructure", "Services\FileStorageService\FileStorageService.Infrastructure\FileStorageService.Infrastructure.csproj", "{E2E99904-E897-43E2-9AF9-6BF6A69282DC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileStorageService.Application", "Services\FileStorageService\FileStorageService.Application\FileStorageService.Application.csproj", "{B551B315-1CD7-4C2B-902C-2EAA4CF9F6FD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -65,6 +67,7 @@ Global
 		{E1C2C87F-BA9B-44AF-BD30-7999D128ED64} = {11026BCF-3A78-4A1B-9BE9-FED86531161F}
 		{3838C329-402B-453B-99AA-50CAFB0688AE} = {E1C2C87F-BA9B-44AF-BD30-7999D128ED64}
 		{E2E99904-E897-43E2-9AF9-6BF6A69282DC} = {E1C2C87F-BA9B-44AF-BD30-7999D128ED64}
+		{B551B315-1CD7-4C2B-902C-2EAA4CF9F6FD} = {E1C2C87F-BA9B-44AF-BD30-7999D128ED64}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{919B2171-0C02-4445-974D-BC99D3FE364B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -115,5 +118,9 @@ Global
 		{E2E99904-E897-43E2-9AF9-6BF6A69282DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E2E99904-E897-43E2-9AF9-6BF6A69282DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E2E99904-E897-43E2-9AF9-6BF6A69282DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B551B315-1CD7-4C2B-902C-2EAA4CF9F6FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B551B315-1CD7-4C2B-902C-2EAA4CF9F6FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B551B315-1CD7-4C2B-902C-2EAA4CF9F6FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B551B315-1CD7-4C2B-902C-2EAA4CF9F6FD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

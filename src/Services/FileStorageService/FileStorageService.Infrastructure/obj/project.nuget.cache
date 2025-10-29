@@ -1,8 +1,21 @@
 {
   "version": 2,
-  "dgSpecHash": "aYwmlKFPdeQ=",
+  "dgSpecHash": "7PA4KDYaLO8=",
   "success": true,
   "projectFilePath": "/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileStorageService/FileStorageService.Infrastructure/FileStorageService.Infrastructure.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "/Users/fririz/.nuget/packages/communitytoolkit.highperformance/8.4.0/communitytoolkit.highperformance.8.4.0.nupkg.sha512",
+    "/Users/fririz/.nuget/packages/microsoft.extensions.configuration/9.0.10/microsoft.extensions.configuration.9.0.10.nupkg.sha512",
+    "/Users/fririz/.nuget/packages/microsoft.extensions.configuration.abstractions/9.0.10/microsoft.extensions.configuration.abstractions.9.0.10.nupkg.sha512",
+    "/Users/fririz/.nuget/packages/microsoft.extensions.dependencyinjection/9.0.4/microsoft.extensions.dependencyinjection.9.0.4.nupkg.sha512",
+    "/Users/fririz/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/9.0.10/microsoft.extensions.dependencyinjection.abstractions.9.0.10.nupkg.sha512",
+    "/Users/fririz/.nuget/packages/microsoft.extensions.logging/9.0.4/microsoft.extensions.logging.9.0.4.nupkg.sha512",
+    "/Users/fririz/.nuget/packages/microsoft.extensions.logging.abstractions/9.0.4/microsoft.extensions.logging.abstractions.9.0.4.nupkg.sha512",
+    "/Users/fririz/.nuget/packages/microsoft.extensions.options/9.0.10/microsoft.extensions.options.9.0.10.nupkg.sha512",
+    "/Users/fririz/.nuget/packages/microsoft.extensions.primitives/9.0.10/microsoft.extensions.primitives.9.0.10.nupkg.sha512",
+    "/Users/fririz/.nuget/packages/minio/6.0.5/minio.6.0.5.nupkg.sha512",
+    "/Users/fririz/.nuget/packages/system.io.hashing/9.0.4/system.io.hashing.9.0.4.nupkg.sha512",
+    "/Users/fririz/.nuget/packages/system.reactive/6.0.1/system.reactive.6.0.1.nupkg.sha512"
+  ],
   "logs": []
 }
