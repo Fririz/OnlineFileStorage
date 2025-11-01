@@ -1,4 +1,6 @@
 using FileApiService.API;
+using FileApiService.Application;
+using FileApiService.Infrastructure;
 using Serilog;
 using Logging;
 
@@ -8,6 +10,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddApiServices(builder.Configuration);
+builder.Services.AddControllers();
+builder.Services.AddApplicationServices(builder.Configuration);
+builder.Services.AddInfrastructureServices(builder.Configuration);
+
 builder.Host.UseSerilog((context, config) =>
 {
     SeriLogger.Configure(context, config);

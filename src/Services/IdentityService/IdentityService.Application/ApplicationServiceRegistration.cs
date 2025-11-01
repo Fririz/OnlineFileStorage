@@ -12,7 +12,6 @@ public static class ApplicationServiceRegistration
     
     public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
     {
-        //TODO add all services
         services.AddFluentValidationAutoValidation(); 
         services.AddValidatorsFromAssemblyContaining<UserRegisterDtoValidator>();
         services.AddScoped<IUserWorker, UserWorker>();

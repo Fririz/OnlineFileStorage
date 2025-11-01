@@ -9,6 +9,7 @@ namespace FileApiService.Domain.Entities;
 [Table("Item")] 
 public class Item : EntityBase
 {
+    //Item Id always equals object id in storage
     [Required]
     public Guid OwnerId { get; private set; }
 
@@ -20,9 +21,6 @@ public class Item : EntityBase
     [Required]
     [MaxLength(255)] 
     public string Name { get; private set; }
-    
-    [MaxLength(1024)] 
-    public string? StorageObjectId { get; private set; } 
 
     public long? FileSize { get; private set; } 
 
@@ -77,8 +75,7 @@ public class Item : EntityBase
         {
             throw new InvalidOperationException("Cannot complete upload for a folder.");
         }
-
-        StorageObjectId = storageObjectId;
+        
         FileSize = fileSize;
         MimeType = mimeType;
         Status = UploadStatus.Ready; 

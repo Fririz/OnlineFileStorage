@@ -1,0 +1,12 @@
+/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileApiService/FileApiService.Domain/bin/Debug/net9.0/FileApiService.Domain.deps.json
+/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileApiService/FileApiService.Domain/bin/Debug/net9.0/FileApiService.Domain.dll
+/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileApiService/FileApiService.Domain/bin/Debug/net9.0/FileApiService.Domain.pdb
+/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileApiService/FileApiService.Domain/obj/Debug/net9.0/FileApiService.Domain.GeneratedMSBuildEditorConfig.editorconfig
+/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileApiService/FileApiService.Domain/obj/Debug/net9.0/FileApiService.Domain.AssemblyInfoInputs.cache
+/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileApiService/FileApiService.Domain/obj/Debug/net9.0/FileApiService.Domain.AssemblyInfo.cs
+/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileApiService/FileApiService.Domain/obj/Debug/net9.0/FileApiService.Domain.csproj.CoreCompileInputs.cache
+/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileApiService/FileApiService.Domain/obj/Debug/net9.0/FileApiService.Domain.sourcelink.json
+/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileApiService/FileApiService.Domain/obj/Debug/net9.0/FileApiService.Domain.dll
+/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileApiService/FileApiService.Domain/obj/Debug/net9.0/refint/FileApiService.Domain.dll
+/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileApiService/FileApiService.Domain/obj/Debug/net9.0/FileApiService.Domain.pdb
+/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileApiService/FileApiService.Domain/obj/Debug/net9.0/ref/FileApiService.Domain.dll

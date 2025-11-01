@@ -1,0 +1,13 @@
+/Users/fririz/RiderProjects/OnlineFileStorage/src/BuildingBlocks/Grpc.Shared/Grpc.Shared/bin/Debug/net9.0/Grpc.Shared.deps.json
+/Users/fririz/RiderProjects/OnlineFileStorage/src/BuildingBlocks/Grpc.Shared/Grpc.Shared/bin/Debug/net9.0/Grpc.Shared.dll
+/Users/fririz/RiderProjects/OnlineFileStorage/src/BuildingBlocks/Grpc.Shared/Grpc.Shared/bin/Debug/net9.0/Grpc.Shared.pdb
+/Users/fririz/RiderProjects/OnlineFileStorage/src/BuildingBlocks/Grpc.Shared/Grpc.Shared/obj/Debug/net9.0/Grpc.Shared.csproj.AssemblyReference.cache
+/Users/fririz/RiderProjects/OnlineFileStorage/src/BuildingBlocks/Grpc.Shared/Grpc.Shared/obj/Debug/net9.0/Grpc.Shared.GeneratedMSBuildEditorConfig.editorconfig
+/Users/fririz/RiderProjects/OnlineFileStorage/src/BuildingBlocks/Grpc.Shared/Grpc.Shared/obj/Debug/net9.0/Grpc.Shared.AssemblyInfoInputs.cache
+/Users/fririz/RiderProjects/OnlineFileStorage/src/BuildingBlocks/Grpc.Shared/Grpc.Shared/obj/Debug/net9.0/Grpc.Shared.AssemblyInfo.cs
+/Users/fririz/RiderProjects/OnlineFileStorage/src/BuildingBlocks/Grpc.Shared/Grpc.Shared/obj/Debug/net9.0/Grpc.Shared.csproj.CoreCompileInputs.cache
+/Users/fririz/RiderProjects/OnlineFileStorage/src/BuildingBlocks/Grpc.Shared/Grpc.Shared/obj/Debug/net9.0/Grpc.Shared.sourcelink.json
+/Users/fririz/RiderProjects/OnlineFileStorage/src/BuildingBlocks/Grpc.Shared/Grpc.Shared/obj/Debug/net9.0/Grpc.Shared.dll
+/Users/fririz/RiderProjects/OnlineFileStorage/src/BuildingBlocks/Grpc.Shared/Grpc.Shared/obj/Debug/net9.0/refint/Grpc.Shared.dll
+/Users/fririz/RiderProjects/OnlineFileStorage/src/BuildingBlocks/Grpc.Shared/Grpc.Shared/obj/Debug/net9.0/Grpc.Shared.pdb
+/Users/fririz/RiderProjects/OnlineFileStorage/src/BuildingBlocks/Grpc.Shared/Grpc.Shared/obj/Debug/net9.0/ref/Grpc.Shared.dll

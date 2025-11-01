@@ -8,13 +8,21 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Grpc.AspNetCore" Version="2.71.0" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.8"/>
+        <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
     </ItemGroup>
 
     <ItemGroup>
       <Content Include="..\..\..\.dockerignore">
         <Link>.dockerignore</Link>
       </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\BuildingBlocks\Logging\Logging\Logging.csproj" />
+      <ProjectReference Include="..\FileStorageService.Application\FileStorageService.Application.csproj" />
+      <ProjectReference Include="..\FileStorageService.Infrastructure\FileStorageService.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

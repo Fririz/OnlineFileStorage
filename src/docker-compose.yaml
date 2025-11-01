@@ -1,4 +1,5 @@
 services:
+#  identity-service
   identity-service:
     build:
       context: .
@@ -11,6 +12,16 @@ services:
     depends_on:
       postgres-identity-service:
         condition: service_started
+#idenetity-service-bd
+  postgres-identity-service:
+    image: postgres:13.2-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: identityServiceDb
+    ports:
+      - "5432:5432"
+#fileapiservice
   fileapiservice:
     build:
       context: .
@@ -22,7 +33,55 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:8082
+    #fileapiservicebd
+  postgres-fileapi-service:
+        image: postgres:13.2-alpine
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: admin
+          POSTGRES_DB: fileApiServiceDb
+        ports:
+          - "5433:5433"
+        command: -c port=5433
+
+
+    #filestorageservice
+  filestorageservice:
+      build:
+        context: .
+        dockerfile: Services/FileStorageService/FileStorageService.API/Dockerfile
+      ports:
+        - "8083:8083"
+      restart: unless-stopped
+      environment:
+        - ASPNETCORE_ENVIRONMENT=Development
+        - ASPNETCORE_URLS=http://0.0.0.0:8083
+        - Minio__Endpoint=minio:9000
+        - Minio__AccessKey=minio
+        - Minio__SecretKey=minio123
+        - Minio__BucketName=files
+        - Minio__WithSSL=false
+
+    #minio for filestorageservice
+  minio:
+    image: minio/minio
+    restart: always
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ACCESS_KEY: minio
+      MINIO_SECRET_KEY: minio123
+      
+    command: server /data --console-address ":9001"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:9000/minio/health/live" ]
+      interval: 5s
+      timeout: 3s
+      retries: 20
   
+  
+  #ocelot
   ocelot:
     build:
       context: .
@@ -31,25 +90,9 @@ services:
       - "6002:8080"
     restart: unless-stopped
         
-  postgres-identity-service:
-    image: postgres:13.2-alpine
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: admin
-      POSTGRES_DB: identityServiceDb
-    ports:
-      - "5432:5432"
+
         
-#  postgres-fileapi-service:
-#    image: postgres:13.2-alpine
-#    environment:
-#      POSTGRES_USER: postgres
-#      POSTGRES_PASSWORD: admin
-#      POSTGRES_DB: fileApiServiceDb
-#    ports:
-#      - "5433:5433"
-#        
-        
+#pgadmin
   pg-admin:
     image: dpage/pgadmin4
     environment:
@@ -61,7 +104,7 @@ services:
       postgres-identity-service:
         condition: service_started
         
-        
+#elk
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.11.1
     container_name: elasticsearch

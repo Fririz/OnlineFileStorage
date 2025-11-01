@@ -40,17 +40,57 @@
     },
     //FileApiService
     {
-      "DownstreamPathTemplate": "/api/File/GetFile",
+      "DownstreamPathTemplate": "/api/file/uploadfile",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         { "Host": "fileapiservice", "Port": 8082 }
       ],
-      "UpstreamPathTemplate": "/api/File/GetFile/",
+      "UpstreamPathTemplate": "/api/file/uploadfile",
       "UpstreamHttpMethod": [ "POST", "GET", "OPTIONS" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       }
+    },
+    {
+      "DownstreamPathTemplate": "/api/file/downloadfile/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        { "Host": "fileapiservice", "Port": 8082 }
+      ],
+      "UpstreamPathTemplate": "/api/file/downloadfile/{id}",
+      "UpstreamHttpMethod": [ "POST", "GET", "OPTIONS" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    //FileStorageService
+    {
+      "DownstreamPathTemplate": "/api/upload/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        { "Host": "filestorageservice", "Port": 8083 }
+      ],
+      "UpstreamPathTemplate": "/api/upload/{id}",
+      "UpstreamHttpMethod": [ "POST", "GET", "OPTIONS" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+    "DownstreamPathTemplate": "/api/download/{id}/{filename}/{token}",
+    "DownstreamScheme": "http",
+    "DownstreamHostAndPorts": [
+      { "Host": "filestorageservice", "Port": 8083 }
+    ],
+    "UpstreamPathTemplate": "/api/download/{id}/{filename}/{token}",
+    "UpstreamHttpMethod": [ "POST", "GET", "OPTIONS" ],
+    "AuthenticationOptions": {
+      "AuthenticationProviderKey": "Bearer",
+      "AllowedScopes": []
+    }
     }
   ],
   "GlobalConfiguration": {

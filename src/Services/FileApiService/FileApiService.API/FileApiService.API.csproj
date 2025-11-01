@@ -22,6 +22,9 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\..\BuildingBlocks\Logging\Logging\Logging.csproj" />
+      <ProjectReference Include="..\FileApiService.Application\FileApiService.Application.csproj" />
+      <ProjectReference Include="..\FileApiService.Domain\FileApiService.Domain.csproj" />
+      <ProjectReference Include="..\FileApiService.Infrastructure\FileApiService.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>
