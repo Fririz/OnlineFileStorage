@@ -31,6 +31,7 @@ public class FileWorker : IFileWorker
             throw new InvalidOperationException("Creating a folder in method createFile not allowed");
         }
         //TODO add name check if exists
+        
         var file = Item.CreateFile(ownerId, item.Name, item.ParentId);
         //TODO add GRPC call to filestorage service
         await _itemRepository.AddAsync(file);
@@ -45,7 +46,7 @@ public class FileWorker : IFileWorker
         {
             throw new InvalidOperationException("Deleting a folder in method createFile not allowed");
         }
-        //TODO add softly delete file
+        //TODO add softly delete file and RabbitMQ to FileStorageService
         // await _itemRepository.DeleteByIdAsync(item.Id);
         return item.Id;
     }

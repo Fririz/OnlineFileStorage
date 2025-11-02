@@ -7,10 +7,12 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\..\BuildingBlocks\Contracts.Shared\Contracts.Shared\Contracts.Shared.csproj" />
       <ProjectReference Include="..\FileApiService.Domain\FileApiService.Domain.csproj" />
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="MassTransit.RabbitMQ" Version="8.5.5" />
       <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.10" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.10" />
       <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.10" />

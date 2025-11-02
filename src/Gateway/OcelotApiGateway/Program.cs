@@ -7,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 
 namespace OcelotApiGateway;
 
@@ -22,17 +23,20 @@ public class Program
         builder.Services.AddAuthorization();
         builder.Configuration.AddJsonFile("ocelot.json", optional: false, reloadOnChange: true);
         builder.Services.AddOcelot();
-        
+        builder.Services.Configure<KestrelServerOptions>(options =>
+        {
+            options.Limits.MaxRequestBodySize = 5_368_709_120; // TODO bring it to env
+        });
         builder.Services.AddCors(o => o.AddPolicy("MyPolicy", policy =>
         {
             policy.WithOrigins(
-                    "http://localhost:5173",   
-                    "http://127.0.0.1:5173",   
+                    "http://localhost:5173",
+                    "http://127.0.0.1:5173",
                     "http://192.168.1.102:5173"
-                   )
-                .AllowAnyMethod()
+                )
+                .AllowAnyMethod()   
                 .AllowAnyHeader()
-                .AllowCredentials(); 
+                .AllowCredentials();
         }));
 
         builder.Host.UseSerilog((context, config) =>

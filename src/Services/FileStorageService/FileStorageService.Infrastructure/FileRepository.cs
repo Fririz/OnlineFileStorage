@@ -1,4 +1,5 @@
 ﻿using FileStorageService.Application.Contracts;
+using FileStorageService.Application.Dto;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -35,54 +36,83 @@ public class FileRepository : IFileRepository
         try
         {
             await EnsureBucketExistsAsync().ConfigureAwait(false);
+            
+            if (stream.CanSeek)
+            {
+                try { stream.Position = 0; } catch { /* ignore */ }
+            }
 
-            Stream payloadStream;
+            Stream payloadStream = stream;
             long payloadLength;
 
             if (stream.CanSeek)
             {
-                try
-                {
-                    stream.Position = 0;
-                }
-                catch { /* ignore, попробуем как есть */ }
-
-                payloadStream = stream;
-                payloadLength = stream.Length; // для seekable потоков длина доступна
+                payloadLength = stream.Length;
             }
             else
             {
-                // Fallback: буферизуем только если нельзя получить длину
-                await using var ms = new MemoryStream();
+                var ms = new MemoryStream();
                 await stream.CopyToAsync(ms).ConfigureAwait(false);
                 ms.Position = 0;
 
                 if (ms.Length == 0)
                 {
                     _logger.LogWarning("Attempted to upload empty stream for object {Object} to bucket {Bucket}.", id, _bucketName);
+                    ms.Dispose();
                     throw new InvalidOperationException("Uploaded stream is empty.");
                 }
 
                 payloadStream = ms;
                 payloadLength = ms.Length;
-
-                // Переприсваиваем, чтобы using сработал после PutObjectAsync
-                stream = ms;
             }
 
-            var putObjectArgs = new PutObjectArgs()
-                .WithBucket(_bucketName)
-                .WithObject(id.ToString("N"))
-                .WithStreamData(payloadStream)
-                .WithObjectSize(payloadLength)
-                .WithContentType("application/octet-stream");
+            try
+            {
+                var putObjectArgs = new PutObjectArgs()
+                    .WithBucket(_bucketName)
+                    .WithObject(id.ToString("N"))
+                    .WithStreamData(payloadStream)
+                    .WithObjectSize(payloadLength)
+                    .WithContentType("application/octet-stream");
 
-            await _minioClient.PutObjectAsync(putObjectArgs).ConfigureAwait(false);
-            _logger.LogInformation("Uploaded object {Object} to bucket {Bucket}, size {Size} bytes.", id, _bucketName, payloadLength);
+                await _minioClient.PutObjectAsync(putObjectArgs).ConfigureAwait(false);
+                _logger.LogInformation("Uploaded object {Object} to bucket {Bucket}, size {Size} bytes.", id, _bucketName, payloadLength);
+            }
+            finally
+            {
+
+                if (!ReferenceEquals(payloadStream, stream))
+                    await payloadStream.DisposeAsync().ConfigureAwait(false);
+            }
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error uploading object {Object} to bucket {Bucket}.", id, _bucketName);
+            throw;
+        }
+    }
+
+    public async Task<FileInfoDto> GetInfoAboutFile(Guid objectId)
+    {
+        try
+        {
+            var statArgs = new StatObjectArgs()
+                .WithBucket(_bucketName)
+                .WithObject(objectId.ToString("N"));
+
+            var stat = await _minioClient.StatObjectAsync(statArgs).ConfigureAwait(false);
+
+
+            return new FileInfoDto
+            {
+                FileId = objectId,
+                FileSize = stat.Size,
+                MimeType = stat.ContentType
+            };
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error getting info about object {Object} from bucket {Bucket}.", objectId, _bucketName);
             throw;
         }
     }

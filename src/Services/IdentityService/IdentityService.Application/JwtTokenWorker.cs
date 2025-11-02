@@ -72,7 +72,7 @@ public class JwtTokenWorker : IJwtTokenWorker
             issuer: _issuer,
             audience: _audience,
             claims: claims,
-            expires: DateTime.UtcNow.AddDays(1),
+            expires: DateTime.UtcNow.AddDays(10),
             signingCredentials: _signingCredentials);
 
         return _handler.WriteToken(token);

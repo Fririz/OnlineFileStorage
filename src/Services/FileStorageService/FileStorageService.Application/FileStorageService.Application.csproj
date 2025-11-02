@@ -11,4 +11,8 @@
       <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.10" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\BuildingBlocks\Contracts.Shared\Contracts.Shared\Contracts.Shared.csproj" />
+    </ItemGroup>
+
 </Project>

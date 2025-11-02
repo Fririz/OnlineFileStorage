@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "AOB/e4YDcak=",
+  "dgSpecHash": "0XLa8pVu2ZQ=",
   "success": true,
   "projectFilePath": "/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileApiService/FileApiService.API/FileApiService.API.csproj",
   "expectedPackageFiles": [
@@ -9,6 +9,9 @@
     "/Users/fririz/.nuget/packages/fluentvalidation/12.0.0/fluentvalidation.12.0.0.nupkg.sha512",
     "/Users/fririz/.nuget/packages/fluentvalidation.aspnetcore/11.3.1/fluentvalidation.aspnetcore.11.3.1.nupkg.sha512",
     "/Users/fririz/.nuget/packages/fluentvalidation.dependencyinjectionextensions/11.11.0/fluentvalidation.dependencyinjectionextensions.11.11.0.nupkg.sha512",
+    "/Users/fririz/.nuget/packages/masstransit/8.5.5/masstransit.8.5.5.nupkg.sha512",
+    "/Users/fririz/.nuget/packages/masstransit.abstractions/8.5.5/masstransit.abstractions.8.5.5.nupkg.sha512",
+    "/Users/fririz/.nuget/packages/masstransit.rabbitmq/8.5.5/masstransit.rabbitmq.8.5.5.nupkg.sha512",
     "/Users/fririz/.nuget/packages/microsoft.aspnetcore.authentication.jwtbearer/9.0.10/microsoft.aspnetcore.authentication.jwtbearer.9.0.10.nupkg.sha512",
     "/Users/fririz/.nuget/packages/microsoft.aspnetcore.openapi/9.0.8/microsoft.aspnetcore.openapi.9.0.8.nupkg.sha512",
     "/Users/fririz/.nuget/packages/microsoft.csharp/4.6.0/microsoft.csharp.4.6.0.nupkg.sha512",
@@ -31,6 +34,8 @@
     "/Users/fririz/.nuget/packages/microsoft.extensions.dependencymodel/9.0.0/microsoft.extensions.dependencymodel.9.0.0.nupkg.sha512",
     "/Users/fririz/.nuget/packages/microsoft.extensions.diagnostics/9.0.10/microsoft.extensions.diagnostics.9.0.10.nupkg.sha512",
     "/Users/fririz/.nuget/packages/microsoft.extensions.diagnostics.abstractions/9.0.10/microsoft.extensions.diagnostics.abstractions.9.0.10.nupkg.sha512",
+    "/Users/fririz/.nuget/packages/microsoft.extensions.diagnostics.healthchecks/9.0.0/microsoft.extensions.diagnostics.healthchecks.9.0.0.nupkg.sha512",
+    "/Users/fririz/.nuget/packages/microsoft.extensions.diagnostics.healthchecks.abstractions/9.0.0/microsoft.extensions.diagnostics.healthchecks.abstractions.9.0.0.nupkg.sha512",
     "/Users/fririz/.nuget/packages/microsoft.extensions.fileproviders.abstractions/9.0.10/microsoft.extensions.fileproviders.abstractions.9.0.10.nupkg.sha512",
     "/Users/fririz/.nuget/packages/microsoft.extensions.fileproviders.physical/9.0.10/microsoft.extensions.fileproviders.physical.9.0.10.nupkg.sha512",
     "/Users/fririz/.nuget/packages/microsoft.extensions.filesystemglobbing/9.0.10/microsoft.extensions.filesystemglobbing.9.0.10.nupkg.sha512",
@@ -55,6 +60,7 @@
     "/Users/fririz/.nuget/packages/microsoft.openapi/1.6.17/microsoft.openapi.1.6.17.nupkg.sha512",
     "/Users/fririz/.nuget/packages/npgsql/9.0.3/npgsql.9.0.3.nupkg.sha512",
     "/Users/fririz/.nuget/packages/npgsql.entityframeworkcore.postgresql/9.0.4/npgsql.entityframeworkcore.postgresql.9.0.4.nupkg.sha512",
+    "/Users/fririz/.nuget/packages/rabbitmq.client/7.1.2/rabbitmq.client.7.1.2.nupkg.sha512",
     "/Users/fririz/.nuget/packages/serilog/4.3.1-dev-02387/serilog.4.3.1-dev-02387.nupkg.sha512",
     "/Users/fririz/.nuget/packages/serilog.aspnetcore/9.0.0/serilog.aspnetcore.9.0.0.nupkg.sha512",
     "/Users/fririz/.nuget/packages/serilog.enrichers.environment/3.0.1/serilog.enrichers.environment.3.0.1.nupkg.sha512",
@@ -72,7 +78,9 @@
     "/Users/fririz/.nuget/packages/system.diagnostics.diagnosticsource/7.0.2/system.diagnostics.diagnosticsource.7.0.2.nupkg.sha512",
     "/Users/fririz/.nuget/packages/system.diagnostics.eventlog/9.0.10/system.diagnostics.eventlog.9.0.10.nupkg.sha512",
     "/Users/fririz/.nuget/packages/system.identitymodel.tokens.jwt/8.0.1/system.identitymodel.tokens.jwt.8.0.1.nupkg.sha512",
-    "/Users/fririz/.nuget/packages/system.threading.channels/8.0.0/system.threading.channels.8.0.0.nupkg.sha512"
+    "/Users/fririz/.nuget/packages/system.io.pipelines/8.0.0/system.io.pipelines.8.0.0.nupkg.sha512",
+    "/Users/fririz/.nuget/packages/system.threading.channels/8.0.0/system.threading.channels.8.0.0.nupkg.sha512",
+    "/Users/fririz/.nuget/packages/system.threading.ratelimiting/8.0.0/system.threading.ratelimiting.8.0.0.nupkg.sha512"
   ],
   "logs": []
 }

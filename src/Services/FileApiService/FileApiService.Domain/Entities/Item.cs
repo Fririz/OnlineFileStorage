@@ -69,7 +69,7 @@ public class Item : EntityBase
     }
 
     
-    public void CompleteUpload(string storageObjectId, long fileSize, string mimeType)
+    public void CompleteUpload(long fileSize, string mimeType)
     {
         if (Type != TypeOfItem.File)
         {

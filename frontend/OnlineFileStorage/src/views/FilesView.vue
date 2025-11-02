@@ -1,134 +1,218 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import api from '@/api'
+import { ref, onMounted } from 'vue'
+import api from '@/api' 
+import FileCard from '@/components/FileCard.vue' 
+import SideMenu from '@/components/SideMenu.vue' 
+import CreateItemModal from '@/components/CreateItemModel.vue'
 
-interface FileItem {
+interface ApiFileItem {
   id: string;
   name: string;
-  size: number;
+  fileSize: number; 
+  type: number;
+  status: number;
 }
-const files = ref<FileItem[]>([]) 
 
+const files = ref<ApiFileItem[]>([])
 const isLoading = ref(false)
 const error = ref<string | null>(null)
+const isModalOpen = ref(false)
 
+const currentParentId = ref<string | null>(null) 
 
 const fetchFiles = async () => {
-
-  files.value = []
   isLoading.value = true
   error.value = null
-
+  files.value = []
+  
   try {
-    const response = await api.get('/file/getfile')
-    
+    let response;
+    if (currentParentId.value === null) {
+      console.log('Loading from root...');
+      response = await api.get('file/getitemsfromroot') 
+    } else {
+      console.log(`Loading children for: ${currentParentId.value}`);
+      response = await api.get(`folder/getallchildren/${currentParentId.value}`)
+    }
     files.value = response.data
     
   } catch (err: any) {
-
-    error.value = 'Не удалось загрузить файлы'
-    console.error(err)
+    if (err.response?.status === 404) {
+      files.value = []
+    } else {
+      console.error(err)
+      error.value = "Failed to load files."
+    }
   } finally {
-
     isLoading.value = false
   }
 }
+
+onMounted(() => {
+  fetchFiles()
+})
+
+const handleFileCreated = () => {
+  isModalOpen.value = false 
+  fetchFiles()
+}
+
+const handleOpenFolder = (folderId: string) => {
+  console.log(`Opening folder: ${folderId}`)
+  currentParentId.value = folderId
+  fetchFiles()
+}
+
+const goBackToRoot = () => {
+  console.log('Returning to root')
+  currentParentId.value = null
+  fetchFiles()
+}
+
+const goBack = async () => {
+  if (currentParentId.value === null) return;
+  
+  console.log(`Requesting parent for: ${currentParentId.value}`)
+  try {
+    const response = await api.get(`file/getparent/${currentParentId.value}`)
+    
+    if (response.data && response.data.id) {
+      console.log('Moving to parent:', response.data.id)
+      currentParentId.value = response.data.id; 
+    } else {
+      console.log('Parent is root.')
+      currentParentId.value = null;
+    }
+
+  } catch (err: any) {
+    console.error(err)
+    error.value = "Failed to load parent folder."
+    currentParentId.value = null; 
+  } finally {
+    fetchFiles() 
+  }
+}
+
 </script>
 
 <template>
-  <main>
+  <SideMenu 
+    @refresh="fetchFiles" 
+    @create-file="isModalOpen = true" 
+  />
+  
+  <CreateItemModal 
+    :isOpen="isModalOpen"
+    :parentId="currentParentId" @close="isModalOpen = false"
+    @created="handleFileCreated"
+  />
 
-    <button class="file-button" @click="fetchFiles">
-      Your files
-    </button>
-    <button class="file-button" @click="fetchFiles">
-      Shared files
-    </button>
-
-    <div v-if="isLoading">
-      Загрузка...
-    </div>
-
-    <div v-else-if="error" style="color: red;">
-      {{ error }}
-    </div>
-
-    <ul v-if="files.length > 0">
+  <main class="content-wrapper">
+    <div class="controls">
       
-      <li v-for="file in files" :key="file.id">
-        {{ file.name }} ({{ file.size }} bytes)
-      </li>
-    </ul>
+      <template v-if="currentParentId !== null">
+        <button @click="goBack" class="back-button">
+          &larr; Back
+        </button>
+        <button @click="goBackToRoot" class="back-button root-button">
+          Root
+        </button>
+      </template>
+      
+      <h2 v-else>My Files (Root)</h2>
+    </div>
 
+    <div classs="results-container">
+      
+      <div v-if="isLoading" class="loading-state">
+        Loading...
+      </div>
+
+      <div v-else-if="error" class="error-message">
+        {{ error }}
+      </div>
+
+      <div v-else-if="files.length > 0" class="file-grid">
+        <FileCard
+          v-for="file in files"
+          :key="file.id"
+          :id="file.id"         
+          :name="file.name"
+          :fileSize="file.fileSize"
+          :fileType="file.type"
+          :status="file.status"
+          @open-folder="handleOpenFolder" 
+        />
+      </div>
+
+      <div v-else class="empty-state">
+        Folder is empty.
+      </div>
+    </div>
   </main>
 </template>
 
 <style scoped>
-main {
-  padding: 1rem;
+.content-wrapper {
+  margin-left: 240px; 
+  padding: 2rem;
+  max-width: 1200px;
+  
+  /* --- THIS IS THE FIX --- */
+  margin-top: 60px; /* (Assuming your header is 60px tall) */
+  /* ----------------------- */
+}
+.controls {
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
-.files-page {
-  max-width: 400px;
-  margin: 20px;
-  align-items: left;
-}
-.file-button {
-  display: block;
-  width: 100%;
-  padding: 0.5rem;
-  margin-bottom: 1rem;
-  background-color: var(--vt-c-indigo);
-  color: white;
+.back-button {
+  background: #3a3a3a;
+  color: #e0e0e0;
   border: none;
-  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
   cursor: pointer;
+  transition: background-color 0.2s ease;
 }
-.file-button:hover {
-  background-color: hsla(160, 100%, 37%, 0.8);
+.back-button:hover {
+  background: #4a4a4a;
 }
-div {
-  margin-bottom: 1rem;
+.root-button {
+  background: #36a070;
+  color: white;
 }
-label {
-  display: block;
-  margin-bottom: 0.25rem;
+.root-button:hover {
+  background: #42b883;
 }
-input {
-  width: 100%;
-  padding: 0.5rem;
-}
+
 
 .results-container {
   margin-top: 2rem;
-  max-width: 400px;
-  margin: 20px;
+}
+.file-grid {
+  display: flex;
+  flex-wrap: wrap; 
+  gap: 1.5rem;
 }
 .loading-state, .empty-state {
-  padding: 1rem;
+  padding: 4rem 2rem;
   text-align: center;
   color: #888;
+  font-size: 1.2rem;
 }
 .error-message {
-  padding: 1rem;
+  padding: 1.5rem;
   text-align: center;
-  color: #c0392b;
-  background-color: rgba(192, 57, 43, 0.1);
-  border: 1px solid rgba(192, 57, 43, 0.2);
-  border-radius: 4px;
-}
-.file-list {
-  list-style: none;
-  padding: 0;
-}
-.file-item {
-  display: flex;
-  justify-content: space-between;
-  padding: 0.75rem 1rem;
-  background-color: #fff;
-  border: 1px solid #eee;
-  border-radius: 4px;
-  margin-bottom: 0.5rem;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  color: #ffadad;
+  background: #4d2424;
+  border: 1px solid #8c3b3b;
+  border-radius: 8px;
+  font-size: 1.1rem;
 }
 </style>

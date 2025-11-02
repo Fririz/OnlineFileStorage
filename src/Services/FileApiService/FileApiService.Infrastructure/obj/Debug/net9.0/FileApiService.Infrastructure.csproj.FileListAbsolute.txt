@@ -22,3 +22,5 @@
 /Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileApiService/FileApiService.Infrastructure/obj/Debug/net9.0/FileApiService.Infrastructure.pdb
 /Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileApiService/FileApiService.Infrastructure/obj/Debug/net9.0/FileApiService.Infrastructure.genruntimeconfig.cache
 /Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileApiService/FileApiService.Infrastructure/obj/Debug/net9.0/ref/FileApiService.Infrastructure.dll
+/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileApiService/FileApiService.Infrastructure/bin/Debug/net9.0/Contracts.Shared.dll
+/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileApiService/FileApiService.Infrastructure/bin/Debug/net9.0/Contracts.Shared.pdb

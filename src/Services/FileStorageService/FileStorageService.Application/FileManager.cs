@@ -18,7 +18,9 @@ public class FileManager : IFileManager
     }
     public async Task UploadFileCaseAsync(Stream stream, Guid id)
     {
+
         await _fileRepository.UploadFileAsync(stream, id);
+        
         //TODO add more logic and rabbiq mq when upload is done
     }
     public async Task<Stream> DownloadFileCaseAsync(Guid objectId, string? token)

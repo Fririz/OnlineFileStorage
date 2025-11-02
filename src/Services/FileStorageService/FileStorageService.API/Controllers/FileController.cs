@@ -1,5 +1,8 @@
 using FileStorageService.Application.Contracts;
 using FileStorageService.Infrastructure;
+using MassTransit.Testing;
+using MassTransit;
+using Contracts.Shared;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FileStorageService.API.Controllers;
@@ -8,9 +11,15 @@ namespace FileStorageService.API.Controllers;
 public class FileController : ControllerBase
 {
     private readonly IFileManager _fileManager;
-    public FileController(IFileManager fileRepository)
+    private readonly IFileRepository _fileRepository;
+    private readonly IPublishEndpoint _publishEndpoint; 
+    public FileController(IFileManager fileManager, 
+        IPublishEndpoint publishEndpoint,
+        IFileRepository fileRepository)
     {
-        _fileManager = fileRepository;
+        _fileManager = fileManager;
+        _publishEndpoint = publishEndpoint;
+        _fileRepository = fileRepository;
     }
 
     [HttpGet]
@@ -39,15 +48,27 @@ public class FileController : ControllerBase
 
     [HttpPost]
     [Route("upload/{id}")]
-    public async Task<ActionResult<string>> UploadFile([FromForm] IFormFile? file, Guid id)
+    public async Task<ActionResult<string>> UploadFile(Guid id)
     {
-        if (file == null || file.Length == 0)
+        try
         {
-            return BadRequest("Empty file.");
+            await _fileManager.UploadFileCaseAsync(Request.Body, id);
+            var fileInfo = await _fileRepository.GetInfoAboutFile(id);
+            await _publishEndpoint.Publish(new FileUploadComplete()
+            {
+                FileId = fileInfo.FileId,
+                FileSize = fileInfo.FileSize,
+                MimeType = fileInfo.MimeType,
+            });
         }
-
-        await using var input = file.OpenReadStream();
-        await _fileManager.UploadFileCaseAsync(input, id);
+        catch (Exception e)
+        {
+            var fileInfo = await _fileRepository.GetInfoAboutFile(id);
+            await _publishEndpoint.Publish(new FileUploadFailed()
+            {
+                FileId = fileInfo.FileId,
+            });
+        }
         return Ok("File uploaded successfully");
     }
 

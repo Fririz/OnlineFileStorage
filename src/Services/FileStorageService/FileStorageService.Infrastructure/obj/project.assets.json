@@ -217,10 +217,21 @@
           "buildTransitive/net6.0/_._": {}
         }
       },
+      "Contracts.Shared/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "compile": {
+          "bin/placeholder/Contracts.Shared.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Contracts.Shared.dll": {}
+        }
+      },
       "FileStorageService.Application/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v9.0",
         "dependencies": {
+          "Contracts.Shared": "1.0.0",
           "Microsoft.Extensions.Configuration": "9.0.10",
           "Microsoft.Extensions.Logging.Abstractions": "9.0.10"
         },
@@ -625,6 +636,11 @@
         "system.reactive.6.0.1.nupkg.sha512",
         "system.reactive.nuspec"
       ]
+    },
+    "Contracts.Shared/1.0.0": {
+      "type": "project",
+      "path": "../../../BuildingBlocks/Contracts.Shared/Contracts.Shared/Contracts.Shared.csproj",
+      "msbuildProject": "../../../BuildingBlocks/Contracts.Shared/Contracts.Shared/Contracts.Shared.csproj"
     },
     "FileStorageService.Application/1.0.0": {
       "type": "project",

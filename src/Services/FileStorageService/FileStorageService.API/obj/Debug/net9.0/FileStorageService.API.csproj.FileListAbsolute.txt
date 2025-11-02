@@ -93,3 +93,9 @@
 /Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileStorageService/FileStorageService.API/obj/Debug/net9.0/FileStorageService.API.pdb
 /Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileStorageService/FileStorageService.API/obj/Debug/net9.0/FileStorageService.API.genruntimeconfig.cache
 /Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileStorageService/FileStorageService.API/obj/Debug/net9.0/ref/FileStorageService.API.dll
+/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileStorageService/FileStorageService.API/bin/Debug/net9.0/MassTransit.dll
+/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileStorageService/FileStorageService.API/bin/Debug/net9.0/MassTransit.Abstractions.dll
+/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileStorageService/FileStorageService.API/bin/Debug/net9.0/MassTransit.RabbitMqTransport.dll
+/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileStorageService/FileStorageService.API/bin/Debug/net9.0/RabbitMQ.Client.dll
+/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileStorageService/FileStorageService.API/bin/Debug/net9.0/Contracts.Shared.dll
+/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileStorageService/FileStorageService.API/bin/Debug/net9.0/Contracts.Shared.pdb

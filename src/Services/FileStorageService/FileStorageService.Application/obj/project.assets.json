@@ -91,6 +91,16 @@
         "build": {
           "buildTransitive/net8.0/_._": {}
         }
+      },
+      "Contracts.Shared/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "compile": {
+          "bin/placeholder/Contracts.Shared.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Contracts.Shared.dll": {}
+        }
       }
     }
   },
@@ -279,10 +289,16 @@
         "microsoft.extensions.primitives.nuspec",
         "useSharedDesignerContext.txt"
       ]
+    },
+    "Contracts.Shared/1.0.0": {
+      "type": "project",
+      "path": "../../../BuildingBlocks/Contracts.Shared/Contracts.Shared/Contracts.Shared.csproj",
+      "msbuildProject": "../../../BuildingBlocks/Contracts.Shared/Contracts.Shared/Contracts.Shared.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net9.0": [
+      "Contracts.Shared >= 1.0.0",
       "Microsoft.Extensions.Configuration >= 9.0.10",
       "Microsoft.Extensions.Logging.Abstractions >= 9.0.10"
     ]
@@ -312,7 +328,11 @@
       "frameworks": {
         "net9.0": {
           "targetAlias": "net9.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "/Users/fririz/RiderProjects/OnlineFileStorage/src/BuildingBlocks/Contracts.Shared/Contracts.Shared/Contracts.Shared.csproj": {
+              "projectPath": "/Users/fririz/RiderProjects/OnlineFileStorage/src/BuildingBlocks/Contracts.Shared/Contracts.Shared/Contracts.Shared.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

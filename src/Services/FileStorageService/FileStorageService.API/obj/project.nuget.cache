@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "3jPanXYqqzg=",
+  "dgSpecHash": "frONYACmJvg=",
   "success": true,
   "projectFilePath": "/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileStorageService/FileStorageService.API/FileStorageService.API.csproj",
   "expectedPackageFiles": [
@@ -15,6 +15,9 @@
     "/Users/fririz/.nuget/packages/grpc.net.clientfactory/2.71.0/grpc.net.clientfactory.2.71.0.nupkg.sha512",
     "/Users/fririz/.nuget/packages/grpc.net.common/2.71.0/grpc.net.common.2.71.0.nupkg.sha512",
     "/Users/fririz/.nuget/packages/grpc.tools/2.71.0/grpc.tools.2.71.0.nupkg.sha512",
+    "/Users/fririz/.nuget/packages/masstransit/8.5.5/masstransit.8.5.5.nupkg.sha512",
+    "/Users/fririz/.nuget/packages/masstransit.abstractions/8.5.5/masstransit.abstractions.8.5.5.nupkg.sha512",
+    "/Users/fririz/.nuget/packages/masstransit.rabbitmq/8.5.5/masstransit.rabbitmq.8.5.5.nupkg.sha512",
     "/Users/fririz/.nuget/packages/microsoft.aspnetcore.openapi/9.0.8/microsoft.aspnetcore.openapi.9.0.8.nupkg.sha512",
     "/Users/fririz/.nuget/packages/microsoft.csharp/4.6.0/microsoft.csharp.4.6.0.nupkg.sha512",
     "/Users/fririz/.nuget/packages/microsoft.extensions.configuration/9.0.10/microsoft.extensions.configuration.9.0.10.nupkg.sha512",
@@ -30,6 +33,8 @@
     "/Users/fririz/.nuget/packages/microsoft.extensions.dependencymodel/9.0.0/microsoft.extensions.dependencymodel.9.0.0.nupkg.sha512",
     "/Users/fririz/.nuget/packages/microsoft.extensions.diagnostics/9.0.10/microsoft.extensions.diagnostics.9.0.10.nupkg.sha512",
     "/Users/fririz/.nuget/packages/microsoft.extensions.diagnostics.abstractions/9.0.10/microsoft.extensions.diagnostics.abstractions.9.0.10.nupkg.sha512",
+    "/Users/fririz/.nuget/packages/microsoft.extensions.diagnostics.healthchecks/9.0.0/microsoft.extensions.diagnostics.healthchecks.9.0.0.nupkg.sha512",
+    "/Users/fririz/.nuget/packages/microsoft.extensions.diagnostics.healthchecks.abstractions/9.0.0/microsoft.extensions.diagnostics.healthchecks.abstractions.9.0.0.nupkg.sha512",
     "/Users/fririz/.nuget/packages/microsoft.extensions.fileproviders.abstractions/9.0.10/microsoft.extensions.fileproviders.abstractions.9.0.10.nupkg.sha512",
     "/Users/fririz/.nuget/packages/microsoft.extensions.fileproviders.physical/9.0.10/microsoft.extensions.fileproviders.physical.9.0.10.nupkg.sha512",
     "/Users/fririz/.nuget/packages/microsoft.extensions.filesystemglobbing/9.0.10/microsoft.extensions.filesystemglobbing.9.0.10.nupkg.sha512",
@@ -48,6 +53,7 @@
     "/Users/fririz/.nuget/packages/microsoft.extensions.primitives/9.0.10/microsoft.extensions.primitives.9.0.10.nupkg.sha512",
     "/Users/fririz/.nuget/packages/microsoft.openapi/1.6.17/microsoft.openapi.1.6.17.nupkg.sha512",
     "/Users/fririz/.nuget/packages/minio/6.0.5/minio.6.0.5.nupkg.sha512",
+    "/Users/fririz/.nuget/packages/rabbitmq.client/7.1.2/rabbitmq.client.7.1.2.nupkg.sha512",
     "/Users/fririz/.nuget/packages/serilog/4.3.1-dev-02387/serilog.4.3.1-dev-02387.nupkg.sha512",
     "/Users/fririz/.nuget/packages/serilog.aspnetcore/9.0.0/serilog.aspnetcore.9.0.0.nupkg.sha512",
     "/Users/fririz/.nuget/packages/serilog.enrichers.environment/3.0.1/serilog.enrichers.environment.3.0.1.nupkg.sha512",
@@ -65,8 +71,10 @@
     "/Users/fririz/.nuget/packages/system.diagnostics.diagnosticsource/7.0.2/system.diagnostics.diagnosticsource.7.0.2.nupkg.sha512",
     "/Users/fririz/.nuget/packages/system.diagnostics.eventlog/9.0.10/system.diagnostics.eventlog.9.0.10.nupkg.sha512",
     "/Users/fririz/.nuget/packages/system.io.hashing/9.0.4/system.io.hashing.9.0.4.nupkg.sha512",
+    "/Users/fririz/.nuget/packages/system.io.pipelines/8.0.0/system.io.pipelines.8.0.0.nupkg.sha512",
     "/Users/fririz/.nuget/packages/system.reactive/6.0.1/system.reactive.6.0.1.nupkg.sha512",
-    "/Users/fririz/.nuget/packages/system.threading.channels/8.0.0/system.threading.channels.8.0.0.nupkg.sha512"
+    "/Users/fririz/.nuget/packages/system.threading.channels/8.0.0/system.threading.channels.8.0.0.nupkg.sha512",
+    "/Users/fririz/.nuget/packages/system.threading.ratelimiting/8.0.0/system.threading.ratelimiting.8.0.0.nupkg.sha512"
   ],
   "logs": []
 }

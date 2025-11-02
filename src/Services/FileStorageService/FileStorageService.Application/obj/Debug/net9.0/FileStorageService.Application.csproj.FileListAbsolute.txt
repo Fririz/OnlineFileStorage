@@ -11,3 +11,6 @@
 /Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileStorageService/FileStorageService.Application/obj/Debug/net9.0/refint/FileStorageService.Application.dll
 /Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileStorageService/FileStorageService.Application/obj/Debug/net9.0/FileStorageService.Application.pdb
 /Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileStorageService/FileStorageService.Application/obj/Debug/net9.0/ref/FileStorageService.Application.dll
+/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileStorageService/FileStorageService.Application/bin/Debug/net9.0/Contracts.Shared.dll
+/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileStorageService/FileStorageService.Application/bin/Debug/net9.0/Contracts.Shared.pdb
+/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileStorageService/FileStorageService.Application/obj/Debug/net9.0/FileStor.2D3EC17F.Up2Date

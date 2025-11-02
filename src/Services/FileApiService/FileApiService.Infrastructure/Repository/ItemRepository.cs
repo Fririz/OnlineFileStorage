@@ -11,7 +11,7 @@ public class ItemRepository : RepositoryBase<Item>, IItemRepository
     {
         
     }
-    public IEnumerable<Item> GetAllChildren(Guid itemId)
+    public IEnumerable<Item?> GetAllChildren(Guid itemId)
     {
         return _context.Items.Where(i => i.ParentId == itemId);
     }

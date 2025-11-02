@@ -65,6 +65,80 @@
         "AllowedScopes": []
       }
     },
+    {
+      "DownstreamPathTemplate": "/api/file/getitemsfromroot",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        { "Host": "fileapiservice", "Port": 8082 }
+      ],
+      "UpstreamPathTemplate": "/api/file/getitemsfromroot",
+      "UpstreamHttpMethod": [ "GET", "OPTIONS" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/folder/createfolder",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "fileapiservice",
+          "Port": 8082
+        }
+      ],
+      "UpstreamPathTemplate": "/api/folder/createfolder",
+      "UpstreamHttpMethod": [
+        "GET",
+        "OPTIONS",
+        "POST"
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/folder/getallchildren/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "fileapiservice",
+          "Port": 8082
+        }
+      ],
+      "UpstreamPathTemplate": "/api/folder/getallchildren/{id}",
+      "UpstreamHttpMethod": [
+        "GET",
+        "OPTIONS",
+        "POST"
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    
+    {
+      "DownstreamPathTemplate": "/api/file/getparent/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "fileapiservice",
+          "Port": 8082
+        }
+      ],
+      "UpstreamPathTemplate": "/api/file/getparent/{id}",
+      "UpstreamHttpMethod": [
+        "GET",
+        "OPTIONS",
+        "POST"
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
     //FileStorageService
     {
       "DownstreamPathTemplate": "/api/upload/{id}",
@@ -74,6 +148,9 @@
       ],
       "UpstreamPathTemplate": "/api/upload/{id}",
       "UpstreamHttpMethod": [ "POST", "GET", "OPTIONS" ],
+      "QoSOptions": {
+        "TimeoutValue": 1800000
+      },
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
@@ -86,7 +163,8 @@
       { "Host": "filestorageservice", "Port": 8083 }
     ],
     "UpstreamPathTemplate": "/api/download/{id}/{filename}/{token}",
-    "UpstreamHttpMethod": [ "POST", "GET", "OPTIONS" ],
+    "UpstreamHttpMethod": [ "POST", "GET", "OPTIONS" ], 
+      "TimeoutValue": 1800000,
     "AuthenticationOptions": {
       "AuthenticationProviderKey": "Bearer",
       "AllowedScopes": []

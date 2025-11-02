@@ -142,8 +142,17 @@
           }
         }
       },
+      "Contracts.Shared/1.0.0": {
+        "runtime": {
+          "Contracts.Shared.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
       "FileStorageService.Application/1.0.0": {
         "dependencies": {
+          "Contracts.Shared": "1.0.0",
           "Microsoft.Extensions.Configuration": "9.0.10",
           "Microsoft.Extensions.Logging.Abstractions": "9.0.10"
         },
@@ -245,6 +254,11 @@
       "sha512": "sha512-rHaWtKDwCi9qJ3ObKo8LHPMuuwv33YbmQi7TcUK1C264V3MFnOr5Im7QgCTdLniztP3GJyeiSg5x8NqYJFqRmg==",
       "path": "system.reactive/6.0.1",
       "hashPath": "system.reactive.6.0.1.nupkg.sha512"
+    },
+    "Contracts.Shared/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
     },
     "FileStorageService.Application/1.0.0": {
       "type": "project",

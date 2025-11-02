@@ -49,6 +49,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Grpc.Shared", "Grpc.Shared"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grpc.Shared", "BuildingBlocks\Grpc.Shared\Grpc.Shared\Grpc.Shared.csproj", "{45548F2E-95FE-4B49-9BEE-42202508563C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Contracts.Shared", "Contracts.Shared", "{BFDE183F-707E-44E1-AF36-D61A7CACA81D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contracts.Shared", "BuildingBlocks\Contracts.Shared\Contracts.Shared\Contracts.Shared.csproj", "{A6972016-28B8-4AEE-83B7-F615E577400B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -74,6 +78,8 @@ Global
 		{B551B315-1CD7-4C2B-902C-2EAA4CF9F6FD} = {E1C2C87F-BA9B-44AF-BD30-7999D128ED64}
 		{4F4FB46E-6B72-4B2B-AAC4-5579EB3A5882} = {C703A2BA-D708-4ED7-B9B4-150C3D4EF86F}
 		{45548F2E-95FE-4B49-9BEE-42202508563C} = {4F4FB46E-6B72-4B2B-AAC4-5579EB3A5882}
+		{BFDE183F-707E-44E1-AF36-D61A7CACA81D} = {C703A2BA-D708-4ED7-B9B4-150C3D4EF86F}
+		{A6972016-28B8-4AEE-83B7-F615E577400B} = {BFDE183F-707E-44E1-AF36-D61A7CACA81D}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{919B2171-0C02-4445-974D-BC99D3FE364B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -132,5 +138,9 @@ Global
 		{45548F2E-95FE-4B49-9BEE-42202508563C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{45548F2E-95FE-4B49-9BEE-42202508563C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{45548F2E-95FE-4B49-9BEE-42202508563C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6972016-28B8-4AEE-83B7-F615E577400B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6972016-28B8-4AEE-83B7-F615E577400B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6972016-28B8-4AEE-83B7-F615E577400B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6972016-28B8-4AEE-83B7-F615E577400B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

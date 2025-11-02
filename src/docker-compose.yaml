@@ -80,7 +80,13 @@ services:
       timeout: 3s
       retries: 20
   
-  
+  #rabbitmq
+  rabbit-mq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
   #ocelot
   ocelot:
     build:

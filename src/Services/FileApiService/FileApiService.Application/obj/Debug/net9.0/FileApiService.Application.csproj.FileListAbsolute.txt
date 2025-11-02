@@ -14,3 +14,5 @@
 /Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileApiService/FileApiService.Application/obj/Debug/net9.0/refint/FileApiService.Application.dll
 /Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileApiService/FileApiService.Application/obj/Debug/net9.0/FileApiService.Application.pdb
 /Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileApiService/FileApiService.Application/obj/Debug/net9.0/ref/FileApiService.Application.dll
+/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileApiService/FileApiService.Application/bin/Debug/net9.0/Contracts.Shared.dll
+/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileApiService/FileApiService.Application/bin/Debug/net9.0/Contracts.Shared.pdb

@@ -107,3 +107,9 @@
 /Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileApiService/FileApiService.API/bin/Debug/net9.0/FileApiService.Infrastructure.pdb
 /Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileApiService/FileApiService.API/bin/Debug/net9.0/IdentityService.Application.pdb
 /Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileApiService/FileApiService.API/bin/Debug/net9.0/IdentityService.Domain.pdb
+/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileApiService/FileApiService.API/bin/Debug/net9.0/MassTransit.dll
+/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileApiService/FileApiService.API/bin/Debug/net9.0/MassTransit.Abstractions.dll
+/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileApiService/FileApiService.API/bin/Debug/net9.0/MassTransit.RabbitMqTransport.dll
+/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileApiService/FileApiService.API/bin/Debug/net9.0/RabbitMQ.Client.dll
+/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileApiService/FileApiService.API/bin/Debug/net9.0/Contracts.Shared.dll
+/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileApiService/FileApiService.API/bin/Debug/net9.0/Contracts.Shared.pdb

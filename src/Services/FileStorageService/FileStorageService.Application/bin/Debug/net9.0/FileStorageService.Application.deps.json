@@ -8,6 +8,7 @@
     ".NETCoreApp,Version=v9.0": {
       "FileStorageService.Application/1.0.0": {
         "dependencies": {
+          "Contracts.Shared": "1.0.0",
           "Microsoft.Extensions.Configuration": "9.0.10",
           "Microsoft.Extensions.Logging.Abstractions": "9.0.10"
         },
@@ -64,6 +65,14 @@
             "fileVersion": "9.0.1025.47515"
           }
         }
+      },
+      "Contracts.Shared/1.0.0": {
+        "runtime": {
+          "Contracts.Shared.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
       }
     }
   },
@@ -107,6 +116,11 @@
       "sha512": "sha512-3pl8D1O5ZwMpDkZAT2uXrhQ6NipkwEgDLMFuURiHTf72TvkoMP61QYH3Vk1yrzVHnHBdNZk3cQACz8Zc7YGNhQ==",
       "path": "microsoft.extensions.primitives/9.0.10",
       "hashPath": "microsoft.extensions.primitives.9.0.10.nupkg.sha512"
+    },
+    "Contracts.Shared/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
     }
   }
 }
