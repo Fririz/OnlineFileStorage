@@ -27,6 +27,13 @@ const router = createRouter({
       path: '/files',
       name: 'files',
       component: () => import('../views/FilesView.vue'),
+      //   beforeEnter: (to, from, next) => {
+      //   const authStore = useAuthStore()
+
+      //   if (!authStore.isLoggedIn) {
+      //     next({ name: 'homeUnAuth' })
+      //   }
+      // }
     },
 
     {

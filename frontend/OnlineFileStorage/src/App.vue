@@ -19,7 +19,9 @@ const authStore = useAuthStore()
           <RouterLink to="/about">About Us</RouterLink>
         </nav>
       </div>
-
+      <div v-if="authStore.isLoggedIn">
+        
+      </div>
       <UserHeader v-if="authStore.isLoggedIn" />
 
   </header>

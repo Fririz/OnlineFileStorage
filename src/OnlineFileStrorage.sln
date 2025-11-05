@@ -18,6 +18,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker-compose", "docker-co
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildingBlocks", "BuildingBlocks", "{C703A2BA-D708-4ED7-B9B4-150C3D4EF86F}"
+	ProjectSection(SolutionItems) = preProject
+		BuildingBlocks\TODOLIST.txt = BuildingBlocks\TODOLIST.txt
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Logging", "Logging", "{F2B98543-6821-4A63-BBC1-FEDDAF96B5A1}"
 EndProject

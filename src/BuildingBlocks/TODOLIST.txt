@@ -1,0 +1,20 @@
+//TODO improve validation on fileapiservice
+//TODO add grpc for links between services
+//TODO add cqrs
+//TODO add deleting logic for files and folders
+//TODO add rabbit mq for deleting files
+//TODO add JWT token for links in filestorageservice
+//TODO mb add logic for bucket(when file softly deleted, move it to bucket)
+//TODO add fileDtoResponse for frontend
+//TODO add hangfire for deleting files with uploadstatus longer than 1hour
+//TODO add metriс servies
+//TODO add redis to cache repositories
+//TODO add notification microservice
+//TODO add pdfconvert microservice
+//TODO add userprofile microservice
+//TODO add swagger
+//TODO add more logging
+//TODO add unit test
+//TODO add mapping
+//TODO impove dockercompose and dockerfiles
+//TODO add logic for sharing files and viewing shared files
