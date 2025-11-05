@@ -1,18 +1,23 @@
+using Contracts.Shared;
 using FileApiService.Application.Contracts;
 using Microsoft.Extensions.Logging;
 using FileApiService.Domain.Entities;
 using FileApiService.Domain.Enums;
 using FileApiService.Application.Dto;
+using MassTransit;
+
 namespace FileApiService.Application;
 
 public class FileWorker : IFileWorker
 {
     ILogger<FileWorker> _logger;
     IItemRepository _itemRepository;
-    public FileWorker(ILogger<FileWorker> logger, IItemRepository itemRepository)
+    IPublishEndpoint _publishEndpoint;
+    public FileWorker(ILogger<FileWorker> logger, IItemRepository itemRepository, IPublishEndpoint publishEndpoint)
     {
         _logger = logger;
         _itemRepository = itemRepository;
+        _publishEndpoint = publishEndpoint;
     }
 
     public async Task<string> DownloadFile(Guid id)
@@ -40,14 +45,22 @@ public class FileWorker : IFileWorker
         var link = await response.Content.ReadAsStringAsync();
         return link;
     }
-    public async Task<Guid> DeleteFile(ItemDeleteDto item)
+    public async Task DeleteFile(Guid itemId)
     {
-        if (item.Type != TypeOfItem.File)
+        var file = await _itemRepository.GetByIdAsync(itemId);
+        if (file == null)
+        {
+            throw new FileNotFoundException("Item not found");  
+        }
+        if (file.Type != TypeOfItem.File)
         {
             throw new InvalidOperationException("Deleting a folder in method createFile not allowed");
         }
-        //TODO add softly delete file and RabbitMQ to FileStorageService
-        // await _itemRepository.DeleteByIdAsync(item.Id);
-        return item.Id;
+        file.MarkAsDeleted();
+        await _itemRepository.UpdateAsync(file);
+        await _publishEndpoint.Publish(new FileDeletionRequested()
+        {
+            FileId = file.Id
+        });
     }
 }

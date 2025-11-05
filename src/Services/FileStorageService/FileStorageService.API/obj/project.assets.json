@@ -1318,6 +1318,7 @@
         "framework": ".NETCoreApp,Version=v9.0",
         "dependencies": {
           "Contracts.Shared": "1.0.0",
+          "MassTransit.RabbitMQ": "8.5.5",
           "Microsoft.Extensions.Configuration": "9.0.10",
           "Microsoft.Extensions.Logging.Abstractions": "9.0.10"
         },

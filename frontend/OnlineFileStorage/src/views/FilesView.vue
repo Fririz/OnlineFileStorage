@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import api from '@/api' 
-import FileCard from '@/components/FileCard.vue' 
-import SideMenu from '@/components/SideMenu.vue' 
+import api from '@/api'
+import FileCard from '@/components/FileCard.vue'
+import SideMenu from '@/components/SideMenu.vue'
 import CreateItemModal from '@/components/CreateItemModel.vue'
 
 interface ApiFileItem {
   id: string;
   name: string;
-  fileSize: number; 
+  fileSize: number;
   type: number;
   status: number;
 }
@@ -18,24 +18,24 @@ const isLoading = ref(false)
 const error = ref<string | null>(null)
 const isModalOpen = ref(false)
 
-const currentParentId = ref<string | null>(null) 
+const currentParentId = ref<string | null>(null)
 
 const fetchFiles = async () => {
   isLoading.value = true
   error.value = null
   files.value = []
-  
+
   try {
     let response;
     if (currentParentId.value === null) {
       console.log('Loading from root...');
-      response = await api.get('file/getitemsfromroot') 
+      response = await api.get('file/getitemsfromroot')
     } else {
       console.log(`Loading children for: ${currentParentId.value}`);
       response = await api.get(`folder/getallchildren/${currentParentId.value}`)
     }
     files.value = response.data
-    
+
   } catch (err: any) {
     if (err.response?.status === 404) {
       files.value = []
@@ -53,7 +53,12 @@ onMounted(() => {
 })
 
 const handleFileCreated = () => {
-  isModalOpen.value = false 
+  isModalOpen.value = false
+  fetchFiles()
+}
+
+const handleFileDeleted = () => {
+  console.log('File deleted, refreshing list...')
   fetchFiles()
 }
 
@@ -71,14 +76,14 @@ const goBackToRoot = () => {
 
 const goBack = async () => {
   if (currentParentId.value === null) return;
-  
+
   console.log(`Requesting parent for: ${currentParentId.value}`)
   try {
     const response = await api.get(`file/getparent/${currentParentId.value}`)
-    
+
     if (response.data && response.data.id) {
       console.log('Moving to parent:', response.data.id)
-      currentParentId.value = response.data.id; 
+      currentParentId.value = response.data.id;
     } else {
       console.log('Parent is root.')
       currentParentId.value = null;
@@ -87,29 +92,23 @@ const goBack = async () => {
   } catch (err: any) {
     console.error(err)
     error.value = "Failed to load parent folder."
-    currentParentId.value = null; 
+    currentParentId.value = null;
   } finally {
-    fetchFiles() 
+    fetchFiles()
   }
 }
 
 </script>
 
 <template>
-  <SideMenu 
-    @refresh="fetchFiles" 
-    @create-file="isModalOpen = true" 
-  />
-  
-  <CreateItemModal 
-    :isOpen="isModalOpen"
-    :parentId="currentParentId" @close="isModalOpen = false"
-    @created="handleFileCreated"
-  />
+  <SideMenu @refresh="fetchFiles" @create-file="isModalOpen = true" />
+
+  <CreateItemModal :isOpen="isModalOpen" :parentId="currentParentId" @close="isModalOpen = false"
+    @created="handleFileCreated" />
 
   <main class="content-wrapper">
     <div class="controls">
-      
+
       <template v-if="currentParentId !== null">
         <button @click="goBack" class="back-button">
           &larr; Back
@@ -118,12 +117,12 @@ const goBack = async () => {
           Root
         </button>
       </template>
-      
+
       <h2 v-else>My Files (Root)</h2>
     </div>
 
     <div classs="results-container">
-      
+
       <div v-if="isLoading" class="loading-state">
         Loading...
       </div>
@@ -133,16 +132,8 @@ const goBack = async () => {
       </div>
 
       <div v-else-if="files.length > 0" class="file-grid">
-        <FileCard
-          v-for="file in files"
-          :key="file.id"
-          :id="file.id"         
-          :name="file.name"
-          :fileSize="file.fileSize"
-          :fileType="file.type"
-          :status="file.status"
-          @open-folder="handleOpenFolder" 
-        />
+        <FileCard v-for="file in files" :key="file.id" :id="file.id" :name="file.name" :fileSize="file.fileSize"
+          :fileType="file.type" :status="file.status" @open-folder="handleOpenFolder" @deleted="handleFileDeleted" />
       </div>
 
       <div v-else class="empty-state">
@@ -154,14 +145,13 @@ const goBack = async () => {
 
 <style scoped>
 .content-wrapper {
-  margin-left: 240px; 
+  margin-left: 240px;
   padding: 2rem;
   max-width: 1200px;
-  
-  /* --- THIS IS THE FIX --- */
-  margin-top: 60px; /* (Assuming your header is 60px tall) */
-  /* ----------------------- */
+
+  margin-top: 60px;
 }
+
 .controls {
   margin-bottom: 2rem;
   display: flex;
@@ -180,13 +170,16 @@ const goBack = async () => {
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
+
 .back-button:hover {
   background: #4a4a4a;
 }
+
 .root-button {
   background: #36a070;
   color: white;
 }
+
 .root-button:hover {
   background: #42b883;
 }
@@ -195,17 +188,21 @@ const goBack = async () => {
 .results-container {
   margin-top: 2rem;
 }
+
 .file-grid {
   display: flex;
-  flex-wrap: wrap; 
+  flex-wrap: wrap;
   gap: 1.5rem;
 }
-.loading-state, .empty-state {
+
+.loading-state,
+.empty-state {
   padding: 4rem 2rem;
   text-align: center;
   color: #888;
   font-size: 1.2rem;
 }
+
 .error-message {
   padding: 1.5rem;
   text-align: center;

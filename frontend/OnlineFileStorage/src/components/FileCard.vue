@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import api from '@/api' 
+import api from '@/api'
 
 const props = defineProps<{
   id: string
@@ -12,12 +12,13 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'open-folder', id: string): void
+  (e: 'deleted'): void
 }>()
 
 const formattedSize = computed(() => {
   if (props.status === 1) return 'Pending...'
   if (props.fileType === 2) return 'Folder'
-  
+
   const bytes = props.fileSize
   if (bytes === 0) return '0 Bytes'
   const k = 1024
@@ -45,6 +46,7 @@ const iconComponent = computed(() => {
 
 
 const isDownloading = ref(false)
+const isDeleting = ref(false)
 
 const handleDownload = async () => {
   if (isDownloading.value || props.status === 1) return
@@ -52,7 +54,7 @@ const handleDownload = async () => {
 
   try {
     if (props.fileType === 2) {
-        return;
+      return;
     }
 
     console.log(`Requesting download link for ID: ${props.id}`)
@@ -70,19 +72,36 @@ const handleDownload = async () => {
     isDownloading.value = false
   }
 }
+
+const handleDelete = async () => {
+  if (isDeleting.value || props.status === 1) return
+
+  if (!confirm(`Are you sure you want to delete "${props.name}"?`)) {
+    return
+  }
+
+  isDeleting.value = true
+  try {
+    await api.delete(`/file/deletefile/${props.id}`)
+    emit('deleted')
+  } catch (err) {
+    console.error('Failed to delete file:', err)
+    alert('Failed to delete file. Check console.')
+  } finally {
+    isDeleting.value = false
+  }
+}
+
 </script>
 
 <template>
-  <div 
-    class="file-card" 
-    @click="fileType === 2 && status !== 1 ? emit('open-folder', id) : null"
-    :class="{ 
-      'folder-clickable': fileType === 2 && status !== 1,
-      'is-pending': status === 1 
-    }">
-    
-    <div class="file-icon-wrapper"> 
-      <div v-html="iconComponent"></div> 
+  <div class="file-card" @click="fileType === 2 && status !== 1 ? emit('open-folder', id) : null" :class="{
+    'folder-clickable': fileType === 2 && status !== 1,
+    'is-pending': status === 1
+  }">
+
+    <div class="file-icon-wrapper">
+      <div v-html="iconComponent"></div>
     </div>
 
     <div class="file-info">
@@ -91,18 +110,20 @@ const handleDownload = async () => {
     </div>
 
     <div class="file-actions">
-      
-      <button 
-        v-if="fileType === 1" 
-        class="download-btn" 
-        @click.stop="handleDownload" 
+
+      <button v-if="fileType === 1" class="download-btn" @click.stop="handleDownload"
         :disabled="isDownloading || status === 1">
         {{ isDownloading ? '...' : (status === 1 ? '...' : 'Download') }}
       </button>
-      
+
       <div v-if="fileType === 2" class="folder-hint">
         {{ status === 1 ? '...' : '(Click to open)' }}
       </div>
+
+      <button v-if="status !== 1" class="delete-btn" @click.stop="handleDelete" :disabled="isDeleting">
+        {{ isDeleting ? '...' : 'Delete' }}
+      </button>
+
     </div>
   </div>
 </template>
@@ -111,25 +132,33 @@ const handleDownload = async () => {
 .folder-clickable {
   cursor: pointer;
 }
+
 .folder-clickable:hover {
   border-color: #42b883;
 }
+
 .is-pending {
   opacity: 0.5;
 }
+
 .folder-clickable.is-pending {
   cursor: not-allowed;
   border-color: #3a3a3a;
 }
+
 .folder-hint {
   font-size: 0.8rem;
   color: #888;
   margin-top: 0.75rem;
   height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
 .file-card {
   width: 220px;
-  height: 280px;
+  height: 330px;
   padding: 1.5rem;
   background: #282828;
   border: 1px solid #3a3a3a;
@@ -141,11 +170,13 @@ const handleDownload = async () => {
   text-align: center;
   transition: all 0.2s ease-in-out;
 }
+
 .file-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
 }
-.file-icon-wrapper { 
+
+.file-icon-wrapper {
   width: 70px;
   height: 85px;
   background-color: #3a3a3a;
@@ -161,20 +192,24 @@ const handleDownload = async () => {
   user-select: none;
   flex-shrink: 0;
 }
+
 .file-icon-wrapper::before {
-  content: none; 
+  content: none;
 }
+
 .file-icon-wrapper svg {
   width: 48px;
   height: 48px;
   color: #42b883;
 }
+
 .file-info {
   margin: 1.25rem 0;
-  flex-grow: 1; 
+  flex-grow: 1;
   width: 100%;
   overflow: hidden;
 }
+
 .file-info h3 {
   margin: 0;
   font-size: 1.1rem;
@@ -183,14 +218,20 @@ const handleDownload = async () => {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 .file-details {
   font-size: 0.9rem;
   color: #aaaaaa;
 }
+
 .file-actions {
   width: 100%;
   flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
+
 .download-btn {
   width: 100%;
   padding: 0.75rem;
@@ -202,13 +243,42 @@ const handleDownload = async () => {
   font-size: 0.95rem;
   cursor: pointer;
   transition: background-color 0.2s ease;
+  height: 38px;
+  box-sizing: border-box;
 }
+
 .download-btn:disabled {
   background-color: #555;
   color: #999;
   cursor: not-allowed;
 }
+
 .download-btn:hover:not(:disabled) {
   background-color: #36a070;
+}
+
+.delete-btn {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #c0392b;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  height: 38px;
+  box-sizing: border-box;
+}
+
+.delete-btn:disabled {
+  background-color: #555;
+  color: #999;
+  cursor: not-allowed;
+}
+
+.delete-btn:hover:not(:disabled) {
+  background-color: #a93226;
 }
 </style>

@@ -17,18 +17,6 @@ builder.Services.Configure<KestrelServerOptions>(options =>
 {
     options.Limits.MaxRequestBodySize = 5_368_709_120; // TODO bring it to env
 });
-builder.Services.AddMassTransit(x =>
-{
-    x.UsingRabbitMq((context, cfg) =>
-    {
-        cfg.Host("rabbit-mq", "/", h =>
-        {
-            h.Username("guest");
-            h.Password("guest");
-        });
-    });
-});
-
 builder.Host.UseSerilog((context, config) =>
 {
     SeriLogger.Configure(context, config);

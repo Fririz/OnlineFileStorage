@@ -30,8 +30,6 @@ public class FolderController : ControllerBase
     {
         var items = _itemRepository.GetAllChildren(id);
         var result = items.OfType<Item>().ToList();
-        if(result.Count == 0)
-            return NotFound();
         return result;
     }
     

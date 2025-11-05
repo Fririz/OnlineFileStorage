@@ -98,12 +98,12 @@ public class JwtTokenWorker : IJwtTokenWorker
         catch (SecurityTokenException ex)
         {
             _logger.LogWarning(ex, "JWT validation error: {Message}", ex.Message);
-            return null; // Токен плохой (просрочен, неверная подпись)
+            return null;
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Unexpected error with jwt parsing");
-            return null; // Другая ошибка
+            return null;
         }
     }
 }

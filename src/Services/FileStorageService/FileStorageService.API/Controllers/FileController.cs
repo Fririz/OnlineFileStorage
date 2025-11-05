@@ -1,6 +1,5 @@
 using FileStorageService.Application.Contracts;
 using FileStorageService.Infrastructure;
-using MassTransit.Testing;
 using MassTransit;
 using Contracts.Shared;
 using Microsoft.AspNetCore.Mvc;
@@ -53,23 +52,13 @@ public class FileController : ControllerBase
         try
         {
             await _fileManager.UploadFileCaseAsync(Request.Body, id);
-            var fileInfo = await _fileRepository.GetInfoAboutFile(id);
-            await _publishEndpoint.Publish(new FileUploadComplete()
-            {
-                FileId = fileInfo.FileId,
-                FileSize = fileInfo.FileSize,
-                MimeType = fileInfo.MimeType,
-            });
+            return Ok("File uploaded successfully");
         }
         catch (Exception e)
         {
-            var fileInfo = await _fileRepository.GetInfoAboutFile(id);
-            await _publishEndpoint.Publish(new FileUploadFailed()
-            {
-                FileId = fileInfo.FileId,
-            });
+            return StatusCode(500, e.Message);
         }
-        return Ok("File uploaded successfully");
+
     }
 
 }

@@ -1,6 +1,7 @@
 using FileApiService.Application.Contracts;
 using FileApiService.Application.Dto;
 using FileApiService.Domain.Entities;
+using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FileApiService.API.Controllers;
@@ -8,13 +9,15 @@ namespace FileApiService.API.Controllers;
 [Route("api/[controller]")]
 public class FileController : ControllerBase
 {
-    IFileWorker _fileWorker;
-    IItemRepository _itemRepository;
+    private readonly IFileWorker _fileWorker;
+    private readonly IItemRepository _itemRepository;
+    private readonly IPublishEndpoint _publishEndpoint; 
     public FileController(IFileWorker fileWorker,
-        IItemRepository itemRepository)
+        IItemRepository itemRepository, IPublishEndpoint publishEndpoint)
     {
         _fileWorker = fileWorker;
         _itemRepository = itemRepository;
+        _publishEndpoint = publishEndpoint;
     }
 
     [HttpGet]
@@ -39,15 +42,35 @@ public class FileController : ControllerBase
         var link = await _fileWorker.DownloadFile(id);
         return Ok(new { uploadUrl = link });
     }
-    //for getting file jsons
+
+    [HttpDelete]
+    [Route("deletefile/{fileId}")]
+    public async Task<ActionResult> DeleteFile(Guid fileId)
+    {
+        try
+        {
+            await _fileWorker.DeleteFile(fileId);
+            return Ok();
+        }
+        catch (FileNotFoundException)
+        {
+            return NotFound();
+        }
+        catch (InvalidOperationException e)
+        {
+            return BadRequest(e.Message);
+        }
+        catch (Exception e)
+        {
+            return StatusCode(500, e.Message);
+        }
+    }
     [HttpGet]
     [Route("getitemsfromroot")]
     public ActionResult<List<Item>> GetItemsFromRoot([FromHeader(Name = "Id")] Guid userId)
     {
         var items = _itemRepository.GetRootItems(userId);
         var result = items.OfType<Item>().ToList();
-        if(result.Count == 0)
-            return NotFound();
         return result;
     }
     

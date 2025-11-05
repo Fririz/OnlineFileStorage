@@ -5,12 +5,12 @@ import axios from 'axios'
 
 const props = defineProps<{
   isOpen: boolean
-  parentId: string | null 
+  parentId: string | null
 }>()
 
 const emit = defineEmits<{
   (e: 'close'): void
-  (e: 'created'): void 
+  (e: 'created'): void
 }>()
 
 const itemType = ref<1 | 2>(2)
@@ -58,7 +58,7 @@ const handleSubmit = async () => {
 
     if (itemType.value === 2) {
       if (!itemName.value) {
-        throw new Error('Имя папки не может быть пустым')
+        throw new Error('Folder name is required')
       }
       dto = {
         Name: itemName.value,
@@ -68,7 +68,7 @@ const handleSubmit = async () => {
       await api.post('folder/createfolder', dto)
     } else {
       if (!selectedFile.value) {
-        throw new Error('Файл не выбран')
+        throw new Error('File is required')
       }
 
       dto = {
@@ -80,13 +80,13 @@ const handleSubmit = async () => {
       console.log('Шаг 1: Отправка DTO на /api/file/uploadfile', dto)
       const response = await api.post('file/uploadfile', dto)
 
-      const uploadUrl = response.data.uploadUrl 
-      
+      const uploadUrl = response.data.uploadUrl
+
       if (!uploadUrl || typeof uploadUrl !== 'string') {
-        throw new Error('Бэкенд не вернул "uploadUrl" в ответе')
+        throw new Error('Backend did not return "uploadUrl" in response')
       }
 
-      console.log('Шаг 2: Получена ссылка, грузим файл на:', uploadUrl)
+      console.log('Received link, uploading file to:', uploadUrl)
 
       await axios.post(
         uploadUrl,
@@ -99,7 +99,7 @@ const handleSubmit = async () => {
         }
       )
 
-      console.log('Шаг 3: Файл успешно загружен.')
+      console.log('File uploaded successfully.')
     }
 
     isLoading.value = false
@@ -108,7 +108,7 @@ const handleSubmit = async () => {
 
   } catch (err: any) {
     console.error(err)
-    error.value = err.response?.data?.message || err.message || 'Произошла ошибка'
+    error.value = err.response?.data?.message || err.message || 'An error occurred'
     isLoading.value = false
   }
 }
@@ -133,21 +133,12 @@ const handleSubmit = async () => {
       <form @submit.prevent="handleSubmit">
         <div v-if="itemType === 2" class="form-group">
           <label for="folderName">Folder Name</label>
-          <input
-            id="folderName"
-            type="text"
-            v-model="itemName"
-            placeholder="New Folder"
-          />
+          <input id="folderName" type="text" v-model="itemName" placeholder="New Folder" />
         </div>
 
         <div v-if="itemType === 1" class="form-group">
           <label for="fileUpload">Choose file</label>
-          <input
-            id="fileUpload"
-            type="file"
-            @change="handleFileChange"
-          />
+          <input id="fileUpload" type="file" @change="handleFileChange" />
         </div>
 
         <div v-if="error" class="error-message">
@@ -259,7 +250,8 @@ h3 {
   margin-top: 1.5rem;
 }
 
-.btn-cancel, .btn-create {
+.btn-cancel,
+.btn-create {
   padding: 0.75rem 1.5rem;
   border: none;
   border-radius: 8px;
@@ -272,6 +264,7 @@ h3 {
   background: #4a4a4a;
   color: #e0e0e0;
 }
+
 .btn-cancel:hover {
   background: #5a5a5a;
 }
@@ -280,6 +273,7 @@ h3 {
   background: #42b883;
   color: white;
 }
+
 .btn-create:hover {
   background: #36a070;
 }

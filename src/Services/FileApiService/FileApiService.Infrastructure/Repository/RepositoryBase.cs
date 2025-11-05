@@ -42,7 +42,7 @@ public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : EntityBas
     }
     public async Task DeleteByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var entity = await _context.Set<T>().FindAsync(new object[] { id }, cancellationToken);
+        var entity  =await _context.Set<T>().IgnoreQueryFilters().FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
         if (entity != null)
         {
             await DeleteAsync(entity, cancellationToken);

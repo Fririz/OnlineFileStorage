@@ -31,6 +31,22 @@ public class FileRepository : IFileRepository
         }
     }
 
+    public async Task DeleteFileAsync(Guid id)
+    {
+        try
+        {
+            RemoveObjectArgs deletingArgs = new RemoveObjectArgs()
+                .WithBucket(_bucketName)
+                .WithObject(id.ToString("N"));
+
+            await _minioClient.RemoveObjectAsync(deletingArgs);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error deleting object {Object} from bucket {Bucket}.", id, _bucketName);
+            throw;
+        }
+    }
     public async Task UploadFileAsync(Stream stream, Guid id)
     {
         try
@@ -39,7 +55,7 @@ public class FileRepository : IFileRepository
             
             if (stream.CanSeek)
             {
-                try { stream.Position = 0; } catch { /* ignore */ }
+                try { stream.Position = 0; } catch {  }
             }
 
             Stream payloadStream = stream;
@@ -92,27 +108,26 @@ public class FileRepository : IFileRepository
         }
     }
 
-    public async Task<FileInfoDto> GetInfoAboutFile(Guid objectId)
+    public async Task<FileInfoDto> GetInfoAboutFile(Guid id)
     {
         try
         {
             var statArgs = new StatObjectArgs()
                 .WithBucket(_bucketName)
-                .WithObject(objectId.ToString("N"));
-
+                .WithObject(id.ToString("N"));
             var stat = await _minioClient.StatObjectAsync(statArgs).ConfigureAwait(false);
 
 
             return new FileInfoDto
             {
-                FileId = objectId,
+                FileId = id,
                 FileSize = stat.Size,
                 MimeType = stat.ContentType
             };
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error getting info about object {Object} from bucket {Bucket}.", objectId, _bucketName);
+            _logger.LogError(ex, "Error getting info about object {Object} from bucket {Bucket}.", id, _bucketName);
             throw;
         }
     }
