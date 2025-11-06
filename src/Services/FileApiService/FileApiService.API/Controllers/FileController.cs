@@ -29,27 +29,27 @@ public class FileController : ControllerBase
     }
     [HttpPost]
     [Route("uploadfile")]
-    public async Task<ActionResult> UploadFile(ItemDto item)
+    public async Task<ActionResult> UploadFile(ItemDto item, [FromHeader(Name = "Id")] Guid userId, CancellationToken cancellationToken = default)
     {
         Guid ownerId = Guid.Parse(Request.Headers["Id"].ToString());
-        var link = await _fileWorker.CreateFile(item, ownerId);
+        var link = await _fileWorker.CreateFile(item, ownerId, cancellationToken);
         return Ok(new { uploadUrl = link });
     }
     [HttpGet]
     [Route("downloadfile/{id:minlength(1)}/")]
-    public async Task<ActionResult> DownloadFile(Guid id)
+    public async Task<ActionResult> DownloadFile(Guid id, [FromHeader(Name = "Id")] Guid userId, CancellationToken cancellationToken = default)
     {
-        var link = await _fileWorker.DownloadFile(id);
+        var link = await _fileWorker.DownloadFile(id, userId, cancellationToken);
         return Ok(new { uploadUrl = link });
     }
 
     [HttpDelete]
     [Route("deletefile/{fileId}")]
-    public async Task<ActionResult> DeleteFile(Guid fileId)
+    public async Task<ActionResult> DeleteFile(Guid fileId, [FromHeader(Name = "Id")] Guid userId)
     {
         try
         {
-            await _fileWorker.DeleteFile(fileId);
+            await _fileWorker.DeleteFile(fileId, userId);
             return Ok();
         }
         catch (FileNotFoundException)

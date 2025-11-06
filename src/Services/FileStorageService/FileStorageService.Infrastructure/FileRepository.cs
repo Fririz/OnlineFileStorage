@@ -31,7 +31,7 @@ public class FileRepository : IFileRepository
         }
     }
 
-    public async Task DeleteFileAsync(Guid id)
+    public async Task DeleteFileAsync(Guid id, CancellationToken cancellationToken = default)
     {
         try
         {
@@ -39,7 +39,7 @@ public class FileRepository : IFileRepository
                 .WithBucket(_bucketName)
                 .WithObject(id.ToString("N"));
 
-            await _minioClient.RemoveObjectAsync(deletingArgs);
+            await _minioClient.RemoveObjectAsync(deletingArgs, cancellationToken);
         }
         catch (Exception ex)
         {
@@ -47,11 +47,11 @@ public class FileRepository : IFileRepository
             throw;
         }
     }
-    public async Task UploadFileAsync(Stream stream, Guid id)
+    public async Task UploadFileAsync(Stream stream, Guid id, CancellationToken cancellationToken = default)
     {
         try
         {
-            await EnsureBucketExistsAsync().ConfigureAwait(false);
+            await EnsureBucketExistsAsync(cancellationToken).ConfigureAwait(false);
             
             if (stream.CanSeek)
             {
@@ -68,7 +68,7 @@ public class FileRepository : IFileRepository
             else
             {
                 var ms = new MemoryStream();
-                await stream.CopyToAsync(ms).ConfigureAwait(false);
+                await stream.CopyToAsync(ms, cancellationToken).ConfigureAwait(false);
                 ms.Position = 0;
 
                 if (ms.Length == 0)
@@ -108,14 +108,14 @@ public class FileRepository : IFileRepository
         }
     }
 
-    public async Task<FileInfoDto> GetInfoAboutFile(Guid id)
+    public async Task<FileInfoDto> GetInfoAboutFile(Guid id, CancellationToken cancellationToken = default)
     {
         try
         {
             var statArgs = new StatObjectArgs()
                 .WithBucket(_bucketName)
                 .WithObject(id.ToString("N"));
-            var stat = await _minioClient.StatObjectAsync(statArgs).ConfigureAwait(false);
+            var stat = await _minioClient.StatObjectAsync(statArgs, cancellationToken).ConfigureAwait(false);
 
 
             return new FileInfoDto
@@ -132,7 +132,7 @@ public class FileRepository : IFileRepository
         }
     }
 
-    public async Task<Stream> DownloadFileAsync(Guid objectId)
+    public async Task<Stream> DownloadFileAsync(Guid objectId, CancellationToken cancellationToken = default)
     {
         try
         {
@@ -146,7 +146,7 @@ public class FileRepository : IFileRepository
                     s.CopyTo(memoryStream);
                 });
 
-            await _minioClient.GetObjectAsync(getObjectArgs).ConfigureAwait(false);
+            await _minioClient.GetObjectAsync(getObjectArgs, cancellationToken).ConfigureAwait(false);
 
             memoryStream.Position = 0;
             _logger.LogInformation("Downloaded object {Object} from bucket {Bucket}, size {Size} bytes.", objectId, _bucketName, memoryStream.Length);

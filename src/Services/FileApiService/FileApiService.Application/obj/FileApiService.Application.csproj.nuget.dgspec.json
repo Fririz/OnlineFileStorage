@@ -124,6 +124,10 @@
               "target": "Package",
               "version": "[9.0.10, )"
             },
+            "Microsoft.Extensions.Http": {
+              "target": "Package",
+              "version": "[9.0.10, )"
+            },
             "Microsoft.Extensions.Logging": {
               "target": "Package",
               "version": "[9.0.10, )"

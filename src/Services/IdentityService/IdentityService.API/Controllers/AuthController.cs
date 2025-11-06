@@ -29,11 +29,11 @@ public class AuthController : ControllerBase
 
     [HttpPost]
     [Route("register")]
-    public async Task<IActionResult> Register(UserAuthDto user)
+    public async Task<IActionResult> Register(UserAuthDto user, CancellationToken cancellationToken = default)
     {
         try
         {
-            await _userWorker.RegisterUser(user);
+            await _userWorker.RegisterUser(user, cancellationToken);
         }
         catch (UserAlreadyExistsException ex)
         {
@@ -44,26 +44,16 @@ public class AuthController : ControllerBase
             _logger.LogError(ex, "Unexpected error with user registration");
             return StatusCode(500, new { message = "An internal server error occurred." });
         }
-
-        var token = await _userWorker.LoginUser(user);
-        if (token == null)
-        {
-            return Unauthorized(new { message = "Invalid credentials after registration." });
-        }
-        
-        
-        Response.Cookies.Append("token", token, GetCookieOptions());
-        
-        _logger.LogInformation("User {Username} registered and logged in successfully.", user.Username);
+        _logger.LogInformation("User {Username} registered successfully.", user.Username);
         
         return Ok(new { message = "Registration successful" });
     }
 
     [HttpPost]
     [Route("login")]
-    public async Task<IActionResult> Login([FromBody] UserAuthDto user)
+    public async Task<IActionResult> Login([FromBody] UserAuthDto user, CancellationToken cancellationToken = default)
     {
-        var token = await _userWorker.LoginUser(user);
+        var token = await _userWorker.LoginUser(user, cancellationToken);
         if (token == null)
         {
             return Unauthorized(new { message = "Invalid username or password." });

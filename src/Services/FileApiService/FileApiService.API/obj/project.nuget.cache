@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "0XLa8pVu2ZQ=",
+  "dgSpecHash": "7P/gUWAnpRI=",
   "success": true,
   "projectFilePath": "/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileApiService/FileApiService.API/FileApiService.API.csproj",
   "expectedPackageFiles": [
@@ -41,6 +41,7 @@
     "/Users/fririz/.nuget/packages/microsoft.extensions.filesystemglobbing/9.0.10/microsoft.extensions.filesystemglobbing.9.0.10.nupkg.sha512",
     "/Users/fririz/.nuget/packages/microsoft.extensions.hosting/9.0.10/microsoft.extensions.hosting.9.0.10.nupkg.sha512",
     "/Users/fririz/.nuget/packages/microsoft.extensions.hosting.abstractions/9.0.10/microsoft.extensions.hosting.abstractions.9.0.10.nupkg.sha512",
+    "/Users/fririz/.nuget/packages/microsoft.extensions.http/9.0.10/microsoft.extensions.http.9.0.10.nupkg.sha512",
     "/Users/fririz/.nuget/packages/microsoft.extensions.logging/9.0.10/microsoft.extensions.logging.9.0.10.nupkg.sha512",
     "/Users/fririz/.nuget/packages/microsoft.extensions.logging.abstractions/9.0.10/microsoft.extensions.logging.abstractions.9.0.10.nupkg.sha512",
     "/Users/fririz/.nuget/packages/microsoft.extensions.logging.configuration/9.0.10/microsoft.extensions.logging.configuration.9.0.10.nupkg.sha512",

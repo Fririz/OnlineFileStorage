@@ -8,26 +8,21 @@ namespace FileStorageService.Application.Consumers;
 public class FileDeletionRequestConsumer : IConsumer<FileDeletionRequested>
 {
     private readonly ILogger<FileDeletionRequestConsumer> _logger;
-    private readonly IFileRepository _fileRepository;
+    private readonly IFileManager _fileManager;
     private readonly IPublishEndpoint _publishEndpoint;
     public FileDeletionRequestConsumer(ILogger<FileDeletionRequestConsumer> logger,
-        IFileRepository fileRepository,
+        IFileManager fileManager,
         IPublishEndpoint publishEndpoint)
     {
         _logger = logger;
-        _fileRepository = fileRepository;
+        _fileManager = fileManager;
         _publishEndpoint = publishEndpoint;
     }
     
     public async Task Consume(ConsumeContext<FileDeletionRequested> context)
-    {
-        var message = context.Message;
-        await _fileRepository.DeleteFileAsync(message.FileId);
-        _logger.LogInformation("File {FileId} deleted and bus message sended", message.FileId);
-        await _publishEndpoint.Publish(new FileDeletionComplete
-        {
-            FileId = message.FileId,
-        });
+    {  //TODO: move consumers and rabbitmq logic to another layer
+        await _fileManager.DeleteFileCaseAsync(context.Message.FileId);
+        _logger.LogInformation("File {FileId} deleted and bus message sended", context.Message.FileId);
 
     }
 }

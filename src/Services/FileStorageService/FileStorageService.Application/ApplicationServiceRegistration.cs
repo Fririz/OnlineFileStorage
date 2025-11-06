@@ -10,10 +10,10 @@ public static class ApplicationServiceRegistration
     
     public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddMassTransit(x =>
+        services.AddMassTransit(x => //TODO: move consumers and rabbitmq logic to another layer
         {
             x.AddConsumer<Consumers.FileDeletionRequestConsumer>();
-            x.UsingRabbitMq((context, cfg) =>
+            x.UsingRabbitMq((context, cfg) => 
             {
                 cfg.Host("rabbit-mq", "/", h =>
                 {

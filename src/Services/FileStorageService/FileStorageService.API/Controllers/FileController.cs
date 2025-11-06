@@ -23,11 +23,11 @@ public class FileController : ControllerBase
 
     [HttpGet]
     [Route("download/{id}/{filename:minlength(1)}/{token}")]
-    public async Task<IActionResult> GetFile(Guid id, string filename, string? token)
+    public async Task<IActionResult> GetFile(Guid id, string filename, string? token, CancellationToken cancellationToken = default)
     {
         try
         {
-            var stream = await _fileManager.DownloadFileCaseAsync(id, token);
+            var stream = await _fileManager.DownloadFileCaseAsync(id, token, cancellationToken);
             return File(stream, "application/octet-stream", filename);
         }
         catch (UnauthorizedAccessException e)
@@ -47,11 +47,11 @@ public class FileController : ControllerBase
 
     [HttpPost]
     [Route("upload/{id}")]
-    public async Task<ActionResult<string>> UploadFile(Guid id)
+    public async Task<ActionResult<string>> UploadFile(Guid id, CancellationToken cancellationToken = default)
     {
         try
         {
-            await _fileManager.UploadFileCaseAsync(Request.Body, id);
+            await _fileManager.UploadFileCaseAsync(Request.Body, id, cancellationToken);
             return Ok("File uploaded successfully");
         }
         catch (Exception e)

@@ -6,6 +6,6 @@ namespace IdentityService.Application.Contracts;
 
 public interface IUserWorker
 {
-    public Task<Guid> RegisterUser(UserAuthDto userDto);
-    public Task<string?> LoginUser(UserAuthDto userDto);
+    public Task<Guid> RegisterUser(UserAuthDto userDto, CancellationToken cancellationToken = default);
+    public Task<string?> LoginUser(UserAuthDto userDto, CancellationToken cancellationToken = default);
 }

@@ -26,24 +26,24 @@ public class UserWorker : IUserWorker
         _passwordWorker = passwordWorker;
         _logger = logger;
     }
-    public async Task<Guid> RegisterUser(UserAuthDto userDto)
+    public async Task<Guid> RegisterUser(UserAuthDto userDto, CancellationToken cancellationToken = default)
     {
-        if(await _userRepository.CheckUserExistenceAsync(userDto.Username))
+        if(await _userRepository.CheckUserExistenceAsync(userDto.Username, cancellationToken))
         {
             _logger.LogInformation($"User {userDto.Username} already exists.");
             throw new UserAlreadyExistsException(userDto.Username);
         }
         
         var user = User.CreateUser(userDto.Username, _passwordWorker.HashPassword(userDto.Password), Role.User);
-        await _userRepository.AddUserAsync(user);
+        await _userRepository.AddUserAsync(user, cancellationToken);
         _logger.LogInformation($"User {user.Username} registered successfully.");
         return user.Id;
 
     }
 
-    public async Task<string?> LoginUser(UserAuthDto userDto)
+    public async Task<string?> LoginUser(UserAuthDto userDto, CancellationToken cancellationToken = default)
     {
-        var user = await _userRepository.GetUserByUsernameAsync(userDto.Username);
+        var user = await _userRepository.GetUserByUsernameAsync(userDto.Username, cancellationToken);
         if (user == null || !_passwordWorker.CheckPassword(userDto.Password, user.PasswordHash))
         {
             _logger.LogInformation($"User {userDto.Username} failed to login.");

@@ -13,7 +13,8 @@ public static class ApplicationServiceRegistration
         services.AddScoped<IFileWorker, FileWorker>();
         services.AddScoped<IFolderWorker, FolderWorker>();
         services.AddScoped<ISerializer, Serializer>();
-        services.AddMassTransit(x =>
+        services.AddHttpClient();
+        services.AddMassTransit(x =>  //TODO: move consumers and rabbitmq logic to another layer
         {
             x.AddConsumer<Consumers.FileUploadCompletedConsumer>();
             x.AddConsumer<Consumers.FileUploadFailedConsumer>();
