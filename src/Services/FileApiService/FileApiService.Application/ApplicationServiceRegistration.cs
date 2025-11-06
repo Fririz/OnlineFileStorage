@@ -1,3 +1,4 @@
+using FileApiService.Application.BackgroundServices;
 using FileApiService.Application.Contracts;
 using MassTransit;
 using Microsoft.Extensions.Configuration;
@@ -14,7 +15,8 @@ public static class ApplicationServiceRegistration
         services.AddScoped<IFolderWorker, FolderWorker>();
         services.AddScoped<ISerializer, Serializer>();
         services.AddHttpClient();
-        services.AddMassTransit(x =>  //TODO: move consumers and rabbitmq logic to another layer
+        services.AddHostedService<PendingFileCleaner>();
+        services.AddMassTransit(x =>  //TODO: move rabbitmq to another layer
         {
             x.AddConsumer<Consumers.FileUploadCompletedConsumer>();
             x.AddConsumer<Consumers.FileUploadFailedConsumer>();

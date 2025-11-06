@@ -1,8 +1,11 @@
 using FileApiService.Application.Contracts;
 using FileApiService.Domain.Entities;
+using FileApiService.Domain.Enums;
 using FileApiService.Infrastructure.Persistence;
 using IdentityService.Application.Contracts;
 using IdentityService.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
+
 namespace FileApiService.Infrastructure.Repository;
 
 public class ItemRepository : RepositoryBase<Item>, IItemRepository
@@ -37,5 +40,16 @@ public class ItemRepository : RepositoryBase<Item>, IItemRepository
             .Where(i => accessibleItemIds.Contains(i.Id))
             .Where(i => i.ParentId == null)
             .Where(i => i.OwnerId != userId);
+    }
+
+    public async Task<int> DeleteFilesWithPendingExpired()
+    {
+        var oneHourAgo = DateTime.UtcNow.AddHours(-1);
+        
+        var rowsAffected = await _context.Items
+            .Where(f => f.Type == TypeOfItem.File && f.Status == UploadStatus.Pending && f.CreatedDate < oneHourAgo)
+            .ExecuteDeleteAsync();
+
+        return rowsAffected;
     }
 }
