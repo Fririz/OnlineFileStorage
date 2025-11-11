@@ -11,13 +11,11 @@ public class FileController : ControllerBase
 {
     private readonly IFileWorker _fileWorker;
     private readonly IItemRepository _itemRepository;
-    private readonly IPublishEndpoint _publishEndpoint; 
     public FileController(IFileWorker fileWorker,
-        IItemRepository itemRepository, IPublishEndpoint publishEndpoint)
+        IItemRepository itemRepository)
     {
         _fileWorker = fileWorker;
         _itemRepository = itemRepository;
-        _publishEndpoint = publishEndpoint;
     }
 
     [HttpGet]
@@ -67,9 +65,9 @@ public class FileController : ControllerBase
     }
     [HttpGet]
     [Route("getitemsfromroot")]
-    public ActionResult<List<Item>> GetItemsFromRoot([FromHeader(Name = "Id")] Guid userId)
+    public async Task<ActionResult<List<Item>>> GetItemsFromRoot([FromHeader(Name = "Id")] Guid userId)
     {
-        var items = _itemRepository.GetRootItems(userId);
+        var items = await _itemRepository.GetRootItems(userId);
         var result = items.OfType<Item>().ToList();
         return result;
     }

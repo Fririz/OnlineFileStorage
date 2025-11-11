@@ -21,6 +21,7 @@ public static class ApplicationServiceRegistration
             x.AddConsumer<Consumers.FileUploadCompletedConsumer>();
             x.AddConsumer<Consumers.FileUploadFailedConsumer>();
             x.AddConsumer<Consumers.FileDeletionCompleteConsumer>();
+            x.AddConsumer <Consumers.FilesDeletionCompleteConsumer>();
             
             x.UsingRabbitMq((context, cfg) =>
             {
@@ -42,6 +43,10 @@ public static class ApplicationServiceRegistration
                 cfg.ReceiveEndpoint("notifications-file-deletion-complete", e =>
                 {
                     e.ConfigureConsumer<Consumers.FileDeletionCompleteConsumer>(context);
+                });
+                cfg.ReceiveEndpoint("notifications-files-deletion-complete", e =>
+                {
+                    e.ConfigureConsumer<Consumers.FilesDeletionCompleteConsumer>(context);
                 });
             });
         });

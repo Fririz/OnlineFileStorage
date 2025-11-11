@@ -26,11 +26,39 @@ public class FolderController : ControllerBase
     }
     [HttpGet]
     [Route("getallchildren/{id}/")]
-    public ActionResult<List<Item>> GetAllChildren(Guid id)
+    public async Task<ActionResult<List<Item>>> GetAllChildren(Guid id)
     {
-        var items = _itemRepository.GetAllChildren(id);
+        var items = await _itemRepository.GetAllChildrenAsync(id);
         var result = items.OfType<Item>().ToList();
         return result;
+    }
+
+    [HttpDelete]
+    [Route("deletefolder/{id}/")]
+    public async Task<ActionResult> DeleteFolderWithChildren(Guid id)
+    {
+        try
+        {
+            await _folderWorker.DeleteFolderWithAllChildren(id, Guid.Parse(Request.Headers["Id"].ToString()));
+            return Ok();
+        }
+
+        catch (InvalidOperationException)
+        {
+            return BadRequest("Incorrect type of item");
+        }
+        catch (UnauthorizedAccessException)
+        {
+            return Unauthorized();
+        }
+        catch (DirectoryNotFoundException)
+        {
+            return NotFound();
+        }
+        catch (Exception e)
+        {
+            return StatusCode(500, e.Message);
+        }
     }
     
 }

@@ -8,4 +8,5 @@ public interface IFileRepository
     public Task<Stream> DownloadFileAsync(Guid objectId, CancellationToken cancellationToken = default);
     public Task<FileInfoDto> GetInfoAboutFile(Guid objectId, CancellationToken cancellationToken = default);
     public Task DeleteFileAsync(Guid objectId, CancellationToken cancellationToken = default);
+    public Task DeleteFilesAsync(IEnumerable<Guid> ids, CancellationToken cancellationToken = default);
 }

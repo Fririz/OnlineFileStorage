@@ -18,12 +18,6 @@ public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : EntityBas
     {
         return await _context.Set<T>().FindAsync(new object[] { id }, cancellationToken);
     }
-
-    public async Task<IReadOnlyList<T?>> GetAllAsync(CancellationToken cancellationToken = default)
-    {
-        return await _context.Set<T>().ToListAsync(cancellationToken);
-    }
-    
     public async Task<T> AddAsync(T entity, CancellationToken cancellationToken = default)
     {
         _context.Set<T>().Add(entity);
@@ -40,12 +34,28 @@ public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : EntityBas
         _context.Set<T>().Remove(entity);
         await _context.SaveChangesAsync(cancellationToken);
     }
+    public async Task DeleteAsync(IEnumerable<T> entities, CancellationToken cancellationToken = default)
+    {
+        _context.Set<T>().RemoveRange(entities);
+        await _context.SaveChangesAsync(cancellationToken);
+    }
     public async Task DeleteByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var entity  =await _context.Set<T>().IgnoreQueryFilters().FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
         if (entity != null)
         {
             await DeleteAsync(entity, cancellationToken);
+        }
+    }
+    public async Task DeleteRangeByIdsAsync(IEnumerable<Guid> idsToDelete, CancellationToken cancellationToken = default)
+    {
+        var entities  = await _context.Set<T>()
+            .IgnoreQueryFilters()
+            .Where(x => idsToDelete.Contains(x.Id))
+            .ToListAsync(cancellationToken);
+        if (entities.Any())
+        {
+            _context.Set<T>().RemoveRange(entities);
             await _context.SaveChangesAsync(cancellationToken);
         }
     }

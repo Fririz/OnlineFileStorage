@@ -25,7 +25,7 @@ public class Item : EntityBase
     public long? FileSize { get; private set; } 
 
     [MaxLength(255)]
-    public string? MimeType { get; private set; } 
+    public string? MimeType { get; private set; } //Delete
     
     public UploadStatus? Status { get; private set; } 
 
@@ -36,8 +36,6 @@ public class Item : EntityBase
     
     [ForeignKey(nameof(ParentId))]
     public virtual Item? Parent { get; private set; } 
-    
-    public virtual ICollection<Item> Children { get; private set; } = new HashSet<Item>(); 
 
     private Item() : base() { }
     

@@ -14,9 +14,9 @@ public class ItemRepository : RepositoryBase<Item>, IItemRepository
     {
         
     }
-    public IEnumerable<Item?> GetAllChildren(Guid itemId)
+    public async Task<IEnumerable<Item?>> GetAllChildrenAsync(Guid itemId)
     {
-        return _context.Items.Where(i => i.ParentId == itemId);
+        return await _context.Items.Where(i => i.ParentId == itemId).ToListAsync();
     }
 
     public Item? GetParent(Guid itemId)
@@ -25,21 +25,22 @@ public class ItemRepository : RepositoryBase<Item>, IItemRepository
             Select(i => i.Parent).FirstOrDefault();
     }
 
-    public IEnumerable<Item?> GetRootItems(Guid userId)
+    public async Task<IEnumerable<Item?>> GetRootItems(Guid userId)
     {
-        return _context.Items.Where(i => i.ParentId == null).
-            Where(i => i.OwnerId == userId);
+        return await _context.Items.Where(i => i.ParentId == null).
+            Where(i => i.OwnerId == userId).ToListAsync();
     }
 
-    public IEnumerable<Item?> GetSharedRootItems(Guid userId)
+    public async Task<IEnumerable<Item?>> GetSharedRootItems(Guid userId)
     {
         var accessibleItemIds = _context.AccessRights
             .Where(ar => ar.UserId == userId && ar.CanRead) 
             .Select(ar => ar.ItemId);
-        return _context.Items
+        return await _context.Items
             .Where(i => accessibleItemIds.Contains(i.Id))
             .Where(i => i.ParentId == null)
-            .Where(i => i.OwnerId != userId);
+            .Where(i => i.OwnerId != userId)
+            .ToListAsync();
     }
 
     public async Task<int> DeleteFilesWithPendingExpired()

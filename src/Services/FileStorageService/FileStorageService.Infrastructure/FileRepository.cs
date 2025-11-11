@@ -2,7 +2,6 @@
 using FileStorageService.Application.Dto;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Minio;
 using Minio.DataModel.Args;
 
@@ -44,6 +43,22 @@ public class FileRepository : IFileRepository
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error deleting object {Object} from bucket {Bucket}.", id, _bucketName);
+            throw;
+        }
+    }
+    public async Task DeleteFilesAsync(IEnumerable<Guid> ids, CancellationToken cancellationToken = default)
+    {
+        var deleteTasks = ids.Select(id => DeleteFileAsync(id, cancellationToken));
+
+        try
+        {
+            await Task.WhenAll(deleteTasks);
+        
+            _logger.LogInformation("Successfully deleted objects from bucket {Bucket}.", _bucketName);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "At least one error occurred during parallel delete from bucket {Bucket}. Some files may not be deleted.", _bucketName);
             throw;
         }
     }

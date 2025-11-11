@@ -75,5 +75,15 @@ public class FileManager : IFileManager
             FileId = objectId
         });
     }
+
+    public async Task DelesFilesCaseAsync(IEnumerable<Guid> idsToDelete)
+    {
+        var deletedIds = idsToDelete.ToArray();
+        await _fileRepository.DeleteFilesAsync(deletedIds);
+        await _publishEndpoint.Publish(new FilesDeletionComplete
+        {
+            DeletedIds = deletedIds
+        });
+    }
     
 }

@@ -13,6 +13,7 @@ public static class ApplicationServiceRegistration
         services.AddMassTransit(x => //TODO: move consumers and rabbitmq logic to another layer
         {
             x.AddConsumer<Consumers.FileDeletionRequestConsumer>();
+            x.AddConsumer<Consumers.FilesDeletionRequestConsumer>();
             x.UsingRabbitMq((context, cfg) => 
             {
                 cfg.Host("rabbit-mq", "/", h =>
@@ -24,7 +25,10 @@ public static class ApplicationServiceRegistration
                 {
                     e.ConfigureConsumer<Consumers.FileDeletionRequestConsumer>(context);
                 });
-
+                cfg.ReceiveEndpoint("files-deletion-request", e =>
+                {
+                    e.ConfigureConsumer<Consumers.FilesDeletionRequestConsumer>(context);
+                });
             });
         });
 

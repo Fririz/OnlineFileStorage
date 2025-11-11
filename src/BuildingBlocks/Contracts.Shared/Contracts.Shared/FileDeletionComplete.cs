@@ -2,5 +2,5 @@ namespace Contracts.Shared;
 
 public class FileDeletionComplete
 {
-    public Guid FileId { get; init; }
+    public required Guid FileId { get; init; }
 }

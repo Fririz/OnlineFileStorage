@@ -7,9 +7,9 @@ namespace FileApiService.Application.Consumers;
 
 public class FileDeletionCompleteConsumer : IConsumer<FileDeletionComplete>
 {
-        private readonly ILogger<FileUploadCompletedConsumer> _logger;
+        private readonly ILogger<FileDeletionCompleteConsumer> _logger;
         private readonly IItemRepository _itemRepository;
-        public FileDeletionCompleteConsumer(ILogger<FileUploadCompletedConsumer> logger,
+        public FileDeletionCompleteConsumer(ILogger<FileDeletionCompleteConsumer> logger,
             IItemRepository itemRepository)
         {
             _logger = logger;
