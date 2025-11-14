@@ -3,7 +3,7 @@ using FileApiService.Application.Dto;
 namespace FileApiService.Application.Contracts;
 
 public interface IFolderWorker
-{
+{//TODO write exceptions and documentation
     public Task<Guid> CreateFolder(ItemDto item, Guid ownerId);
     /// <exception cref="InvalidOperationException">
     /// Creating a file in method createFolder not allowed

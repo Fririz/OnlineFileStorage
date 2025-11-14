@@ -55,7 +55,7 @@ public class FolderWorker : IFolderWorker
         var allItemsToDelete = new List<Item>();
         await FindAllDescendantsAsync(folderId, allItemsToDelete);
         allItemsToDelete.Add(folder);
-        await _itemRepository.DeleteAsync(allItemsToDelete);
+        allItemsToDelete.ForEach(x => x.MarkAsDeleted());
         await _publishEndpoint.Publish(new FilesDeletionRequest
         {
             IdsToDelete = allItemsToDelete.Select(x => x.Id).ToList()

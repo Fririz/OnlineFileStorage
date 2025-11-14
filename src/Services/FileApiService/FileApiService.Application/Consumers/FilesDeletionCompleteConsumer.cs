@@ -15,7 +15,7 @@ public class FilesDeletionCompleteConsumer : IConsumer<FilesDeletionComplete>
         _logger = logger;
         _itemRepository = itemRepository;
     }
-    //TODO: move consumers and rabbitmq logic to another layer
+    //TODO: move consumers and rabbitmq logic to another layer 
     public async Task Consume(ConsumeContext<FilesDeletionComplete> context)
     {
         var message = context.Message;

@@ -26,7 +26,7 @@ public class Context : DbContext
         
         modelBuilder.Entity<Item>()
             .HasOne(i => i.Parent) 
-            .WithMany(i => i.Children) 
+            .WithMany()
             .HasForeignKey(i => i.ParentId) 
             .OnDelete(DeleteBehavior.Restrict); 
         
