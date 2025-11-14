@@ -27,10 +27,10 @@ public class FileController : ControllerBase
     }
     [HttpPost]
     [Route("uploadfile")]
-    public async Task<ActionResult> UploadFile(ItemDto item, [FromHeader(Name = "Id")] Guid userId, CancellationToken cancellationToken = default)
+    public async Task<ActionResult> UploadFile(ItemCreateDto itemCreate, [FromHeader(Name = "Id")] Guid userId, CancellationToken cancellationToken = default)
     {
         Guid ownerId = Guid.Parse(Request.Headers["Id"].ToString());
-        var link = await _fileWorker.CreateFile(item, ownerId, cancellationToken);
+        var link = await _fileWorker.CreateFile(itemCreate, ownerId, cancellationToken);
         return Ok(new { uploadUrl = link });
     }
     [HttpGet]
@@ -65,11 +65,10 @@ public class FileController : ControllerBase
     }
     [HttpGet]
     [Route("getitemsfromroot")]
-    public async Task<ActionResult<List<Item>>> GetItemsFromRoot([FromHeader(Name = "Id")] Guid userId)
+    public async Task<ActionResult<List<ItemResponseDto>>> GetItemsFromRoot([FromHeader(Name = "Id")] Guid userId)
     {
-        var items = await _itemRepository.GetRootItems(userId);
-        var result = items.OfType<Item>().ToList();
-        return result;
+        var items = await _fileWorker.GetAllChildren(userId);
+        return items;
     }
     
 

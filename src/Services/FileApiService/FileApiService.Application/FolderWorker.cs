@@ -22,13 +22,13 @@ public class FolderWorker : IFolderWorker
         _publishEndpoint = publishEndpoint;
     }
 
-    public async Task<Guid> CreateFolder(ItemDto item, Guid ownerId)
+    public async Task<Guid> CreateFolder(ItemCreateDto itemCreate, Guid ownerId)
     {
-        if (item.Type != TypeOfItem.Folder)
+        if (itemCreate.Type != TypeOfItem.Folder)
         {
             throw new InvalidOperationException("Creating a file in method createFolder not allowed");
         }
-        var folder = Item.CreateFolder(ownerId, item.Name, item.ParentId);
+        var folder = Item.CreateFolder(ownerId, itemCreate.Name, itemCreate.ParentId);
         await _itemRepository.AddAsync(folder);
         return folder.Id;
     }

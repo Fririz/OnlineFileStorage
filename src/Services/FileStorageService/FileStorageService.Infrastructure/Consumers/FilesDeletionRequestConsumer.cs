@@ -3,7 +3,7 @@ using FileStorageService.Application.Contracts;
 using MassTransit;
 using Microsoft.Extensions.Logging;
 
-namespace FileStorageService.Application.Consumers;
+namespace FileStorageService.Infrastructure.Consumers;
 
 public class FilesDeletionRequestConsumer : IConsumer<FilesDeletionRequest>
 {

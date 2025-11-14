@@ -3,26 +3,26 @@ using FileApiService.Application.Contracts;
 using MassTransit;
 using Microsoft.Extensions.Logging;
 
-namespace FileApiService.Application.Consumers;
+namespace FileApiService.Infrastructure.Consumers;
 
-public class FileUploadCompletedConsumer : IConsumer<FileUploadComplete>
+public class FileUploadFailedConsumer : IConsumer<FileUploadFailed>
 {
     private readonly ILogger<FileUploadCompletedConsumer> _logger;
     private readonly IItemRepository _itemRepository;
-    public FileUploadCompletedConsumer(ILogger<FileUploadCompletedConsumer> logger,
+    public FileUploadFailedConsumer(ILogger<FileUploadCompletedConsumer> logger,
         IItemRepository itemRepository)
     {
         _logger = logger;
         _itemRepository = itemRepository;
     }
     //TODO: move consumers and rabbitmq logic to another layer
-    public async Task Consume(ConsumeContext<FileUploadComplete> context)
+    public async Task Consume(ConsumeContext<FileUploadFailed> context)
     {
         var message = context.Message;
         var item = await _itemRepository.GetByIdAsync(message.FileId);
         if (item == null)
             return;
-        item.CompleteUpload(message.FileSize, message.MimeType);
+        item.MarkUploadAsFailed();
         await _itemRepository.UpdateAsync(item);
     }
 }

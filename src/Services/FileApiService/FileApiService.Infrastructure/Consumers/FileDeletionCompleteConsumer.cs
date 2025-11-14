@@ -3,7 +3,7 @@ using FileApiService.Application.Contracts;
 using MassTransit;
 using Microsoft.Extensions.Logging;
 
-namespace FileApiService.Application.Consumers;
+namespace FileApiService.Infrastructure.Consumers;
 
 public class FileDeletionCompleteConsumer : IConsumer<FileDeletionComplete>
 {

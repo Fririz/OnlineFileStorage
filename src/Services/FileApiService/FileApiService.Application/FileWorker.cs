@@ -14,17 +14,29 @@ public class FileWorker : IFileWorker
     private readonly IItemRepository _itemRepository;
     private readonly IPublishEndpoint _publishEndpoint;
     private readonly IHttpClientFactory _httpClientFactory;
+    private readonly IMapper _mapper;
     public FileWorker(ILogger<FileWorker> logger, 
         IItemRepository itemRepository, 
         IPublishEndpoint publishEndpoint,
-        IHttpClientFactory httpClientFactory)
+        IHttpClientFactory httpClientFactory,
+        IMapper mapper
+        )
     {
         _logger = logger;
         _itemRepository = itemRepository;
         _publishEndpoint = publishEndpoint;
         _httpClientFactory = httpClientFactory;
+        _mapper = mapper;
+        
     }
-
+    public async Task<List<ItemResponseDto>> GetAllChildren(Guid userId)
+    {
+        var itemsEnum = await _itemRepository.GetRootItems(userId);
+        var items = itemsEnum.OfType<Item>().ToList();
+        var itemDtos = _mapper.Map(items);
+        return itemDtos;
+    }
+    
     public async Task<string> DownloadFile(Guid id, Guid ownerId, CancellationToken cancellationToken = default)
     {
 
@@ -44,15 +56,15 @@ public class FileWorker : IFileWorker
         var link = await response.Content.ReadAsStringAsync(cancellationToken);
         return link;
     }
-    public async Task<string> CreateFile(ItemDto item, Guid userId, CancellationToken cancellationToken = default)
+    public async Task<string> CreateFile(ItemCreateDto itemCreate, Guid userId, CancellationToken cancellationToken = default)
     {
-        if (item.Type != TypeOfItem.File)
+        if (itemCreate.Type != TypeOfItem.File)
         {
             throw new InvalidOperationException("Creating a folder in method createFile not allowed");
         }
         //TODO add name check if exists
         
-        var file = Item.CreateFile(userId, item.Name, item.ParentId);
+        var file = Item.CreateFile(userId, itemCreate.Name, itemCreate.ParentId);
         //TODO add GRPC call to filestorage service
         await _itemRepository.AddAsync(file, cancellationToken);;
         var client = _httpClientFactory.CreateClient();

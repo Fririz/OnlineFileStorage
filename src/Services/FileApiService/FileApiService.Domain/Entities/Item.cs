@@ -9,7 +9,6 @@ namespace FileApiService.Domain.Entities;
 [Table("Item")] 
 public class Item : EntityBase
 {
-    //Item Id always equals object id in storage
     [Required]
     public Guid OwnerId { get; private set; }
 
@@ -23,9 +22,6 @@ public class Item : EntityBase
     public string Name { get; private set; }
 
     public long? FileSize { get; private set; } 
-
-    [MaxLength(255)]
-    public string? MimeType { get; private set; } //Delete
     
     public UploadStatus? Status { get; private set; } 
 
@@ -75,7 +71,6 @@ public class Item : EntityBase
         }
         
         FileSize = fileSize;
-        MimeType = mimeType;
         Status = UploadStatus.Ready; 
         LastModifiedDate = DateTime.UtcNow;
     }

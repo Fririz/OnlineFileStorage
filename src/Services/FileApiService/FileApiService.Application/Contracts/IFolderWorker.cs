@@ -4,7 +4,7 @@ namespace FileApiService.Application.Contracts;
 
 public interface IFolderWorker
 {//TODO write exceptions and documentation
-    public Task<Guid> CreateFolder(ItemDto item, Guid ownerId);
+    public Task<Guid> CreateFolder(ItemCreateDto itemCreate, Guid ownerId);
     /// <exception cref="InvalidOperationException">
     /// Creating a file in method createFolder not allowed
     /// </exception>

@@ -2,6 +2,8 @@ using FileStorageService.Application.Contracts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Minio;
+using MassTransit;
+using FileStorageService.Infrastructure.Consumers;
 
 namespace FileStorageService.Infrastructure
 {
@@ -9,6 +11,27 @@ namespace FileStorageService.Infrastructure
     {
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddMassTransit(x => 
+            {
+                x.AddConsumer<FileDeletionRequestConsumer>();
+                x.AddConsumer<FilesDeletionRequestConsumer>();
+                x.UsingRabbitMq((context, cfg) => 
+                {
+                    cfg.Host("rabbit-mq", "/", h =>
+                    {
+                        h.Username("guest");
+                        h.Password("guest");
+                    });
+                    cfg.ReceiveEndpoint("file-deletion-request", e =>
+                    {
+                        e.ConfigureConsumer<FileDeletionRequestConsumer>(context);
+                    });
+                    cfg.ReceiveEndpoint("files-deletion-request", e =>
+                    {
+                        e.ConfigureConsumer<FilesDeletionRequestConsumer>(context);
+                    });
+                });
+            });
             var minioSection = configuration.GetSection("Minio");
 
             var endpoint  = (minioSection["Endpoint"]  ?? "minio:9000").Trim();

@@ -1,7 +1,7 @@
 using FileApiService.Domain.Enums;
 namespace FileApiService.Application.Dto;
 
-public class ItemDto
+public class ItemCreateDto
 {
     public string Name { get; set; }
     public Guid? ParentId { get; set; }

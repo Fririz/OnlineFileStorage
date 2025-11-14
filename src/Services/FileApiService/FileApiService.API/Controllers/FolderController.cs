@@ -18,10 +18,10 @@ public class FolderController : ControllerBase
     }
     [HttpPost]
     [Route("createfolder")]
-    public async Task<ActionResult> CreateFolder(ItemDto item)
+    public async Task<ActionResult> CreateFolder(ItemCreateDto itemCreate)
     {
         Guid ownerId = Guid.Parse(Request.Headers["Id"].ToString());
-        await _folderWorker.CreateFolder(item, ownerId);
+        await _folderWorker.CreateFolder(itemCreate, ownerId);
         return Ok();
     }
     [HttpGet]

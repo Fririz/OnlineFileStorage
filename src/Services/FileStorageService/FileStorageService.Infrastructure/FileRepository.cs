@@ -59,7 +59,7 @@ public class FileRepository : IFileRepository
         catch (Exception ex)
         {
             _logger.LogError(ex, "At least one error occurred during parallel delete from bucket {Bucket}. Some files may not be deleted.", _bucketName);
-            throw;
+            throw;  
         }
     }
     public async Task UploadFileAsync(Stream stream, Guid id, CancellationToken cancellationToken = default)
