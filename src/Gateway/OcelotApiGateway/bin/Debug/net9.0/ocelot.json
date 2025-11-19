@@ -139,6 +139,25 @@
         "AllowedScopes": []
       }
     },
+    {
+      "DownstreamPathTemplate": "/api/folder/deletefolder/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "fileapiservice",
+          "Port": 8082
+        }
+      ],
+      "UpstreamPathTemplate": "/api/folder/deletefolder/{id}",
+      "UpstreamHttpMethod": [
+        "DELETE",
+        "OPTIONS"
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
 
 
     {

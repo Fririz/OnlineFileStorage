@@ -18,3 +18,4 @@
 //TODO add mapping
 //TODO impove dockercompose and dockerfiles
 //TODO add logic for sharing files and viewing shared files
+//TODO maybe give items to front like 10 files, 20 files or smthning like that

@@ -6,7 +6,7 @@ const props = defineProps<{
   id: string
   name: string
   fileSize: number
-  fileType: number
+  fileType: number // 1 = file, 2 = folder
   status: number
 }>()
 
@@ -73,6 +73,7 @@ const handleDownload = async () => {
   }
 }
 
+// --- ИЗМЕНЕННАЯ ФУНКЦИЯ ---
 const handleDelete = async () => {
   if (isDeleting.value || props.status === 1) return
 
@@ -81,19 +82,29 @@ const handleDelete = async () => {
   }
 
   isDeleting.value = true
+
+  // Определяем, папка это или файл
+  const isFolder = props.fileType === 2
+  const itemType = isFolder ? 'folder' : 'file'
+
+  // Выбираем URL в зависимости от типа
+  const deleteUrl = isFolder
+    ? `/folder/deletefolder/${props.id}` // Новый эндпоинт для папок
+    : `/file/deletefile/${props.id}`   // Старый эндпоинт для файлов
+
   try {
-    await api.delete(`/file/deletefile/${props.id}`)
+    await api.delete(deleteUrl) // Используем динамический URL
     emit('deleted')
   } catch (err) {
-    console.error('Failed to delete file:', err)
-    alert('Failed to delete file. Check console.')
+    // Используем itemType в сообщении об ошибке
+    console.error(`Failed to delete ${itemType}:`, err)
+    alert(`Failed to delete ${itemType}. Check console.`)
   } finally {
     isDeleting.value = false
   }
 }
 
 </script>
-
 <template>
   <div class="file-card" @click="fileType === 2 && status !== 1 ? emit('open-folder', id) : null" :class="{
     'folder-clickable': fileType === 2 && status !== 1,
