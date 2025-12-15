@@ -73,7 +73,7 @@ const handleDownload = async () => {
   }
 }
 
-// --- ИЗМЕНЕННАЯ ФУНКЦИЯ ---
+
 const handleDelete = async () => {
   if (isDeleting.value || props.status === 1) return
 
@@ -83,20 +83,19 @@ const handleDelete = async () => {
 
   isDeleting.value = true
 
-  // Определяем, папка это или файл
+  
   const isFolder = props.fileType === 2
   const itemType = isFolder ? 'folder' : 'file'
 
-  // Выбираем URL в зависимости от типа
+  
   const deleteUrl = isFolder
-    ? `/folder/deletefolder/${props.id}` // Новый эндпоинт для папок
-    : `/file/deletefile/${props.id}`   // Старый эндпоинт для файлов
+    ? `/folder/deletefolder/${props.id}` 
+    : `/file/deletefile/${props.id}`   
 
   try {
-    await api.delete(deleteUrl) // Используем динамический URL
+    await api.delete(deleteUrl) 
     emit('deleted')
   } catch (err) {
-    // Используем itemType в сообщении об ошибке
     console.error(`Failed to delete ${itemType}:`, err)
     alert(`Failed to delete ${itemType}. Check console.`)
   } finally {

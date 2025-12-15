@@ -76,8 +76,8 @@ namespace FileApiService.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("MimeType")
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -111,16 +111,11 @@ namespace FileApiService.Infrastructure.Migrations
             modelBuilder.Entity("FileApiService.Domain.Entities.Item", b =>
                 {
                     b.HasOne("FileApiService.Domain.Entities.Item", "Parent")
-                        .WithMany("Children")
+                        .WithMany()
                         .HasForeignKey("ParentId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Parent");
-                });
-
-            modelBuilder.Entity("FileApiService.Domain.Entities.Item", b =>
-                {
-                    b.Navigation("Children");
                 });
 #pragma warning restore 612, 618
         }

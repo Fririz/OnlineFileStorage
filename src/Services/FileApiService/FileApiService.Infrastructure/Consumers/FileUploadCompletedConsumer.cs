@@ -15,14 +15,13 @@ public class FileUploadCompletedConsumer : IConsumer<FileUploadComplete>
         _logger = logger;
         _itemRepository = itemRepository;
     }
-    //TODO: move consumers and rabbitmq logic to another layer
     public async Task Consume(ConsumeContext<FileUploadComplete> context)
     {
         var message = context.Message;
         var item = await _itemRepository.GetByIdAsync(message.FileId);
         if (item == null)
             return;
-        item.CompleteUpload(message.FileSize, message.MimeType);
+        item.CompleteUpload(message.FileSize, message.MimeType ?? "application/octet-stream");
         await _itemRepository.UpdateAsync(item);
     }
 }

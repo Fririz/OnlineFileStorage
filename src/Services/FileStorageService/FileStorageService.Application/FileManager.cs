@@ -1,4 +1,5 @@
 using Contracts.Shared;
+using FileSignatures;
 using FileStorageService.Application.Contracts;
 using FileStorageService.Application.Exceptions;
 using MassTransit;
@@ -12,26 +13,33 @@ public class FileManager : IFileManager
     private readonly IFileRepository _fileRepository;
     private readonly ITokenManager _tokenManager;
     private readonly IPublishEndpoint _publishEndpoint;
+    private readonly IFileFormatInspector _fileFormatInspector;
     public FileManager(ILogger<FileManager> logger, 
         IFileRepository fileRepository,
         ITokenManager tokenManager,
-        IPublishEndpoint publishEndpoint
+        IPublishEndpoint publishEndpoint,
+        IFileFormatInspector fileFormatInspector
         )
     {
         _logger = logger;
         _fileRepository = fileRepository;
         _tokenManager = tokenManager;
         _publishEndpoint = publishEndpoint;
+        _fileFormatInspector = fileFormatInspector;
     }
 
     public async Task UploadFileCaseAsync(Stream stream, Guid id, CancellationToken cancellationToken = default)
     {
+        _logger.LogInformation("Uploading file {FileId}", id);
         try
         {
-            await _fileRepository.UploadFileAsync(stream, id, cancellationToken);
+            var fileFormat = "application/octet-stream"; //TODO impove
+            _logger.LogInformation("Detected MIME type for file {FileId}: {MimeType}", id, fileFormat);
+            
+            await _fileRepository.UploadFileAsync(stream, fileFormat, id, cancellationToken);
 
             var fileInfo = await _fileRepository.GetInfoAboutFile(id, cancellationToken);
-
+            
             await _publishEndpoint.Publish(new FileUploadComplete()
             {
                 FileId = fileInfo.FileId,
@@ -45,6 +53,7 @@ public class FileManager : IFileManager
         }
         catch (Exception ex) 
         {
+            _logger.LogError(ex, "Error uploading file {FileId}", id);
             await _publishEndpoint.Publish(new FileUploadFailed()
             {
                 FileId = id

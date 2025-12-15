@@ -2,6 +2,7 @@
 using FileStorageService.Application.Contracts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using FileSignatures;
 using MassTransit;
 namespace FileStorageService.Application;
 
@@ -13,6 +14,7 @@ public static class ApplicationServiceRegistration
         services.AddScoped<IFileManager, FileManager>();
         services.AddScoped<ILinkGenerator, LinkGenerator>();
         services.AddScoped<ITokenManager, TokenManager>();
+        services.AddSingleton<IFileFormatInspector, FileFormatInspector>();
         return services;
     }
 }

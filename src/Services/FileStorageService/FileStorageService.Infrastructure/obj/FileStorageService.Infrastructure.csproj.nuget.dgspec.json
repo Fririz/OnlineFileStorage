@@ -109,6 +109,10 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "dependencies": {
+            "FileSignatures": {
+              "target": "Package",
+              "version": "[6.1.1, )"
+            },
             "MassTransit.RabbitMQ": {
               "target": "Package",
               "version": "[8.5.5, )"

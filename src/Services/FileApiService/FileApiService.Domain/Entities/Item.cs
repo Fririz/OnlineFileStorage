@@ -26,7 +26,8 @@ public class Item : EntityBase
     public UploadStatus? Status { get; private set; } 
 
     // Logic Fields
-
+    
+    public string MimeType { get; private set; } = string.Empty;
     public bool IsDeleted { get; private set; } = false; 
 
     
@@ -73,6 +74,7 @@ public class Item : EntityBase
         FileSize = fileSize;
         Status = UploadStatus.Ready; 
         LastModifiedDate = DateTime.UtcNow;
+        MimeType = mimeType;
     }
     
     public void MarkUploadAsFailed()

@@ -45,7 +45,6 @@ services:
       POSTGRES_DB: fileApiServiceDb
     ports:
       - "5433:5433"
-    # Эта команда указывает Postgres внутри контейнера слушать порт 5433
     command: postgres -p 5433
 
   #filestorageservice

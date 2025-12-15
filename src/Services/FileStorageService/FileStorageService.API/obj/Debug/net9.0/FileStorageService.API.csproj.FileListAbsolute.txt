@@ -99,3 +99,5 @@
 /Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileStorageService/FileStorageService.API/bin/Debug/net9.0/RabbitMQ.Client.dll
 /Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileStorageService/FileStorageService.API/bin/Debug/net9.0/Contracts.Shared.dll
 /Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileStorageService/FileStorageService.API/bin/Debug/net9.0/Contracts.Shared.pdb
+/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileStorageService/FileStorageService.API/bin/Debug/net9.0/FileSignatures.dll
+/Users/fririz/RiderProjects/OnlineFileStorage/src/Services/FileStorageService/FileStorageService.API/bin/Debug/net9.0/OpenMcdf.dll

@@ -62,7 +62,7 @@ public class FileRepository : IFileRepository
             throw;  
         }
     }
-    public async Task UploadFileAsync(Stream stream, Guid id, CancellationToken cancellationToken = default)
+    public async Task UploadFileAsync(Stream stream,string contentType, Guid id, CancellationToken cancellationToken = default)
     {
         try
         {
@@ -104,7 +104,7 @@ public class FileRepository : IFileRepository
                     .WithObject(id.ToString("N"))
                     .WithStreamData(payloadStream)
                     .WithObjectSize(payloadLength)
-                    .WithContentType("application/octet-stream");
+                    .WithContentType(contentType);
 
                 await _minioClient.PutObjectAsync(putObjectArgs).ConfigureAwait(false);
                 _logger.LogInformation("Uploaded object {Object} to bucket {Bucket}, size {Size} bytes.", id, _bucketName, payloadLength);

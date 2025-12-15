@@ -4,7 +4,6 @@
 //TODO add deleting logic for files and folders
 //TODO add rabbit mq for deleting files
 //TODO add JWT token for links in filestorageservice
-//TODO mb add logic for bucket(when file softly deleted, move it to bucket)
 //TODO add fileDtoResponse for frontend
 //TODO add hangfire for deleting files with uploadstatus longer than 1hour
 //TODO add metriс servies
@@ -18,4 +17,12 @@
 //TODO add mapping
 //TODO impove dockercompose and dockerfiles
 //TODO add logic for sharing files and viewing shared files
-//TODO maybe give items to front like 10 files, 20 files or smthning like that
+//TODO add ASNOTRACKING
+//TODO Eliding async await
+//TODO add MIME TYPE
+//TODO add admin panel
+//TODO add search
+//TODO add pagination
+//TODO add abbility to move files
+//TODO add chunk upload for files > 100mb
+//TODO add Hash for files and make logic to not duplicate files(compare hashes)

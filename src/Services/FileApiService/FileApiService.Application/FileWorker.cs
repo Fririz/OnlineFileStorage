@@ -49,7 +49,6 @@ public class FileWorker : IFileWorker
         {
             throw new UnauthorizedAccessException("You are not allowed to download this file");
         }
-        
         //TODO add GRPC call to filestorage service ITS TEMPORARY
         var client = _httpClientFactory.CreateClient();
         var response = await client.GetAsync($"http://filestorageservice:8083/api/link/GetDownloadLink/{item.Id}/{item.Name}/", cancellationToken);
@@ -85,7 +84,7 @@ public class FileWorker : IFileWorker
         }
         if (file.Type != TypeOfItem.File)
         {
-            throw new InvalidOperationException("Deleting a folder in method createFile not allowed");
+            throw new InvalidOperationException("Deleting a folder in method delete file not allowed");
         }
         file.MarkAsDeleted();
         await _itemRepository.UpdateAsync(file);

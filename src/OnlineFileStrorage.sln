@@ -56,6 +56,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Contracts.Shared", "Contrac
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contracts.Shared", "BuildingBlocks\Contracts.Shared\Contracts.Shared\Contracts.Shared.csproj", "{A6972016-28B8-4AEE-83B7-F615E577400B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".env", ".env", "{92C076AA-8AEF-4BCC-8FBA-6AA5950678A9}"
+	ProjectSection(SolutionItems) = preProject
+		.env = .env
+		..\.gitignore = ..\.gitignore
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

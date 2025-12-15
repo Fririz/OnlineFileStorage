@@ -4,7 +4,7 @@ namespace FileStorageService.Application.Contracts;
 
 public interface IFileRepository
 {
-    Task UploadFileAsync(Stream stream, Guid id, CancellationToken cancellationToken = default);
+    Task UploadFileAsync(Stream stream, string contentType,Guid id, CancellationToken cancellationToken = default);
     public Task<Stream> DownloadFileAsync(Guid objectId, CancellationToken cancellationToken = default);
     public Task<FileInfoDto> GetInfoAboutFile(Guid objectId, CancellationToken cancellationToken = default);
     public Task DeleteFileAsync(Guid objectId, CancellationToken cancellationToken = default);
