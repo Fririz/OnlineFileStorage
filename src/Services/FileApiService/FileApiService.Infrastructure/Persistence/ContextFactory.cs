@@ -13,10 +13,9 @@ public class ContextFactory : IDesignTimeDbContextFactory<Context>
 
         var optionsBuilder = new DbContextOptionsBuilder<Context>();
         
-        var connectionString = "Host=localhost;Port=5433;Database=fileApiServiceDb;Username=postgres;Password=admin";
+        var connectionString = "Host=localhost;Port=5432;Database=fileApiServiceDb;Username=postgres;Password=admin";
         
         optionsBuilder.UseNpgsql(connectionString);
-
         return new Context(optionsBuilder.Options);
     }
 }

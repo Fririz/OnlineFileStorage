@@ -24,4 +24,8 @@
       <ProjectReference Include="..\FileApiService.Domain\FileApiService.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Migrations\" />
+    </ItemGroup>
+
 </Project>

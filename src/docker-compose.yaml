@@ -14,13 +14,12 @@ services:
       postgres-identity-service:
         condition: service_started
 
-  #idenetity-service-bd
+  #postgredb
   postgres-identity-service:
     image: postgres:13.2-alpine
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: admin
-      POSTGRES_DB: identityServiceDb
     ports:
       - "5432:5432"
 
@@ -37,15 +36,15 @@ services:
       - ASPNETCORE_URLS=http://0.0.0.0:8082
 
   #fileapiservicebd
-  postgres-fileapi-service:
-    image: postgres:13.2-alpine
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: admin
-      POSTGRES_DB: fileApiServiceDb
-    ports:
-      - "5433:5433"
-    command: postgres -p 5433
+#  postgres-fileapi-service:
+#    image: postgres:13.2-alpine
+#    environment:
+#      POSTGRES_USER: postgres
+#      POSTGRES_PASSWORD: admin
+#      POSTGRES_DB: fileApiServiceDb
+#    ports:
+#      - "5433:5433"
+#    command: postgres -p 5433
 
   #filestorageservice
   filestorageservice:

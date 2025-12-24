@@ -8,10 +8,6 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["Services/IdentityService/IdentityService.API/IdentityService.API.csproj", "Services/IdentityService/IdentityService.API/"]
-COPY ["Services/IdentityService/IdentityService.API/IdentityService.Application.csproj", "Services/IdentityService/IdentityService.Application/"]
-COPY ["Services/IdentityService/IdentityService.API/IdentityService.Infrastructure.csproj", "Services/IdentityService/IdentityService.Infrastructure/"]
-COPY ["Services/IdentityService/IdentityService.API/IdentityService.Domain.csproj", "Services/IdentityService/IdentityService.Domain/"]
-COPY ["BuildingBlocks/Logging/Logging.csproj", "BuildingBlocks/Logging/"]
 
 
 RUN dotnet restore "Services/IdentityService/IdentityService.API/IdentityService.API.csproj"

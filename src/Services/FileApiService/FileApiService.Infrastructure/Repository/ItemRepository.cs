@@ -16,7 +16,7 @@ public class ItemRepository : RepositoryBase<Item>, IItemRepository
     }
     public async Task<IEnumerable<Item?>> GetAllChildrenAsync(Guid itemId)
     {
-        return await _context.Items.Where(i => i.ParentId == itemId).ToListAsync();
+        return await _context.Items.Where(i => i.ParentId == itemId).AsNoTracking().ToListAsync();
     }
 
     public Item? GetParent(Guid itemId)
@@ -28,7 +28,7 @@ public class ItemRepository : RepositoryBase<Item>, IItemRepository
     public async Task<IEnumerable<Item?>> GetRootItems(Guid userId)
     {
         return await _context.Items.Where(i => i.ParentId == null).
-            Where(i => i.OwnerId == userId).ToListAsync();
+            Where(i => i.OwnerId == userId).AsNoTracking().ToListAsync();
     }
 
     public async Task<IEnumerable<Item?>> GetSharedRootItems(Guid userId)
