@@ -6,7 +6,8 @@ using Serilog;
 using Logging;
 using IdentityService.Application;
 using IdentityService.Infrastructure;
-// 1. Убираем using Microsoft.IdentityModel.Logging;
+using IdentityService.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace IdentityService.API;
 
@@ -14,7 +15,6 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        // 2. Убираем отладочные флаги PII
         
         Console.WriteLine("fff World!");
         var builder = WebApplication.CreateBuilder(args);
@@ -27,7 +27,24 @@ public class Program
         });
         
         var app = builder.Build();
-
+        using (var scope = app.Services.CreateScope())
+        {
+            var services = scope.ServiceProvider;
+            try 
+            {
+                var context = services.GetRequiredService<UserContext>();
+                
+                if (context.Database.GetPendingMigrations().Any())
+                {
+                    context.Database.Migrate(); 
+                }
+            }
+            catch (Exception ex)
+            {
+                var logger = services.GetRequiredService<ILogger<Program>>();
+                logger.LogError(ex, "An error occurred while migrating the database.");
+            }
+        }
         if (app.Environment.IsDevelopment())
         {
             app.MapOpenApi();

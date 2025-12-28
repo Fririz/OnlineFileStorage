@@ -1,8 +1,10 @@
 using FileApiService.API;
 using FileApiService.Application;
 using FileApiService.Infrastructure;
+using FileApiService.Infrastructure.Persistence;
 using Serilog;
 using Logging;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,7 +23,24 @@ builder.Host.UseSerilog((context, config) =>
 
 
 var app = builder.Build();
-
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try 
+    {
+        var context = services.GetRequiredService<Context>();
+                
+        if (context.Database.GetPendingMigrations().Any())
+        {
+            context.Database.Migrate(); 
+        }
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred while migrating the database.");
+    }
+}
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

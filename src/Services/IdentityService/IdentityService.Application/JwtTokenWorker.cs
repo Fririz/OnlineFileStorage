@@ -23,10 +23,10 @@ public class JwtTokenWorker : IJwtTokenWorker
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _handler = new JwtSecurityTokenHandler();
-
-        string? jwtKey = configuration.GetValue<string>("Jwt:Key");
-        _issuer = configuration.GetValue<string>("Jwt:Issuer");
-        _audience = configuration.GetValue<string>("Jwt:Audience");
+        var section = configuration.GetSection("Jwt");
+        var jwtKey = section["Key"];
+        _issuer = section["Issuer"];
+        _audience = section["Audience"];
 
         if (string.IsNullOrWhiteSpace(jwtKey))
             throw new InvalidOperationException("Jwt:Key is not set");

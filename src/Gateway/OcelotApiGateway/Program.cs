@@ -45,12 +45,13 @@ public class Program
             SeriLogger.Configure(context, config);
         });
     
-        var validIssuer = configuration["Jwt:Issuer"]
-            ?? throw new InvalidOperationException("Jwt:Issuer is not set");
-        var validAudience = configuration["Jwt:Audience"]
-            ?? throw new InvalidOperationException("Jwt:Audience is not set");
-        var jwtKey = configuration["Jwt:Key"]
-            ?? throw new InvalidOperationException("Jwt:Key is not set");
+        var jwtSection = configuration.GetSection("Jwt");
+        var validIssuer = jwtSection["Issuer"]
+                          ?? throw new InvalidOperationException("Jwt:Issuer is not set");
+        var validAudience = jwtSection["Audience"]
+                            ?? throw new InvalidOperationException("Jwt:Audience is not set");
+        var jwtKey = jwtSection["Key"]
+                     ?? throw new InvalidOperationException("Jwt:Key is not set");
 
         builder.Services.AddAuthentication()
             .AddJwtBearer("Bearer", options => 

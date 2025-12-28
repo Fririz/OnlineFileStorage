@@ -1,6 +1,4 @@
-  
 services:
-  #  identity-service
   identity-service:
     build:
       context: .
@@ -10,20 +8,22 @@ services:
     restart: unless-stopped
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=${ConnectionStrings__IdentityConnection}
+      - Jwt__Key=${JWT_SECRET}
+      - Jwt__Issuer=${JWT_ISSUER}
+      - Jwt__Audience=${JWT_AUDIENCE}
     depends_on:
-      postgres-identity-service:
+      postgres: 
         condition: service_started
 
-  #postgredb
-  postgres-identity-service:
+  postgres:
     image: postgres:13.2-alpine
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: admin
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - "5432:5432"
 
-  #fileapiservice
   fileapiservice:
     build:
       context: .
@@ -32,21 +32,14 @@ services:
       - "8082:8082"
     restart: unless-stopped
     environment:
+      - ConnectionStrings__DefaultConnection=${ConnectionStrings__FileApiConnection}
+      - JwtSecret=${JWT_SECRET}
+      - RabbitMq__User=${RABBITMQ_USER}
+      - RabbitMq__Pass=${RABBITMQ_PASS}
+      - RabbitMq__Host=rabbit-mq
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:8082
 
-  #fileapiservicebd
-#  postgres-fileapi-service:
-#    image: postgres:13.2-alpine
-#    environment:
-#      POSTGRES_USER: postgres
-#      POSTGRES_PASSWORD: admin
-#      POSTGRES_DB: fileApiServiceDb
-#    ports:
-#      - "5433:5433"
-#    command: postgres -p 5433
-
-  #filestorageservice
   filestorageservice:
     build:
       context: .
@@ -57,13 +50,18 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:8083
+      - RabbitMq__User=${RABBITMQ_USER}
+      - RabbitMq__Pass=${RABBITMQ_PASS}
+      - RabbitMq__Host=rabbit-mq
       - Minio__Endpoint=minio:9000
-      - Minio__AccessKey=minio
-      - Minio__SecretKey=minio123
+      - Minio__AccessKey=${MINIO_ACCESS_KEY}
+      - Minio__SecretKey=${MINIO_SECRET_KEY}
       - Minio__BucketName=files
       - Minio__WithSSL=false
+    depends_on:
+      - minio
+      - rabbit-mq
 
-  #minio for filestorageservice
   minio:
     image: minio/minio
     restart: always
@@ -71,8 +69,8 @@ services:
       - "9000:9000"
       - "9001:9001"
     environment:
-      MINIO_ACCESS_KEY: minio
-      MINIO_SECRET_KEY: minio123
+      MINIO_ROOT_USER: ${MINIO_ACCESS_KEY}   
+      MINIO_ROOT_PASSWORD: ${MINIO_SECRET_KEY}
     command: server /data --console-address ":9001"
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:9000/minio/health/live" ]
@@ -80,14 +78,15 @@ services:
       timeout: 3s
       retries: 20
 
-  #rabbitmq
   rabbit-mq:
     image: rabbitmq:3-management
     ports:
       - "5672:5672"
       - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASS}
 
-  #ocelot
   ocelot:
     build:
       context: .
@@ -95,20 +94,25 @@ services:
     ports:
       - "6002:8080"
     restart: unless-stopped
+    environment:
+      - Jwt__Key=${JWT_SECRET}
+      - Jwt__Issuer=${JWT_ISSUER}
+      - Jwt__Audience=${JWT_AUDIENCE}
+    depends_on:
+      - identity-service
+      - fileapiservice
 
-  #pgadmin
   pg-admin:
     image: dpage/pgadmin4
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@admin.com
-      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
     ports:
       - "5050:80"
     depends_on:
-      postgres-identity-service:
+      postgres:
         condition: service_started
 
-  #elk
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.11.1
     container_name: elasticsearch

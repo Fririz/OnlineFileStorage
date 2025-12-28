@@ -12,9 +12,15 @@ public static class InfrastructureServiceRegistration
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<Context>(options =>
-            options.UseNpgsql(configuration.GetConnectionString("PostgresConnectionString")));
+            options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
         services.AddScoped<IItemRepository, ItemRepository>();
         services.AddScoped<IAccessRightsRepository, AccessRightsRepository>();
+        
+        var rabbitMqSection = configuration.GetSection("RabbitMq");                            
+        var rabbitMqUser= (rabbitMqSection["User"] ?? throw new InvalidOperationException("RabbitMq:User is not set")).Trim();                         
+        var rabbitMqPass = (rabbitMqSection["Pass"] ?? throw new InvalidOperationException("RabbitMq:Pass is not set")).Trim();                        
+        var rabbitMqHost = (rabbitMqSection["Host"] ?? throw new InvalidOperationException("RabbitMq:Host is not set")).Trim();    
+        
         services.AddMassTransit(x => 
         {
             x.AddConsumer<Consumers.FileUploadCompletedConsumer>();
@@ -24,10 +30,10 @@ public static class InfrastructureServiceRegistration
             
             x.UsingRabbitMq((context, cfg) =>
             {
-                cfg.Host("rabbit-mq", "/", h =>
+                cfg.Host(rabbitMqHost, "/", h =>
                 {
-                    h.Username("guest");
-                    h.Password("guest");
+                    h.Username(rabbitMqUser);
+                    h.Password(rabbitMqPass);
                 });
                 
                 cfg.ReceiveEndpoint("notifications-file-uploaded", e =>

@@ -11,16 +11,21 @@ namespace FileStorageService.Infrastructure
     {
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
+            var rabbitMqSection = configuration.GetSection("RabbitMq");
+            var rabbitMqUser= (rabbitMqSection["User"] ?? throw new InvalidOperationException("RabbitMq:User is not set")).Trim();                         
+            var rabbitMqPass = (rabbitMqSection["Pass"] ?? throw new InvalidOperationException("RabbitMq:Pass is not set")).Trim();                        
+            var rabbitMqHost = (rabbitMqSection["Host"] ?? throw new InvalidOperationException("RabbitMq:Host is not set")).Trim();                                                                               
+
             services.AddMassTransit(x => 
             {
                 x.AddConsumer<FileDeletionRequestConsumer>();
                 x.AddConsumer<FilesDeletionRequestConsumer>();
                 x.UsingRabbitMq((context, cfg) => 
                 {
-                    cfg.Host("rabbit-mq", "/", h =>
+                    cfg.Host(rabbitMqHost, "/", h =>
                     {
-                        h.Username("guest");
-                        h.Password("guest");
+                        h.Username(rabbitMqUser);
+                        h.Password(rabbitMqPass);
                     });
                     cfg.ReceiveEndpoint("file-deletion-request", e =>
                     {
@@ -64,7 +69,7 @@ namespace FileStorageService.Infrastructure
             });
 
             services.AddScoped<IFileRepository, FileRepository>();
-
+                                       
             return services;
         }
     }
