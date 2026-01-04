@@ -29,7 +29,7 @@ public class FileWorker : IFileWorker
         _mapper = mapper;
         
     }
-    public async Task<List<ItemResponseDto>> GetAllChildren(Guid userId)
+    public async Task<List<ItemResponseDto>> GetRootItems(Guid userId)
     {
         var itemsEnum = await _itemRepository.GetRootItems(userId);
         var items = itemsEnum.OfType<Item>().ToList();

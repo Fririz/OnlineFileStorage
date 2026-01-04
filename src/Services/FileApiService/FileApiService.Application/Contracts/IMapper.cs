@@ -7,4 +7,5 @@ public interface IMapper
 {
     public ItemResponseDto Map(Item item);
     public List<ItemResponseDto> Map(List<Item> items);
+    public List<ItemResponseDto> Map(IEnumerable<Item?> items);
 }

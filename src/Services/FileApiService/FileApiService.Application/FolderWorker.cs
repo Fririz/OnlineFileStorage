@@ -13,15 +13,23 @@ public class FolderWorker : IFolderWorker
     private readonly ILogger<FolderWorker> _logger;
     private readonly IItemRepository _itemRepository;
     private readonly IPublishEndpoint _publishEndpoint;
+    private readonly IMapper _mapper;
     public FolderWorker(ILogger<FolderWorker> logger, 
         IItemRepository itemRepository,
-        IPublishEndpoint publishEndpoint)
+        IPublishEndpoint publishEndpoint,
+        IMapper mapper)
     {
+        _mapper = mapper;
         _logger = logger;
         _itemRepository = itemRepository;
         _publishEndpoint = publishEndpoint;
     }
 
+    public async Task<IEnumerable<ItemResponseDto>> GetChildrenAsync(Guid userId)
+    {
+        var items = await _itemRepository.GetAllChildrenAsync(userId);
+        return _mapper.Map(items);
+    }
     public async Task<Guid> CreateFolder(ItemCreateDto itemCreate, Guid ownerId)
     {
         if (itemCreate.Type != TypeOfItem.Folder)

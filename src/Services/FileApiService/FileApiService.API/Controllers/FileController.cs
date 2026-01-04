@@ -95,7 +95,7 @@ public class FileController : ControllerBase
     [Route("getitemsfromroot")]
     public async Task<ActionResult<List<ItemResponseDto>>> GetItemsFromRoot([FromHeader(Name = "Id")] Guid userId)
     {
-        var items = await _fileWorker.GetAllChildren(userId);
+        var items = await _fileWorker.GetRootItems(userId);
         return items;
     }
     

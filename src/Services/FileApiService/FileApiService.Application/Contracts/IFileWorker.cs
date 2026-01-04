@@ -7,5 +7,5 @@ public interface IFileWorker
     public Task<string> DownloadFile(Guid id, Guid ownerId, CancellationToken cancellationToken = default);
     public Task<string> CreateFile(ItemCreateDto itemCreate, Guid ownerId, CancellationToken cancellationToken = default);
     public Task DeleteFile(Guid id, Guid ownerId);
-    public Task<List<ItemResponseDto>> GetAllChildren(Guid userId);
+    public Task<List<ItemResponseDto>> GetRootItems(Guid userId);
 }

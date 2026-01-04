@@ -9,12 +9,10 @@ namespace FileApiService.API.Controllers;
 public class FolderController : ControllerBase
 {
     private readonly IFolderWorker _folderWorker;
-    private readonly IItemRepository _itemRepository;
     public FolderController(IFolderWorker fileWorker,
         IItemRepository itemRepository)
     {
         _folderWorker = fileWorker;
-        _itemRepository = itemRepository;
     }
     [HttpPost]
     [Route("createfolder")]
@@ -28,9 +26,8 @@ public class FolderController : ControllerBase
     [Route("getallchildren/{id}/")]
     public async Task<ActionResult<List<Item>>> GetAllChildren(Guid id)
     {
-        var items = await _itemRepository.GetAllChildrenAsync(id);
-        var result = items.OfType<Item>().ToList();
-        return result;
+        var children = await _folderWorker.GetChildrenAsync(id);
+        return Ok(children);
     }
 
     [HttpDelete]

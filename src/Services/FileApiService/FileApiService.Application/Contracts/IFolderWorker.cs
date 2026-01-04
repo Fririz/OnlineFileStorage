@@ -11,4 +11,5 @@ public interface IFolderWorker
     /// <exception cref="UnauthorizedAccessException">You are not allowed to delete this folder</exception>
     /// <exception cref="DirectoryNotFoundException"></exception>
     public Task DeleteFolderWithAllChildren(Guid folderId, Guid ownerId);
+    public Task<IEnumerable<ItemResponseDto>> GetChildrenAsync(Guid userId);
 }
