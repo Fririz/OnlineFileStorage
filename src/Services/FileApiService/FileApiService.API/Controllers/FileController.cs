@@ -17,7 +17,11 @@ public class FileController : ControllerBase
         _fileWorker = fileWorker;
         _itemRepository = itemRepository;
     }
-
+    /// <summary>
+    /// Get parent of file
+    /// </summary>
+    /// <param name="id">fileId</param>
+    /// <returns></returns>
     [HttpGet]
     [Route("getparent/{id}")]
     public ActionResult<Item> GetParent(Guid id)
@@ -25,6 +29,13 @@ public class FileController : ControllerBase
         var parent = _itemRepository.GetParent(id);
         return Ok(parent);
     }
+    /// <summary>
+    /// Create file
+    /// </summary>
+    /// <param name="itemCreate"></param>
+    /// <param name="userId"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpPost]
     [Route("uploadfile")]
     public async Task<ActionResult> UploadFile(ItemCreateDto itemCreate, [FromHeader(Name = "Id")] Guid userId, CancellationToken cancellationToken = default)
@@ -33,6 +44,13 @@ public class FileController : ControllerBase
         var link = await _fileWorker.CreateFile(itemCreate, ownerId, cancellationToken);
         return Ok(new { uploadUrl = link });
     }
+    /// <summary>
+    /// Download file
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="userId"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpGet]
     [Route("downloadfile/{id:minlength(1)}/")]
     public async Task<ActionResult> DownloadFile(Guid id, [FromHeader(Name = "Id")] Guid userId, CancellationToken cancellationToken = default)
@@ -40,7 +58,12 @@ public class FileController : ControllerBase
         var link = await _fileWorker.DownloadFile(id, userId, cancellationToken);
         return Ok(new { uploadUrl = link });
     }
-
+/// <summary>
+/// Delete file
+/// </summary>
+/// <param name="fileId"></param>
+/// <param name="userId"></param>
+/// <returns></returns>
     [HttpDelete]
     [Route("deletefile/{fileId}")]
     public async Task<ActionResult> DeleteFile(Guid fileId, [FromHeader(Name = "Id")] Guid userId)
@@ -63,6 +86,11 @@ public class FileController : ControllerBase
             return StatusCode(500, e.Message);
         }
     }
+/// <summary>
+/// Get all items from root
+/// </summary>
+/// <param name="userId">User id</param>
+/// <returns>list of items</returns>
     [HttpGet]
     [Route("getitemsfromroot")]
     public async Task<ActionResult<List<ItemResponseDto>>> GetItemsFromRoot([FromHeader(Name = "Id")] Guid userId)
