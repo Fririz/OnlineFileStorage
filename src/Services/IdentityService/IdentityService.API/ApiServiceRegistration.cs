@@ -1,6 +1,9 @@
+using System.Reflection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.OpenApi;
+using Microsoft.OpenApi.Models;
 
 namespace IdentityService.API;
 
@@ -9,7 +12,21 @@ public static class ApiServiceRegistration
     public static IServiceCollection AddApiServices(this IServiceCollection services,
         ConfigurationManager configuration)
     {
-        // 1. Возвращаем чтение из IConfiguration
+        services.AddEndpointsApiExplorer();
+        services.AddSwaggerGen(options =>
+        {
+            var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+            
+            options.AddSecurityDefinition("CookieAuth", new OpenApiSecurityScheme
+            {
+                Name = "token",
+                Type = SecuritySchemeType.ApiKey,
+                In = ParameterLocation.Cookie,
+            });
+        });
+        
+        
         var validIssuer = configuration["Jwt:Issuer"] 
             ?? throw new InvalidOperationException("Jwt:Issuer is not set");
         var validAudience = configuration["Jwt:Audience"] 
@@ -17,7 +34,6 @@ public static class ApiServiceRegistration
         var jwtKey = configuration["Jwt:Key"] 
             ?? throw new InvalidOperationException("Jwt:Key is not set");
 
-        // 2. Оставляем рабочую конфигурацию схемы по умолчанию
         services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = "MyCookieAuth";
@@ -58,7 +74,6 @@ public static class ApiServiceRegistration
 
         services.AddAuthorization();
         services.AddControllers();
-        services.AddOpenApi();
 
         return services;
     }

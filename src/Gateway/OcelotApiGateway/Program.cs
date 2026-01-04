@@ -8,6 +8,7 @@ using System.Text;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
+using MMLib.SwaggerForOcelot.DependencyInjection;
 
 namespace OcelotApiGateway;
 
@@ -23,6 +24,9 @@ public class Program
         builder.Services.AddAuthorization();
         builder.Configuration.AddJsonFile("ocelot.json", optional: false, reloadOnChange: true);
         builder.Services.AddOcelot();
+        builder.Configuration.AddOcelotWithSwaggerSupport(null);
+        builder.Services.AddSwaggerForOcelot(configuration);
+        
         builder.Services.Configure<KestrelServerOptions>(options =>
         {
             options.Limits.MaxRequestBodySize = 5_368_709_120; // TODO bring it to env
@@ -105,10 +109,9 @@ public class Program
         app.UseRouting();
         
         app.UseCors("MyPolicy"); 
-        
+        app.UseSwaggerForOcelotUI();
         app.UseAuthentication();
         app.UseAuthorization();
-
         await app.UseOcelot();
         await app.RunAsync();
     }

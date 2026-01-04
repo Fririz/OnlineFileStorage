@@ -27,8 +27,17 @@ public class AuthController : ControllerBase
         _env = env; 
     }
 
+    /// <summary>
+    /// Register a new user
+    /// </summary>
+    /// <param name="user"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns>Ok message</returns>
     [HttpPost]
     [Route("register")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> Register(UserAuthDto user, CancellationToken cancellationToken = default)
     {
         try
@@ -48,9 +57,16 @@ public class AuthController : ControllerBase
         
         return Ok(new { message = "Registration successful" });
     }
-
+    /// <summary>
+    /// Login a registered user
+    /// </summary>
+    /// <param name="user"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns>Ok message</returns>
     [HttpPost]
     [Route("login")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> Login([FromBody] UserAuthDto user, CancellationToken cancellationToken = default)
     {
         var token = await _userWorker.LoginUser(user, cancellationToken);
@@ -65,10 +81,14 @@ public class AuthController : ControllerBase
         
         return Ok(new { message = "Login successful" });
     }
-    
+    /// <summary>
+    /// Logout a registered user
+    /// </summary>
+    /// <returns>Ok message</returns>
     [Authorize] 
     [HttpGet]
     [Route("logout")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public IActionResult Logout()
     {
         var username = User.Identity?.Name ?? "unknown";
@@ -76,9 +96,14 @@ public class AuthController : ControllerBase
         _logger.LogInformation($"User {username} logged out successfully.");
         return Ok(new { message = $"Logout successful. User: {username}" });
     }
-
+    /// <summary>
+    /// Get current user from coockie
+    /// </summary>
+    /// <returns>user info</returns>
     [HttpGet]
     [Route("GetCurrentUser")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public IActionResult GetCurrentUser()
     {
         string? token = Request.Cookies["token"];
