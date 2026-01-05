@@ -21,6 +21,6 @@ public class FilesDeletionRequestConsumer : IConsumer<FilesDeletionRequest>
     
     public async Task Consume(ConsumeContext<FilesDeletionRequest> context)
     {
-        await _fileManager.DelesFilesCaseAsync(context.Message.IdsToDelete);
+        await _fileManager.DeleteFilesCaseAsync(context.Message.IdsToDelete);
     }
 }

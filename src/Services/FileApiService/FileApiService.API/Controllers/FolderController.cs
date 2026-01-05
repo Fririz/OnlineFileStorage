@@ -9,8 +9,7 @@ namespace FileApiService.API.Controllers;
 public class FolderController : ControllerBase
 {
     private readonly IFolderWorker _folderWorker;
-    public FolderController(IFolderWorker fileWorker,
-        IItemRepository itemRepository)
+    public FolderController(IFolderWorker fileWorker)
     {
         _folderWorker = fileWorker;
     }

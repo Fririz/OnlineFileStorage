@@ -19,10 +19,10 @@ public class ItemRepository : RepositoryBase<Item>, IItemRepository
         return await _context.Items.Where(i => i.ParentId == itemId).AsNoTracking().ToListAsync();
     }
 
-    public Item? GetParent(Guid itemId)
+    public async Task<Item?> GetParent(Guid itemId)
     {
-        return _context.Items.Where(i => itemId == i.Id).
-            Select(i => i.Parent).FirstOrDefault();
+        return await _context.Items.Where(i => itemId == i.Id).
+            Select(i => i.Parent).FirstOrDefaultAsync();
     }
 
     public async Task<IEnumerable<Item?>> GetRootItems(Guid userId)

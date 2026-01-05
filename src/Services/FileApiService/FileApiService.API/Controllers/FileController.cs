@@ -10,12 +10,9 @@ namespace FileApiService.API.Controllers;
 public class FileController : ControllerBase
 {
     private readonly IFileWorker _fileWorker;
-    private readonly IItemRepository _itemRepository;
-    public FileController(IFileWorker fileWorker,
-        IItemRepository itemRepository)
+    public FileController(IFileWorker fileWorker)
     {
         _fileWorker = fileWorker;
-        _itemRepository = itemRepository;
     }
     /// <summary>
     /// Get parent of file
@@ -24,9 +21,9 @@ public class FileController : ControllerBase
     /// <returns></returns>
     [HttpGet]
     [Route("getparent/{id}")]
-    public ActionResult<Item> GetParent(Guid id)
+    public async Task<ActionResult<Item>> GetParent(Guid id)
     {
-        var parent = _itemRepository.GetParent(id);
+        var parent = await _fileWorker.GetParent(id);
         return Ok(parent);
     }
     /// <summary>

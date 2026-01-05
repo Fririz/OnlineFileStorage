@@ -29,6 +29,12 @@ public class FileWorker : IFileWorker
         _mapper = mapper;
         
     }
+
+    public  Task<Item?> GetParent(Guid itemId)
+    {
+        var parent = _itemRepository.GetParent(itemId);
+        return parent;
+    }
     public async Task<List<ItemResponseDto>> GetRootItems(Guid userId)
     {
         var itemsEnum = await _itemRepository.GetRootItems(userId);
