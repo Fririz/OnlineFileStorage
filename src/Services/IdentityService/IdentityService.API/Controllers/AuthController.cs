@@ -17,14 +17,17 @@ public class AuthController : ControllerBase
     private readonly IJwtTokenWorker _jwtTokenWorker;
     private readonly ILogger _logger;
     
-    private readonly IHostEnvironment _env;
-
-    public AuthController(IUserWorker userWorker, IJwtTokenWorker jwtTokenWorker, ILogger<AuthController> logger, IHostEnvironment env)
+    /// <summary>
+    /// Auth controller
+    /// </summary>
+    /// <param name="userWorker"></param>
+    /// <param name="jwtTokenWorker"></param>
+    /// <param name="logger"></param>
+    public AuthController(IUserWorker userWorker, IJwtTokenWorker jwtTokenWorker, ILogger<AuthController> logger)
     {
         _userWorker = userWorker;
         _jwtTokenWorker = jwtTokenWorker;
         _logger = logger;
-        _env = env; 
     }
 
     /// <summary>
@@ -136,7 +139,7 @@ public class AuthController : ControllerBase
             SameSite = SameSiteMode.Lax,
             Secure = false,
             Expires = DateTime.UtcNow.AddDays(10), 
-            Path = "/", 
+            Path = "/",
         };
     }
 }
