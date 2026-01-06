@@ -45,7 +45,6 @@ public class FileWorker : IFileWorker
     
     public async Task<string> DownloadFile(Guid id, Guid ownerId, CancellationToken cancellationToken = default)
     {
-
         var item = await _itemRepository.GetByIdAsync(id, cancellationToken);
         if (item == null)
         {
@@ -68,7 +67,6 @@ public class FileWorker : IFileWorker
             throw new InvalidOperationException("Creating a folder in method createFile not allowed");
         }
         //TODO add name check if exists
-        
         var file = Item.CreateFile(userId, itemCreate.Name, itemCreate.ParentId);
         //TODO add GRPC call to filestorage service
         await _itemRepository.AddAsync(file, cancellationToken);;

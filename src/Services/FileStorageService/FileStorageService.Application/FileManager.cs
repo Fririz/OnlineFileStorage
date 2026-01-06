@@ -31,28 +31,38 @@ public class FileManager : IFileManager
     public async Task UploadFileCaseAsync(Stream stream, Guid id, CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Uploading file {FileId}", id);
+        bool fileUploaded = false;
         try
         {
             var fileFormat = "application/octet-stream"; //TODO impove
             _logger.LogInformation("Detected MIME type for file {FileId}: {MimeType}", id, fileFormat);
-            
-            await _fileRepository.UploadFileAsync(stream, fileFormat, id, cancellationToken);
 
+            await _fileRepository.UploadFileAsync(stream, fileFormat, id, cancellationToken);
+            fileUploaded = true;
             var fileInfo = await _fileRepository.GetInfoAboutFile(id, cancellationToken);
-            
+
             await _publishEndpoint.Publish(new FileUploadComplete()
             {
                 FileId = fileInfo.FileId,
                 FileSize = fileInfo.FileSize,
                 MimeType = fileInfo.MimeType,
-            }, cancellationToken); 
+            }, cancellationToken);
         }
         catch (OperationCanceledException)
         {
             throw;
         }
-        catch (Exception ex) 
+        catch (Exception ex)
         {
+            if (fileUploaded)
+            {
+                try
+                {
+                    await DeleteFileCaseAsync(id);
+                }
+                catch{}
+            }
+            
             _logger.LogError(ex, "Error uploading file {FileId}", id);
             await _publishEndpoint.Publish(new FileUploadFailed()
             {
