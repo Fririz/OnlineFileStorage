@@ -73,9 +73,13 @@ public class AuthController : ControllerBase
         var loginResult = await _userWorker.LoginUser(user, cancellationToken);
         if (loginResult.IsFailed)
         {
-            var errorMessage = loginResult.Errors.First().Message;
-            _logger.LogWarning("Login failed: {Message}", errorMessage);
-            return BadRequest(new { error = errorMessage });
+            var error = loginResult.Errors.First();
+            _logger.LogInformation("Login failed: {Message}", error.Message);
+            return error switch
+            {
+                InvalidUserDataException => Unauthorized(new { error = error.Message }),
+                _ => BadRequest(new { error = error.Message })
+            };
         }
 
         var token = loginResult.Value;

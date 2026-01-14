@@ -49,7 +49,7 @@ public class UserWorker : IUserWorker
         if (user == null || !_passwordWorker.CheckPassword(userDto.Password, user.PasswordHash))
         {
             _logger.LogInformation($"User {userDto.Username} failed to login.");
-            return Result.Fail("Invalid username or password");
+            return Result.Fail(new InvalidUserDataException("Invalid username or password"));
         }
         _logger.LogInformation($"User {user.Username} logged in successfully.");
         var token = _jwtTokenWorker.GenerateToken(user);
