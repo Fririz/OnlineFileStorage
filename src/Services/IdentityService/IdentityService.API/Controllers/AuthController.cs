@@ -65,11 +65,15 @@ public class AuthController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> Login([FromBody] UserAuthDto user, CancellationToken cancellationToken = default)
     {
-        var token = await _userWorker.LoginUser(user, cancellationToken);
-        if (token == null)
+        var loginResult = await _userWorker.LoginUser(user, cancellationToken);
+        if (loginResult.IsFailed)
         {
-            return Unauthorized(new { message = "Invalid username or password." });
+            var errorMessage = loginResult.Errors.First().Message;
+            _logger.LogWarning("Login failed: {Message}", errorMessage);
+            return BadRequest(new { error = errorMessage });
         }
+
+        var token = loginResult.Value;
         
         Response.Cookies.Append("token", token, GetCookieOptions());
         

@@ -8,5 +8,5 @@ namespace IdentityService.Application.Contracts;
 public interface IUserWorker
 {
     public Task<Result> RegisterUser(UserAuthDto userDto, CancellationToken cancellationToken = default);
-    public Task<string?> LoginUser(UserAuthDto userDto, CancellationToken cancellationToken = default);
+    public Task<Result<string>> LoginUser(UserAuthDto userDto, CancellationToken cancellationToken = default);
 }

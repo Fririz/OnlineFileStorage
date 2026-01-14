@@ -42,15 +42,16 @@ public class UserWorker : IUserWorker
 
     }
 
-    public async Task<string?> LoginUser(UserAuthDto userDto, CancellationToken cancellationToken = default)
+    public async Task<Result<string>> LoginUser(UserAuthDto userDto, CancellationToken cancellationToken = default)
     {
         var user = await _userRepository.GetUserByUsernameAsync(userDto.Username, cancellationToken);
         if (user == null || !_passwordWorker.CheckPassword(userDto.Password, user.PasswordHash))
         {
             _logger.LogInformation($"User {userDto.Username} failed to login.");
-            return null;
+            return Result.Fail("Invalid username or password");
         }
         _logger.LogInformation($"User {user.Username} logged in successfully.");
-        return _jwtTokenWorker.GenerateToken(user);
+        var token = _jwtTokenWorker.GenerateToken(user);
+        return Result.Ok(token);
     }
 }
