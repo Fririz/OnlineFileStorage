@@ -43,21 +43,14 @@ public class AuthController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> Register(UserAuthDto user, CancellationToken cancellationToken = default)
     {
-        try
+        var registrationResult = await _userWorker.RegisterUser(user, cancellationToken);
+        if (registrationResult.IsFailed)
         {
-            await _userWorker.RegisterUser(user, cancellationToken);
-        }
-        catch (UserAlreadyExistsException ex)
-        {
-            return BadRequest(new { message = ex.Message }); 
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Unexpected error with user registration");
-            return StatusCode(500, new { message = "An internal server error occurred." });
+            var errorMessage = registrationResult.Errors.First().Message;
+            _logger.LogWarning("Registration failed: {Message}", errorMessage);
+            return Conflict(new { error = errorMessage }); 
         }
         _logger.LogInformation("User {Username} registered successfully.", user.Username);
-        
         return Ok(new { message = "Registration successful" });
     }
     /// <summary>

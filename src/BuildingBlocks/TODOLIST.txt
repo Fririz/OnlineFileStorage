@@ -12,7 +12,7 @@
 //TODO add more logging
 //TODO add unit test
 //TODO add mapping
-//TODO impove dockercompose and dockerfiles
+//TODO improve dockercompose and dockerfiles
 //TODO add logic for sharing files and viewing shared files
 //TODO add ASNOTRACKING
 //TODO Eliding async await

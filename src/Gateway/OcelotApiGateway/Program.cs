@@ -24,8 +24,8 @@ public class Program
         builder.Services.AddAuthorization();
         builder.Configuration.AddJsonFile("ocelot.json", optional: false, reloadOnChange: true);
         builder.Services.AddOcelot();
-        builder.Configuration.AddOcelotWithSwaggerSupport(null);
-        builder.Services.AddSwaggerForOcelot(configuration);
+        //builder.Configuration.AddOcelotWithSwaggerSupport(null);
+        //builder.Services.AddSwaggerForOcelot(configuration);
         
         builder.Services.Configure<KestrelServerOptions>(options =>
         {
@@ -109,7 +109,7 @@ public class Program
         app.UseRouting();
         
         app.UseCors("MyPolicy"); 
-        app.UseSwaggerForOcelotUI();
+        //app.UseSwaggerForOcelotUI();
         app.UseAuthentication();
         app.UseAuthorization();
         await app.UseOcelot();

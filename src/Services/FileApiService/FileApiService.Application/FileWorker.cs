@@ -66,7 +66,6 @@ public class FileWorker : IFileWorker
         {
             throw new InvalidOperationException("Creating a folder in method createFile not allowed");
         }
-        //TODO add name check if exists
         var file = Item.CreateFile(userId, itemCreate.Name, itemCreate.ParentId);
         //TODO add GRPC call to filestorage service
         await _itemRepository.AddAsync(file, cancellationToken);;
