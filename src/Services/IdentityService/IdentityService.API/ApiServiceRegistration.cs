@@ -12,7 +12,6 @@ public static class ApiServiceRegistration
     public static IServiceCollection AddApiServices(this IServiceCollection services,
         ConfigurationManager configuration)
     {
-        services.AddExceptionHandler<GlobalExceptionHandler>();
         services.AddProblemDetails();
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen(options =>

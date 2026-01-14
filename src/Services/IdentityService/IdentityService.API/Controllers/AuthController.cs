@@ -6,6 +6,7 @@ using IdentityService.Application.Contracts;
 using IdentityService.Application.DTO;
 using IdentityService.Application.Exceptions;
 using Microsoft.AspNetCore.Authorization;
+using IdentityService.Application.Exceptions.FluentResultsErrors;
 
 namespace IdentityService.API.Controllers;
 
@@ -46,9 +47,13 @@ public class AuthController : ControllerBase
         var registrationResult = await _userWorker.RegisterUser(user, cancellationToken);
         if (registrationResult.IsFailed)
         {
-            var errorMessage = registrationResult.Errors.First().Message;
-            _logger.LogWarning("Registration failed: {Message}", errorMessage);
-            return Conflict(new { error = errorMessage }); 
+            var error = registrationResult.Errors.First();
+            _logger.LogWarning("Registration failed: {Message}", error.Message);
+            return error switch
+            {
+                UserAlreadyExistsError => Conflict(new { error = error.Message }),
+                _ => BadRequest(new { error = error.Message })
+            };
         }
         _logger.LogInformation("User {Username} registered successfully.", user.Username);
         return Ok(new { message = "Registration successful" });

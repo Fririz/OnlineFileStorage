@@ -7,7 +7,8 @@ using Microsoft.AspNetCore.Http;
 using IdentityService.Application.Exceptions;
 using IdentityService.Domain.Enums;
 using Microsoft.AspNetCore.Http.HttpResults;
-using FluentResults;//TODO implement
+using FluentResults;
+using IdentityService.Application.Exceptions.FluentResultsErrors;
 
 namespace IdentityService.Application;
 
@@ -32,7 +33,7 @@ public class UserWorker : IUserWorker
         if(await _userRepository.CheckUserExistenceAsync(userDto.Username, cancellationToken))
         {
             _logger.LogInformation($"User {userDto.Username} already exists.");
-            return Result.Fail($"User {userDto.Username} already exists.").WithError("User already exists");
+            return Result.Fail(new UserAlreadyExistsError($"User {userDto.Username} already exists."));
         }
         
         var user = User.CreateUser(userDto.Username, _passwordWorker.HashPassword(userDto.Password), Role.User);
