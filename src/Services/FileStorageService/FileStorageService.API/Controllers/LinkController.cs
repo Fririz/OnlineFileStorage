@@ -32,7 +32,7 @@ public class LinkController: ControllerBase
     /// <param name="fileId">file id</param>
     /// <returns></returns>
     [HttpGet]
-    [Route("GetUploadLink/{id}")]
+    [Route("GetUploadLink/{fileId}")]
     public ActionResult<string> GetUploadLink(Guid fileId)
     {
         var link = _linkGenerator.GenerateUploadLink(fileId);

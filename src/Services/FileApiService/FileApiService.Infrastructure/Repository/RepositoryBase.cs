@@ -29,6 +29,12 @@ public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : EntityBas
         _context.Set<T>().Update(entity);
         await _context.SaveChangesAsync(cancellationToken);
     }
+
+    public async Task UpdateRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken = default)
+    {
+        _context.Set<T>().UpdateRange(entities);
+        await _context.SaveChangesAsync(cancellationToken);
+    }
     public async Task DeleteAsync(T entity, CancellationToken cancellationToken = default)
     {
         _context.Set<T>().Remove(entity);

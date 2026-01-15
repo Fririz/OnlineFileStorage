@@ -1,4 +1,3 @@
-// FileApiService.Domain.Entities/Item.cs
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using FileApiService.Domain.Common;

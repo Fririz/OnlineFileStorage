@@ -68,6 +68,8 @@ public class FolderWorker : IFolderWorker
         {
             IdsToDelete = allItemsToDelete.Select(x => x.Id).ToList()
         });
+        await _itemRepository.UpdateRangeAsync(allItemsToDelete);// delete files softly
+
     }
     private async Task FindAllDescendantsAsync(Guid parentId, List<Item> allItems)
     {
