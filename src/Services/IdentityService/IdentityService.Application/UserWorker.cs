@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using IdentityService.Application.Contracts;
 using IdentityService.Application.DTO;
 using Microsoft.AspNetCore.Mvc;
@@ -49,10 +50,27 @@ public class UserWorker : IUserWorker
         if (user == null || !_passwordWorker.CheckPassword(userDto.Password, user.PasswordHash))
         {
             _logger.LogInformation($"User {userDto.Username} failed to login.");
-            return Result.Fail(new InvalidUserDataException("Invalid username or password"));
+            return Result.Fail(new InvalidUserDataError("Invalid username or password"));
         }
         _logger.LogInformation($"User {user.Username} logged in successfully.");
         var token = _jwtTokenWorker.GenerateToken(user);
         return Result.Ok(token);
+    }
+
+    public Result<UserTokenCheckDto> GetCurrentUser(string token,
+        CancellationToken cancellationToken = default)
+    {
+        var principal = _jwtTokenWorker.GetPrincipalFromToken(token);
+        var user = new UserTokenCheckDto()
+        {
+            Id = principal?.FindFirstValue(ClaimTypes.NameIdentifier),
+            Username = principal?.FindFirstValue(ClaimTypes.Name) 
+        };
+        if (user.Id == null || user.Username == null)
+        {
+            return Result.Fail(new InvalidTokenError("Invalid token"));
+        }
+
+        return Result.Ok(new UserTokenCheckDto());
     }
 }

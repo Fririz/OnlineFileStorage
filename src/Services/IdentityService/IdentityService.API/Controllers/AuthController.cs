@@ -77,7 +77,7 @@ public class AuthController : ControllerBase
             _logger.LogInformation("Login failed: {Message}", error.Message);
             return error switch
             {
-                InvalidUserDataException => Unauthorized(new { error = error.Message }),
+                InvalidUserDataError => Unauthorized(new { error = error.Message }),
                 _ => BadRequest(new { error = error.Message })
             };
         }
@@ -116,25 +116,22 @@ public class AuthController : ControllerBase
     public IActionResult GetCurrentUser()
     {
         string? token = Request.Cookies["token"];
-
-        var principal = _jwtTokenWorker.GetPrincipalFromToken(token);
-
-        if (principal == null)
+        if (token == null)
         {
             return Unauthorized();
         }
-        var user = new UserTokenCheckDto()
+        
+        var userResult = _userWorker.GetCurrentUser(token);
+        if (userResult.IsFailed)
         {
-            Id = principal.FindFirstValue(ClaimTypes.NameIdentifier),
-            Username = principal.FindFirstValue(ClaimTypes.Name) 
-        };
-
-        if (user.Id == null || user.Username == null)
-        {
-            _logger.LogError("Token validated but required claims (sub, name) are missing.");
-            return Unauthorized();
+            var error = userResult.Errors.First();
+            return error switch
+            {
+                InvalidTokenError => Unauthorized(new { error = error.Message }),
+                _ => BadRequest(new { error = error.Message })
+            };
         }
-
+        UserTokenCheckDto user =  userResult.Value;
         return Ok(user);
     }
     private CookieOptions GetCookieOptions()
