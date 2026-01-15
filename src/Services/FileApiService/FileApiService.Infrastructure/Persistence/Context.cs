@@ -1,4 +1,5 @@
 using FileApiService.Domain.Entities;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 
 namespace FileApiService.Infrastructure.Persistence;
@@ -12,6 +13,10 @@ public class Context : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+        modelBuilder.AddInboxStateEntity();
+        modelBuilder.AddOutboxMessageEntity();
+        modelBuilder.AddOutboxStateEntity();
+        
         //AccessRightsRepository
         modelBuilder.Entity<AccessRights>()
             .HasIndex(ar => new { ar.UserId, ar.ItemId })

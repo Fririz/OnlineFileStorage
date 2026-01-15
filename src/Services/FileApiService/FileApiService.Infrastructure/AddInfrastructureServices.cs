@@ -5,6 +5,8 @@ using FileApiService.Infrastructure.Persistence;
 using FileApiService.Application.Contracts;
 using FileApiService.Infrastructure.Repository;
 using MassTransit;
+using MassTransit.EntityFrameworkCoreIntegration;
+
 namespace FileApiService.Infrastructure;
 
 public static class InfrastructureServiceRegistration
@@ -23,6 +25,11 @@ public static class InfrastructureServiceRegistration
         
         services.AddMassTransit(x => 
         {
+            x.AddEntityFrameworkOutbox<Context>(o =>
+            {
+                o.UseBusOutbox(); 
+                o.LockStatementProvider = new PostgresLockStatementProvider(false);
+            });
             x.AddConsumer<Consumers.FileUploadCompletedConsumer>();
             x.AddConsumer<Consumers.FileUploadFailedConsumer>();
             x.AddConsumer<Consumers.FileDeletionCompleteConsumer>();
@@ -53,6 +60,7 @@ public static class InfrastructureServiceRegistration
                 {
                     e.ConfigureConsumer<Consumers.FilesDeletionCompleteConsumer>(context);
                 });
+                cfg.ConfigureEndpoints(context);
             });
         });
         return services;

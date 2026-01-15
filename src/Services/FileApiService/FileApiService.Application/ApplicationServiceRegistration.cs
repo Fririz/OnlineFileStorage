@@ -14,7 +14,7 @@ public static class ApplicationServiceRegistration
         services.AddScoped<IFolderWorker, FolderWorker>();
         services.AddScoped<ISerializer, Serializer>();
         services.AddScoped<IMapper, Mapper>();
-        services.AddHttpClient();
+        services.AddHttpClient(); //TODO move to infr layer and change to grpc
         services.AddHostedService<PendingFileCleaner>();
         return services;
     }

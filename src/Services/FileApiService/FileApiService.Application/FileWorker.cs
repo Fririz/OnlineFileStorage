@@ -70,9 +70,14 @@ public class FileWorker : IFileWorker
         await _itemRepository.AddAsync(file, cancellationToken);
         try
         {
+            //TODO add GRPC call to filestorage service and move to infrastructure layer
             var client = _httpClientFactory.CreateClient();
+            _logger.LogInformation($"Created file {file.Id}");
+            
             var response = await client.GetAsync($"http://filestorageservice:8083/api/link/GetUploadLink/{file.Id}",
                 cancellationToken);
+            _logger.LogInformation($"Link for uploading = {response.Content.ReadAsStringAsync(cancellationToken).Result}");
+            
             if (!response.IsSuccessStatusCode)
             {
                 throw new Exception("Storage service unavailable");
@@ -85,7 +90,6 @@ public class FileWorker : IFileWorker
             await _itemRepository.DeleteAsync(file, cancellationToken);
             throw; 
         }
-        //TODO add GRPC call to filestorage service
     }
     public async Task DeleteFile(Guid itemId, Guid userId)
     {
@@ -103,10 +107,11 @@ public class FileWorker : IFileWorker
             throw new InvalidOperationException("Deleting a folder in method delete file not allowed");
         }
         file.MarkAsDeleted();
-        await _itemRepository.UpdateAsync(file);
         await _publishEndpoint.Publish(new FileDeletionRequested()
         {
             FileId = file.Id
         });
+        await _itemRepository.UpdateAsync(file);
+
     }
 }
