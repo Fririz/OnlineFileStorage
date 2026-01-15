@@ -67,12 +67,25 @@ public class FileWorker : IFileWorker
             throw new InvalidOperationException("Creating a folder in method createFile not allowed");
         }
         var file = Item.CreateFile(userId, itemCreate.Name, itemCreate.ParentId);
+        await _itemRepository.AddAsync(file, cancellationToken);
+        try
+        {
+            var client = _httpClientFactory.CreateClient();
+            var response = await client.GetAsync($"http://filestorageservice:8083/api/link/GetUploadLink/{file.Id}",
+                cancellationToken);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception("Storage service unavailable");
+            }
+
+            return await response.Content.ReadAsStringAsync(cancellationToken);
+        }
+        catch
+        {
+            await _itemRepository.DeleteAsync(file, cancellationToken);
+            throw; 
+        }
         //TODO add GRPC call to filestorage service
-        await _itemRepository.AddAsync(file, cancellationToken);;
-        var client = _httpClientFactory.CreateClient();
-        var response = await client.GetAsync($"http://filestorageservice:8083/api/link/GetUploadLink/{file.Id}", cancellationToken);
-        var link = await response.Content.ReadAsStringAsync(cancellationToken);
-        return link;
     }
     public async Task DeleteFile(Guid itemId, Guid userId)
     {
