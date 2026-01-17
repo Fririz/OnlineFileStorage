@@ -4,7 +4,9 @@ using Microsoft.Extensions.Logging;
 using FileApiService.Domain.Entities;
 using FileApiService.Domain.Enums;
 using FileApiService.Application.Dto;
+using FileApiService.Application.Exceptions.FluentResultsErrors;
 using MassTransit;
+using FluentResults;
 
 namespace FileApiService.Application;
 
@@ -91,20 +93,20 @@ public class FileWorker : IFileWorker
             throw; 
         }
     }
-    public async Task DeleteFile(Guid itemId, Guid userId)
+    public async Task<Result> DeleteFile(Guid itemId, Guid userId)
     {
         var file = await _itemRepository.GetByIdAsync(itemId);
         if (file == null)
         {
-            throw new FileNotFoundException("Item not found");  
+            return Result.Fail(new FileNotFoundError("Item not found"));
         }
         if (file.OwnerId != userId)
         {
-            throw new UnauthorizedAccessException("You are not allowed to delete this file");
+            return Result.Fail(new UnauthorizedAccessError("You are not allowed to delete this file"));
         }
         if (file.Type != TypeOfItem.File)
         {
-            throw new InvalidOperationException("Deleting a folder in method delete file not allowed");
+            return Result.Fail(new InvalidOperationError("Deleting a folder in method delete file not allowed"));
         }
         file.MarkAsDeleted();
         await _publishEndpoint.Publish(new FileDeletionRequested()
@@ -112,6 +114,6 @@ public class FileWorker : IFileWorker
             FileId = file.Id
         });
         await _itemRepository.UpdateAsync(file);
-
+        return Result.Ok();
     }
 }

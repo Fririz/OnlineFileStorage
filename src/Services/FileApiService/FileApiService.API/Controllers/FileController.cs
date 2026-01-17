@@ -1,5 +1,6 @@
 using FileApiService.Application.Contracts;
 using FileApiService.Application.Dto;
+using FileApiService.Application.Exceptions.FluentResultsErrors;
 using FileApiService.Domain.Entities;
 using MassTransit;
 using Microsoft.AspNetCore.Mvc;
@@ -65,23 +66,19 @@ public class FileController : ControllerBase
     [Route("deletefile/{fileId}")]
     public async Task<ActionResult> DeleteFile(Guid fileId, [FromHeader(Name = "Id")] Guid userId)
     {
-        try
+        var result = await _fileWorker.DeleteFile(fileId, userId);
+        if (result.IsFailed)
         {
-            await _fileWorker.DeleteFile(fileId, userId);
-            return Ok();
+            var error = result.Errors.First();
+            return error switch
+            {
+                FileNotFoundError => NotFound(new {error.Message}),
+                InvalidOperationError => BadRequest(new {error.Message}),
+                UnauthorizedAccessError => Unauthorized( new {error.Message}),
+                _ => BadRequest(new {error.Message})
+            };
         }
-        catch (FileNotFoundException)
-        {
-            return NotFound();
-        }
-        catch (InvalidOperationException e)
-        {
-            return BadRequest(e.Message);
-        }
-        catch (Exception e)
-        {
-            return StatusCode(500, e.Message);
-        }
+        return Ok();
     }
 /// <summary>
 /// Get all items from root
