@@ -48,26 +48,26 @@ public class FileWorker : IFileWorker
         return itemDtos;
     }
     
-    public async Task<string> DownloadFile(Guid id, Guid ownerId, CancellationToken cancellationToken = default)
+    public async Task<Result<string>> DownloadFile(Guid id, Guid ownerId, CancellationToken cancellationToken = default)
     {
         var item = await _itemRepository.GetByIdAsync(id, cancellationToken);
         if (item == null)
         {
-            throw new FileNotFoundException("Item not found"); 
+            return Result.Fail(new FileNotFoundError("Item not found"));
         }
         if (item.OwnerId != ownerId)
         {
-            throw new UnauthorizedAccessException("You are not allowed to download this file");
+            return Result.Fail(new UnauthorizedAccessError("You are not allowed to download this file"));
         }
         var link = await _linkProvider.GetDownloadLinkAsync(item.Id, item.Name, cancellationToken);
         
-        return link;
+        return Result.Ok(link);
     }
-    public async Task<string> CreateFile(ItemCreateDto itemCreate, Guid userId, CancellationToken cancellationToken = default)
+    public async Task<Result<string>> CreateFile(ItemCreateDto itemCreate, Guid userId, CancellationToken cancellationToken = default)
     {
         if (itemCreate.Type != TypeOfItem.File)
         {
-            throw new InvalidOperationException("Creating a folder in method createFile not allowed");
+            return Result.Fail(new InvalidOperationError("Creating a folder in method createFile not allowed"));
         }
         var file = Item.CreateFile(userId, itemCreate.Name, itemCreate.ParentId);
         await _itemRepository.AddAsync(file, cancellationToken);
@@ -78,12 +78,12 @@ public class FileWorker : IFileWorker
             var link = await _linkProvider.GetUploadLinkAsync(file.Id, cancellationToken);
             
             _logger.LogInformation($"Link for uploading = {link}");
-            return link;
+            return Result.Ok(link);
         }
         catch
         {
             await _itemRepository.DeleteAsync(file, cancellationToken);
-            throw; 
+            throw;
         }
     }
     public async Task<Result> DeleteFile(Guid itemId, Guid userId)

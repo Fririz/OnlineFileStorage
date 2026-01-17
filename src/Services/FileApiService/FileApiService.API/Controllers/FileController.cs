@@ -3,6 +3,7 @@ using FileApiService.Application.Dto;
 using FileApiService.Application.Exceptions.FluentResultsErrors;
 using FileApiService.Domain.Entities;
 using MassTransit;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FileApiService.API.Controllers;
@@ -39,8 +40,16 @@ public class FileController : ControllerBase
     public async Task<ActionResult> UploadFile(ItemCreateDto itemCreate, [FromHeader(Name = "Id")] Guid userId, CancellationToken cancellationToken = default)
     {
         Guid ownerId = Guid.Parse(Request.Headers["Id"].ToString());
-        var link = await _fileWorker.CreateFile(itemCreate, ownerId, cancellationToken);
-        return Ok(new { uploadUrl = link });
+        var result = await _fileWorker.CreateFile(itemCreate, ownerId, cancellationToken);
+        if (result.IsFailed)
+        {
+            var error = result.Errors.First();
+            return error switch
+            {
+                _ => BadRequest(new {error.Message})
+            };
+        }
+        return Ok(new { uploadUrl = result.Value });
     }
     /// <summary>
     /// Download file
@@ -53,8 +62,18 @@ public class FileController : ControllerBase
     [Route("downloadfile/{id:minlength(1)}/")]
     public async Task<ActionResult> DownloadFile(Guid id, [FromHeader(Name = "Id")] Guid userId, CancellationToken cancellationToken = default)
     {
-        var link = await _fileWorker.DownloadFile(id, userId, cancellationToken);
-        return Ok(new { uploadUrl = link });
+        var result = await _fileWorker.DownloadFile(id, userId, cancellationToken);
+        if (result.IsFailed)
+        {
+            var error = result.Errors.First();
+            return error switch
+            {
+                FileNotFoundError => NotFound(new { error.Message }),
+                UnauthorizedAccessError => Unauthorized(new {error.Message}),
+                _ => BadRequest(new {error.Message})
+            };
+        }
+        return Ok(new { uploadUrl = result.Value });
     }
 /// <summary>
 /// Delete file

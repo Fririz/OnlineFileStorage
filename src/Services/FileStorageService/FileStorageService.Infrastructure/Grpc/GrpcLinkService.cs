@@ -27,8 +27,6 @@ public class GrpcLinkService : StorageService.StorageServiceBase
 
         return Task.FromResult(new LinkResponse { Url = url });
     }
-
-    // ДОБАВЛЕНО: override
     public override Task<LinkResponse> GetUploadLink(UploadLinkRequest request, ServerCallContext context)
     {
         if (!Guid.TryParse(request.FileId, out var guid))
