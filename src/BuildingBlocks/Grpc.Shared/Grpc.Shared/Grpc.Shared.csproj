@@ -10,7 +10,12 @@
       <PackageReference Include="Google.Protobuf" Version="3.33.0" />
       <PackageReference Include="Google.Protobuf.Tools" Version="3.33.0" />
       <PackageReference Include="Grpc.Core.Api" Version="2.71.0" />
-        <Protobuf Include="Protos\storage.proto" GrpcServices="None" />
+      <PackageReference Include="Grpc.Tools" Version="2.76.0">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+        <Protobuf Include="Protos\storage.proto" GrpcServices="Both" />
     </ItemGroup>
+    
 
 </Project>

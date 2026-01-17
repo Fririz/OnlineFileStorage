@@ -21,7 +21,6 @@
         <Link>.dockerignore</Link>
       </Content>
     </ItemGroup>
-
     <ItemGroup>
       <ProjectReference Include="..\..\..\BuildingBlocks\Logging\Logging\Logging.csproj" />
       <ProjectReference Include="..\FileStorageService.Application\FileStorageService.Application.csproj" />

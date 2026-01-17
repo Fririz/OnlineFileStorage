@@ -6,6 +6,7 @@ using FileApiService.Application.Contracts;
 using FileApiService.Infrastructure.Repository;
 using MassTransit;
 using MassTransit.EntityFrameworkCoreIntegration;
+using OnlineFileStorage.Grpc.Shared.Storage;
 
 namespace FileApiService.Infrastructure;
 
@@ -17,7 +18,12 @@ public static class InfrastructureServiceRegistration
             options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
         services.AddScoped<IItemRepository, ItemRepository>();
         services.AddScoped<IAccessRightsRepository, AccessRightsRepository>();
-        
+        services.AddScoped<ILinkProvider, Grpc.LinkProvider>();
+        services.AddGrpcClient<StorageService.StorageServiceClient>(o =>
+            {
+                o.Address = new Uri("host.docker.internal:8083");
+            }
+        );
         var rabbitMqSection = configuration.GetSection("RabbitMq");                            
         var rabbitMqUser= (rabbitMqSection["User"] ?? throw new InvalidOperationException("RabbitMq:User is not set")).Trim();                         
         var rabbitMqPass = (rabbitMqSection["Pass"] ?? throw new InvalidOperationException("RabbitMq:Pass is not set")).Trim();                        

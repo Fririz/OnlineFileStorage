@@ -1,6 +1,7 @@
 using System.Reflection;
 using FileStorageService.Application;
 using FileStorageService.Infrastructure;
+using FileStorageService.Infrastructure.Grpc;
 using Serilog;
 using Logging;
 using MassTransit;
@@ -44,5 +45,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseSerilogRequestLogging();
+app.MapGrpcService<GrpcLinkService>();
 app.MapControllers();
 app.Run();

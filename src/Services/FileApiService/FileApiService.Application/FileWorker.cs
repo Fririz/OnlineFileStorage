@@ -16,18 +16,21 @@ public class FileWorker : IFileWorker
     private readonly IItemRepository _itemRepository;
     private readonly IPublishEndpoint _publishEndpoint;
     private readonly IHttpClientFactory _httpClientFactory;
+    private readonly ILinkProvider _linkProvider;
     private readonly IMapper _mapper;
     public FileWorker(ILogger<FileWorker> logger, 
         IItemRepository itemRepository, 
         IPublishEndpoint publishEndpoint,
         IHttpClientFactory httpClientFactory,
-        IMapper mapper
+        IMapper mapper,
+        ILinkProvider linkProvider
         )
     {
         _logger = logger;
         _itemRepository = itemRepository;
         _publishEndpoint = publishEndpoint;
         _httpClientFactory = httpClientFactory;
+        _linkProvider = linkProvider;
         _mapper = mapper;
         
     }
@@ -56,10 +59,8 @@ public class FileWorker : IFileWorker
         {
             throw new UnauthorizedAccessException("You are not allowed to download this file");
         }
-        //TODO add GRPC call to filestorage service ITS TEMPORARY
-        var client = _httpClientFactory.CreateClient();
-        var response = await client.GetAsync($"http://filestorageservice:8083/api/link/GetDownloadLink/{item.Id}/{item.Name}/", cancellationToken);
-        var link = await response.Content.ReadAsStringAsync(cancellationToken);
+        var link = await _linkProvider.GetDownloadLinkAsync(item.Id, item.Name, cancellationToken);
+        
         return link;
     }
     public async Task<string> CreateFile(ItemCreateDto itemCreate, Guid userId, CancellationToken cancellationToken = default)
@@ -72,20 +73,12 @@ public class FileWorker : IFileWorker
         await _itemRepository.AddAsync(file, cancellationToken);
         try
         {
-            //TODO add GRPC call to filestorage service and move to infrastructure layer
-            var client = _httpClientFactory.CreateClient();
             _logger.LogInformation($"Created file {file.Id}");
             
-            var response = await client.GetAsync($"http://filestorageservice:8083/api/link/GetUploadLink/{file.Id}",
-                cancellationToken);
-            _logger.LogInformation($"Link for uploading = {response.Content.ReadAsStringAsync(cancellationToken).Result}");
+            var link = await _linkProvider.GetUploadLinkAsync(file.Id, cancellationToken);
             
-            if (!response.IsSuccessStatusCode)
-            {
-                throw new Exception("Storage service unavailable");
-            }
-
-            return await response.Content.ReadAsStringAsync(cancellationToken);
+            _logger.LogInformation($"Link for uploading = {link}");
+            return link;
         }
         catch
         {

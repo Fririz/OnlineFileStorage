@@ -7,6 +7,9 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="Grpc.Core" Version="2.46.6" />
+      <PackageReference Include="Grpc.Core.Api" Version="2.76.0" />
+      <PackageReference Include="Grpc.Net.ClientFactory" Version="2.76.0" />
       <PackageReference Include="MassTransit.EntityFrameworkCore" Version="8.5.7" />
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.10" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.10">
@@ -20,6 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\..\BuildingBlocks\Grpc.Shared\Grpc.Shared\Grpc.Shared.csproj" />
       <ProjectReference Include="..\..\IdentityService\IdentityService.Application\IdentityService.Application.csproj" />
       <ProjectReference Include="..\FileApiService.Application\FileApiService.Application.csproj" />
       <ProjectReference Include="..\FileApiService.Domain\FileApiService.Domain.csproj" />

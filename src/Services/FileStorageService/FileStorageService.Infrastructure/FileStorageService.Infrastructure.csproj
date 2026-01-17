@@ -7,10 +7,12 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\..\BuildingBlocks\Grpc.Shared\Grpc.Shared\Grpc.Shared.csproj" />
       <ProjectReference Include="..\FileStorageService.Application\FileStorageService.Application.csproj" />
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="Grpc.Core" Version="2.46.6" />
       <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.10" />
       <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.10" />
       <PackageReference Include="Minio" Version="6.0.5" />

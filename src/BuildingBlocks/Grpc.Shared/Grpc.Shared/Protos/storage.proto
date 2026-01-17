@@ -1,19 +1,22 @@
 syntax = "proto3";
+option csharp_namespace = "OnlineFileStorage.Grpc.Shared.Storage";
 
-option csharp_namespace = "Shared.Grpc.Storage";
+package storage;
 
 service StorageService {
-
-  rpc GenerateLink (GeneratePresignedUrlRequest) returns (GeneratePresignedUrlResponse);
+  rpc GetDownloadLink (DownloadLinkRequest) returns (LinkResponse);
+  rpc GetUploadLink (UploadLinkRequest) returns (LinkResponse);
 }
 
-
-message GeneratePresignedUrlRequest {
-  string file_id = 1;
+message DownloadLinkRequest {
+  string file_id = 1; 
   string file_name = 2;
-  int32 expires_in_minutes = 3;
 }
 
-message GeneratePresignedUrlResponse {
-  string presigned_url = 1;
+message UploadLinkRequest {
+  string file_id = 1;
+}
+
+message LinkResponse {
+  string url = 1;
 }
