@@ -5,6 +5,8 @@ using FileApiService.Domain.Entities;
 using FileApiService.Domain.Enums;
 using MassTransit;
 using Microsoft.Extensions.Logging;
+using FluentResults; 
+using FileApiService.Application.Exceptions.FluentResultsErrors; 
 
 namespace FileApiService.Application;
 
@@ -14,6 +16,7 @@ public class FolderWorker : IFolderWorker
     private readonly IItemRepository _itemRepository;
     private readonly IPublishEndpoint _publishEndpoint;
     private readonly IMapper _mapper;
+
     public FolderWorker(ILogger<FolderWorker> logger, 
         IItemRepository itemRepository,
         IPublishEndpoint publishEndpoint,
@@ -25,56 +28,66 @@ public class FolderWorker : IFolderWorker
         _publishEndpoint = publishEndpoint;
     }
 
-    public async Task<IEnumerable<ItemResponseDto>> GetChildrenAsync(Guid userId)
+    public async Task<Result<List<ItemResponseDto>>> GetChildrenAsync(Guid userId)
     {
         var items = await _itemRepository.GetAllChildrenAsync(userId);
-        return _mapper.Map(items);
+        var mappedItems = _mapper.Map(items);
+        
+        return Result.Ok(mappedItems);
     }
-    public async Task<Guid> CreateFolder(ItemCreateDto itemCreate, Guid ownerId)
+
+    public async Task<Result<Guid>> CreateFolder(ItemCreateDto itemCreate, Guid ownerId)
     {
         if (itemCreate.Type != TypeOfItem.Folder)
         {
-            throw new InvalidOperationException("Creating a file in method createFolder not allowed");
+            return Result.Fail(new InvalidOperationError("Creating a file in method CreateFolder is not allowed"));
         }
+
         var folder = Item.CreateFolder(ownerId, itemCreate.Name, itemCreate.ParentId);
         await _itemRepository.AddAsync(folder);
-        return folder.Id;
+        
+        return Result.Ok(folder.Id);
     }
 
-    public async Task DeleteFolderWithAllChildren(Guid folderId, Guid ownerId)
+    public async Task<Result> DeleteFolderWithAllChildren(Guid folderId, Guid ownerId)
     {
-        
         var folder = await _itemRepository.GetByIdAsync(folderId);
+        
         if (folder is null)
         {
-            throw new DirectoryNotFoundException();
+            return Result.Fail(new DirectoryNotFoundError($"Folder with id {folderId} not found"));
         }
 
         if (folder.Type != TypeOfItem.Folder)
         {
-            
-            throw new InvalidOperationException("Creating a file in method createFolder not allowed");
+            return Result.Fail(new InvalidOperationError($"Item {folderId} is not a folder"));
         }
 
         if (folder.OwnerId != ownerId)
         {
-            throw new UnauthorizedAccessException("You are not allowed to delete this folder");
+            return Result.Fail(new UnauthorizedAccessError("You are not allowed to delete this folder"));
         }
+
         var allItemsToDelete = new List<Item>();
+        
         await FindAllDescendantsAsync(folderId, allItemsToDelete);
+        
         allItemsToDelete.Add(folder);
         allItemsToDelete.ForEach(x => x.MarkAsDeleted());
+
         await _publishEndpoint.Publish(new FilesDeletionRequest
         {
             IdsToDelete = allItemsToDelete.Select(x => x.Id).ToList()
         });
-        await _itemRepository.UpdateRangeAsync(allItemsToDelete);// delete files softly
 
+        await _itemRepository.UpdateRangeAsync(allItemsToDelete);
+
+        return Result.Ok();
     }
+
     private async Task FindAllDescendantsAsync(Guid parentId, List<Item> allItems)
     {
         var children = await _itemRepository.GetAllChildrenAsync(parentId);
-        
         var childrenList = children.ToList(); 
 
         if (!childrenList.Any())

@@ -2,6 +2,7 @@ using FileApiService.Application.Contracts;
 using FileApiService.Application.Dto;
 using FileApiService.Application.Exceptions.FluentResultsErrors;
 using FileApiService.Domain.Entities;
+using FluentResults;
 using MassTransit;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -21,11 +22,16 @@ public class FileController : ControllerBase
     /// </summary>
     /// <param name="id">fileId</param>
     /// <returns></returns>
-    [HttpGet]
-    [Route("getparent/{id}")]
+    [HttpGet("getparent/{id:guid}")]
     public async Task<ActionResult<Item>> GetParent(Guid id)
     {
         var parent = await _fileWorker.GetParent(id);
+        
+        if (parent is null)
+        {
+            return NotFound();
+        }
+
         return Ok(parent);
     }
     /// <summary>
@@ -35,21 +41,20 @@ public class FileController : ControllerBase
     /// <param name="userId"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [HttpPost]
-    [Route("uploadfile")]
-    public async Task<ActionResult> UploadFile(ItemCreateDto itemCreate, [FromHeader(Name = "Id")] Guid userId, CancellationToken cancellationToken = default)
+    [HttpPost("uploadfile")]
+    public async Task<ActionResult> UploadFile(
+        [FromBody] ItemCreateDto itemCreate, 
+        [FromHeader(Name = "Id")] Guid userId, 
+        CancellationToken cancellationToken)
     {
-        Guid ownerId = Guid.Parse(Request.Headers["Id"].ToString());
-        var result = await _fileWorker.CreateFile(itemCreate, ownerId, cancellationToken);
-        if (result.IsFailed)
+        var result = await _fileWorker.CreateFile(itemCreate, userId, cancellationToken);
+        
+        if (result.IsSuccess)
         {
-            var error = result.Errors.First();
-            return error switch
-            {
-                _ => BadRequest(new {error.Message})
-            };
+            return Ok(new { uploadUrl = result.Value });
         }
-        return Ok(new { uploadUrl = result.Value });
+
+        return HandleError(result.Errors);
     }
     /// <summary>
     /// Download file
@@ -58,22 +63,20 @@ public class FileController : ControllerBase
     /// <param name="userId"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [HttpGet]
-    [Route("downloadfile/{id:minlength(1)}/")]
-    public async Task<ActionResult> DownloadFile(Guid id, [FromHeader(Name = "Id")] Guid userId, CancellationToken cancellationToken = default)
+    [HttpGet("downloadfile/{id:guid}")]
+    public async Task<ActionResult> DownloadFile(
+        Guid id, 
+        [FromHeader(Name = "Id")] Guid userId, 
+        CancellationToken cancellationToken)
     {
         var result = await _fileWorker.DownloadFile(id, userId, cancellationToken);
-        if (result.IsFailed)
+        
+        if (result.IsSuccess)
         {
-            var error = result.Errors.First();
-            return error switch
-            {
-                FileNotFoundError => NotFound(new { error.Message }),
-                UnauthorizedAccessError => Unauthorized(new {error.Message}),
-                _ => BadRequest(new {error.Message})
-            };
+            return Ok(new { downloadUrl = result.Value });
         }
-        return Ok(new { uploadUrl = result.Value });
+
+        return HandleError(result.Errors);
     }
 /// <summary>
 /// Delete file
@@ -81,36 +84,51 @@ public class FileController : ControllerBase
 /// <param name="fileId"></param>
 /// <param name="userId"></param>
 /// <returns></returns>
-    [HttpDelete]
-    [Route("deletefile/{fileId}")]
-    public async Task<ActionResult> DeleteFile(Guid fileId, [FromHeader(Name = "Id")] Guid userId)
+    [HttpDelete("deletefile/{id:guid}")]
+    public async Task<ActionResult> DeleteFile(Guid id, [FromHeader(Name = "Id")] Guid userId)
     {
-        var result = await _fileWorker.DeleteFile(fileId, userId);
-        if (result.IsFailed)
+        var result = await _fileWorker.DeleteFile(id, userId);
+            
+        if (result.IsSuccess)
         {
-            var error = result.Errors.First();
-            return error switch
-            {
-                FileNotFoundError => NotFound(new {error.Message}),
-                InvalidOperationError => BadRequest(new {error.Message}),
-                UnauthorizedAccessError => Unauthorized( new {error.Message}),
-                _ => BadRequest(new {error.Message})
-            };
+            return Ok();
         }
-        return Ok();
+
+        return HandleError(result.Errors);
     }
 /// <summary>
 /// Get all items from root
 /// </summary>
 /// <param name="userId">User id</param>
 /// <returns>list of items</returns>
-    [HttpGet]
-    [Route("getitemsfromroot")]
+    [HttpGet("getitemsfromroot")]
     public async Task<ActionResult<List<ItemResponseDto>>> GetItemsFromRoot([FromHeader(Name = "Id")] Guid userId)
     {
-        var items = await _fileWorker.GetRootItems(userId);
-        return items;
+        var result = await _fileWorker.GetRootItems(userId);
+            
+        if (result.IsSuccess)
+        {
+            return Ok(result.Value);
+        }
+
+        return HandleError(result.Errors);
     }
-    
+    private ActionResult HandleError(IReadOnlyList<IError> errors)
+    {
+        var error = errors.FirstOrDefault();
+        
+        if (error is null)
+        {
+            return StatusCode(500);
+        }
+
+        return error switch
+        {
+            FileNotFoundError => NotFound(new { error.Message }),
+            UnauthorizedAccessError => Unauthorized(new { error.Message }),
+            InvalidOperationError => BadRequest(new { error.Message }),
+            _ => BadRequest(new { error.Message })
+        };
+    }
 
 }

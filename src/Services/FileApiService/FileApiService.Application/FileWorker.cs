@@ -40,12 +40,12 @@ public class FileWorker : IFileWorker
         var parent = _itemRepository.GetParent(itemId);
         return parent;
     }
-    public async Task<List<ItemResponseDto>> GetRootItems(Guid userId)
+    public async Task<Result<List<ItemResponseDto>>> GetRootItems(Guid userId)
     {
         var itemsEnum = await _itemRepository.GetRootItems(userId);
         var items = itemsEnum.OfType<Item>().ToList();
         var itemDtos = _mapper.Map(items);
-        return itemDtos;
+        return Result.Ok(itemDtos);
     }
     
     public async Task<Result<string>> DownloadFile(Guid id, Guid ownerId, CancellationToken cancellationToken = default)
