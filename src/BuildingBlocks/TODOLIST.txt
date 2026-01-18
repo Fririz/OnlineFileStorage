@@ -8,8 +8,6 @@
 //TODO add notification microservice
 //TODO add pdfconvert microservice
 //TODO add userprofile microservice
-//TODO add swagger
-//TODO add more logging
 //TODO add unit test
 //TODO add mapping
 //TODO improve dockercompose and dockerfiles
