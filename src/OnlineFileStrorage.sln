@@ -62,6 +62,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".env", ".env", "{92C076AA-8
 		..\.gitignore = ..\.gitignore
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{DA57D004-2D31-44C4-B3CD-AE1C8AFCA858}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileApiService.UnitTests", "Tests\FileApiService.UnitTests\FileApiService.UnitTests.csproj", "{B013BCEA-0CF8-429E-9F19-ED480C474CE6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -89,6 +93,7 @@ Global
 		{45548F2E-95FE-4B49-9BEE-42202508563C} = {4F4FB46E-6B72-4B2B-AAC4-5579EB3A5882}
 		{BFDE183F-707E-44E1-AF36-D61A7CACA81D} = {C703A2BA-D708-4ED7-B9B4-150C3D4EF86F}
 		{A6972016-28B8-4AEE-83B7-F615E577400B} = {BFDE183F-707E-44E1-AF36-D61A7CACA81D}
+		{B013BCEA-0CF8-429E-9F19-ED480C474CE6} = {DA57D004-2D31-44C4-B3CD-AE1C8AFCA858}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{919B2171-0C02-4445-974D-BC99D3FE364B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -151,5 +156,9 @@ Global
 		{A6972016-28B8-4AEE-83B7-F615E577400B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A6972016-28B8-4AEE-83B7-F615E577400B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A6972016-28B8-4AEE-83B7-F615E577400B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B013BCEA-0CF8-429E-9F19-ED480C474CE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B013BCEA-0CF8-429E-9F19-ED480C474CE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B013BCEA-0CF8-429E-9F19-ED480C474CE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B013BCEA-0CF8-429E-9F19-ED480C474CE6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

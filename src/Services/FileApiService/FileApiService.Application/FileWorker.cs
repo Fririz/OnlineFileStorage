@@ -15,13 +15,11 @@ public class FileWorker : IFileWorker
     private readonly ILogger<FileWorker> _logger;
     private readonly IItemRepository _itemRepository;
     private readonly IPublishEndpoint _publishEndpoint;
-    private readonly IHttpClientFactory _httpClientFactory;
     private readonly ILinkProvider _linkProvider;
     private readonly IMapper _mapper;
     public FileWorker(ILogger<FileWorker> logger, 
         IItemRepository itemRepository, 
         IPublishEndpoint publishEndpoint,
-        IHttpClientFactory httpClientFactory,
         IMapper mapper,
         ILinkProvider linkProvider
         )
@@ -29,7 +27,6 @@ public class FileWorker : IFileWorker
         _logger = logger;
         _itemRepository = itemRepository;
         _publishEndpoint = publishEndpoint;
-        _httpClientFactory = httpClientFactory;
         _linkProvider = linkProvider;
         _mapper = mapper;
         
@@ -63,6 +60,7 @@ public class FileWorker : IFileWorker
         
         return Result.Ok(link);
     }
+    
     public async Task<Result<string>> CreateFile(ItemCreateDto itemCreate, Guid userId, CancellationToken cancellationToken = default)
     {
         if (itemCreate.Type != TypeOfItem.File)
@@ -109,4 +107,6 @@ public class FileWorker : IFileWorker
         await _itemRepository.UpdateAsync(file);
         return Result.Ok();
     }
+    
+    
 }
