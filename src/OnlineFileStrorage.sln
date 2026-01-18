@@ -66,6 +66,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{DA57D004
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileApiService.UnitTests", "Tests\FileApiService.UnitTests\FileApiService.UnitTests.csproj", "{B013BCEA-0CF8-429E-9F19-ED480C474CE6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityService.UnitTests", "Tests\IdentityService.UnitTests\IdentityService.UnitTests.csproj", "{D4E9BC43-5CBA-407C-B077-AF5DEDD2CEBF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileStorageService.UnitTests", "Tests\FileStorageService.UnitTests\FileStorageService.UnitTests.csproj", "{183EED58-DB03-415D-80CB-C82BAE5168B1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -94,6 +98,8 @@ Global
 		{BFDE183F-707E-44E1-AF36-D61A7CACA81D} = {C703A2BA-D708-4ED7-B9B4-150C3D4EF86F}
 		{A6972016-28B8-4AEE-83B7-F615E577400B} = {BFDE183F-707E-44E1-AF36-D61A7CACA81D}
 		{B013BCEA-0CF8-429E-9F19-ED480C474CE6} = {DA57D004-2D31-44C4-B3CD-AE1C8AFCA858}
+		{D4E9BC43-5CBA-407C-B077-AF5DEDD2CEBF} = {DA57D004-2D31-44C4-B3CD-AE1C8AFCA858}
+		{183EED58-DB03-415D-80CB-C82BAE5168B1} = {DA57D004-2D31-44C4-B3CD-AE1C8AFCA858}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{919B2171-0C02-4445-974D-BC99D3FE364B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -160,5 +166,13 @@ Global
 		{B013BCEA-0CF8-429E-9F19-ED480C474CE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B013BCEA-0CF8-429E-9F19-ED480C474CE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B013BCEA-0CF8-429E-9F19-ED480C474CE6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4E9BC43-5CBA-407C-B077-AF5DEDD2CEBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4E9BC43-5CBA-407C-B077-AF5DEDD2CEBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4E9BC43-5CBA-407C-B077-AF5DEDD2CEBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4E9BC43-5CBA-407C-B077-AF5DEDD2CEBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{183EED58-DB03-415D-80CB-C82BAE5168B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{183EED58-DB03-415D-80CB-C82BAE5168B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{183EED58-DB03-415D-80CB-C82BAE5168B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{183EED58-DB03-415D-80CB-C82BAE5168B1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
