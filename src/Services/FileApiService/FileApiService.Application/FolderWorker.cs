@@ -28,9 +28,9 @@ public class FolderWorker : IFolderWorker
         _publishEndpoint = publishEndpoint;
     }
 
-    public async Task<Result<List<ItemResponseDto>>> GetChildrenAsync(Guid userId)
+    public async Task<Result<List<ItemResponseDto>>> GetChildrenAsync(Guid folderId)
     {
-        var items = await _itemRepository.GetAllChildrenAsync(userId);
+        var items = await _itemRepository.GetAllChildrenAsync(folderId);
         var mappedItems = _mapper.Map(items);
         
         return Result.Ok(mappedItems);
