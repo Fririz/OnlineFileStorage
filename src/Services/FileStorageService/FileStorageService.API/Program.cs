@@ -28,6 +28,12 @@ builder.Services.AddSwaggerGen(options =>
         In = ParameterLocation.Cookie,
     });
 });
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(8083, o => o.Protocols = HttpProtocols.Http1);
+
+    options.ListenAnyIP(8090, o => o.Protocols = HttpProtocols.Http2);
+});
 builder.Services.Configure<KestrelServerOptions>(options =>
 {
     options.Limits.MaxRequestBodySize = 5_368_709_120; // TODO bring it to env

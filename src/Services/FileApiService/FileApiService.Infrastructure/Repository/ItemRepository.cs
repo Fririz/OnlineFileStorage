@@ -14,24 +14,24 @@ public class ItemRepository : RepositoryBase<Item>, IItemRepository
     {
         
     }
-    public async Task<IEnumerable<Item?>> GetAllChildrenAsync(Guid itemId)
+    public async Task<IEnumerable<Item?>> GetAllChildrenAsync(Guid itemId, CancellationToken cancellationToken = default)
     {
-        return await _context.Items.Where(i => i.ParentId == itemId).AsNoTracking().ToListAsync();
+        return await _context.Items.Where(i => i.ParentId == itemId).AsNoTracking().ToListAsync(cancellationToken: cancellationToken);
     }
 
-    public async Task<Item?> GetParent(Guid itemId)
+    public async Task<Item?> GetParent(Guid itemId, CancellationToken cancellationToken = default)
     {
         return await _context.Items.Where(i => itemId == i.Id).
-            Select(i => i.Parent).FirstOrDefaultAsync();
+            Select(i => i.Parent).FirstOrDefaultAsync(cancellationToken: cancellationToken);
     }
 
-    public async Task<IEnumerable<Item?>> GetRootItems(Guid userId)
+    public async Task<IEnumerable<Item?>> GetRootItems(Guid userId, CancellationToken cancellationToken = default)
     {
         return await _context.Items.Where(i => i.ParentId == null).
-            Where(i => i.OwnerId == userId).AsNoTracking().ToListAsync();
+            Where(i => i.OwnerId == userId).AsNoTracking().ToListAsync(cancellationToken: cancellationToken);
     }
 
-    public async Task<IEnumerable<Item?>> GetSharedRootItems(Guid userId)
+    public async Task<IEnumerable<Item?>> GetSharedRootItems(Guid userId, CancellationToken cancellationToken = default)
     {
         var accessibleItemIds = _context.AccessRights
             .Where(ar => ar.UserId == userId && ar.CanRead) 
@@ -40,7 +40,7 @@ public class ItemRepository : RepositoryBase<Item>, IItemRepository
             .Where(i => accessibleItemIds.Contains(i.Id))
             .Where(i => i.ParentId == null)
             .Where(i => i.OwnerId != userId)
-            .ToListAsync();
+            .ToListAsync(cancellationToken: cancellationToken);
     }
 
     public async Task<int> DeleteFilesWithPendingExpired()
@@ -50,6 +50,7 @@ public class ItemRepository : RepositoryBase<Item>, IItemRepository
         var rowsAffected = await _context.Items
             .Where(f => f.Type == TypeOfItem.File && f.Status == UploadStatus.Pending && f.CreatedDate < oneHourAgo)
             .ExecuteDeleteAsync();
+        //business logic leak but that is how it should be
 
         return rowsAffected;
     }

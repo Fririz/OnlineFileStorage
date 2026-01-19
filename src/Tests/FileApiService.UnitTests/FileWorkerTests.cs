@@ -217,7 +217,7 @@ public class FileWorkerTests
     
         var dtos = new List<ItemResponseDto> { new ItemResponseDto { Name = "file1.txt" } };
 
-        _itemRepositoryMock.Setup(repo => repo.GetRootItems(userId))
+        _itemRepositoryMock.Setup(repo => repo.GetRootItems(userId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(items);
 
         _mapperMock.Setup(m => m.Map(items)).Returns(dtos); 

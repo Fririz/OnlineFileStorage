@@ -59,7 +59,7 @@ public class FolderWorkerTests
             } 
         };
 
-        _itemRepositoryMock.Setup(repo => repo.GetAllChildrenAsync(userId))
+        _itemRepositoryMock.Setup(repo => repo.GetAllChildrenAsync(userId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(itemsList);
     
         _mapperMock.Setup(m => m.Map(It.IsAny<IEnumerable<Item>>()))
@@ -166,10 +166,10 @@ public class FolderWorkerTests
         _itemRepositoryMock.Setup(repo => repo.GetByIdAsync(rootId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(rootFolder);
 
-        _itemRepositoryMock.Setup(repo => repo.GetAllChildrenAsync(rootId))
+        _itemRepositoryMock.Setup(repo => repo.GetAllChildrenAsync(rootId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(new List<Item> { childFile, childFolder });
 
-        _itemRepositoryMock.Setup(repo => repo.GetAllChildrenAsync(childFolder.Id))
+        _itemRepositoryMock.Setup(repo => repo.GetAllChildrenAsync(childFolder.Id, It.IsAny<CancellationToken>()))
             .ReturnsAsync(new List<Item> { grandChildFile });
 
         var result = await _folderWorker.DeleteFolderWithAllChildren(rootId, userId);

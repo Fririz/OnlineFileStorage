@@ -3,10 +3,10 @@ namespace FileApiService.Application.Contracts;
 
 public interface IItemRepository : IRepositoryBase<Item>
 {
-    public Task<IEnumerable<Item?>> GetAllChildrenAsync(Guid itemId);
-    public Task<Item?> GetParent(Guid itemId);
-    public Task<IEnumerable<Item?>> GetRootItems(Guid userId);
-    public Task<IEnumerable<Item?>> GetSharedRootItems(Guid userId);
+    public Task<IEnumerable<Item?>> GetAllChildrenAsync(Guid itemId, CancellationToken cancellationToken = default);
+    public Task<Item?> GetParent(Guid itemId, CancellationToken cancellationToken = default);
+    public Task<IEnumerable<Item?>> GetRootItems(Guid userId, CancellationToken cancellationToken = default);
+    public Task<IEnumerable<Item?>> GetSharedRootItems(Guid userId, CancellationToken cancellationToken = default);
     public Task<int> DeleteFilesWithPendingExpired();
 
 }

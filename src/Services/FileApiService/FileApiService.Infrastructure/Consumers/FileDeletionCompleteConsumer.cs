@@ -15,10 +15,11 @@ public class FileDeletionCompleteConsumer : IConsumer<FileDeletionComplete>
             _logger = logger;
             _itemRepository = itemRepository;
         }
-        //TODO: move consumers and rabbitmq logic to another layer
         public async Task Consume(ConsumeContext<FileDeletionComplete> context)
         {
             var message = context.Message;
-            await _itemRepository.DeleteByIdAsync(message.FileId);
+            var item = await _itemRepository.GetByIdAsync(message.FileId);
+            if (item is not null)
+                await _itemRepository.DeleteAsync(item);
         }
 }

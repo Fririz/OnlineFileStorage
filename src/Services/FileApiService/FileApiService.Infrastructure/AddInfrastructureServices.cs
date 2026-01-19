@@ -14,16 +14,28 @@ public static class InfrastructureServiceRegistration
 {
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
+        //Postgres
         services.AddDbContext<Context>(options =>
             options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
+        //DI
         services.AddScoped<IItemRepository, ItemRepository>();
         services.AddScoped<IAccessRightsRepository, AccessRightsRepository>();
         services.AddScoped<ILinkProvider, Grpc.LinkProvider>();
+        services.Decorate<IItemRepository, CachedItemRepository>();
+        //Redis
+        var redisConnection = configuration.GetConnectionString("Redis");
+        services.AddStackExchangeRedisCache(options =>
+        {
+            options.Configuration = redisConnection;
+            options.InstanceName = "FileApi_"; 
+        });
+        //GRPC
         services.AddGrpcClient<StorageService.StorageServiceClient>(o =>
             {
-                o.Address = new Uri("host.docker.internal:8083");
+                o.Address = new Uri("http://filestorageservice:8090");
             }
         );
+        //RabbitMq
         var rabbitMqSection = configuration.GetSection("RabbitMq");                            
         var rabbitMqUser= (rabbitMqSection["User"] ?? throw new InvalidOperationException("RabbitMq:User is not set")).Trim();                         
         var rabbitMqPass = (rabbitMqSection["Pass"] ?? throw new InvalidOperationException("RabbitMq:Pass is not set")).Trim();                        

@@ -54,9 +54,12 @@ services:
         condition: service_healthy
       filestorageservice:
         condition: service_started
+      redis:
+        condition: service_healthy
 
 
   filestorageservice:
+    container_name: filestorageservice
     build:
       context: .
       dockerfile: Services/FileStorageService/FileStorageService.API/Dockerfile
@@ -98,6 +101,21 @@ services:
       interval: 5s
       timeout: 3s
       retries: 20
+      
+  redis:
+    image: redis:alpine
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 1s
+      timeout: 3s
+      retries: 30
+      start_period: 5s
+    volumes:
+      - redis_data:/data
 
   rabbit-mq:
     image: rabbitmq:3-management
@@ -175,3 +193,4 @@ volumes:
   rabbitmq_data:
   pgadmin_data:
   elastic_data:
+  redis_data:

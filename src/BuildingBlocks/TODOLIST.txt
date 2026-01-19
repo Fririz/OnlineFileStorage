@@ -1,8 +1,5 @@
-//TODO add grpc for links between services
 //TODO add cqrs
 //TODO add JWT token for links in filestorageservice
-//TODO add fileDtoResponse for frontend
-//TODO add hangfire for deleting files with uploadstatus longer than 1hour
 //TODO add metriс servies
 //TODO add redis to cache repositories
 //TODO add notification microservice
