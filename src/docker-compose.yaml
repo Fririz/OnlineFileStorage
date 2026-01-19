@@ -13,16 +13,24 @@ services:
       - Jwt__Issuer=${JWT_ISSUER}
       - Jwt__Audience=${JWT_AUDIENCE}
     depends_on:
-      postgres: 
-        condition: service_started
+      postgres:
+        condition: service_healthy 
+
 
   postgres:
     image: postgres:13.2-alpine
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+    healthcheck: 
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   fileapiservice:
     build:
@@ -39,6 +47,14 @@ services:
       - RabbitMq__Host=rabbit-mq
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:8082
+    depends_on:
+      rabbit-mq:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+      filestorageservice:
+        condition: service_started
+
 
   filestorageservice:
     build:
@@ -59,8 +75,11 @@ services:
       - Minio__BucketName=files
       - Minio__WithSSL=false
     depends_on:
-      - minio
-      - rabbit-mq
+      minio:
+        condition: service_healthy
+      rabbit-mq:
+        condition: service_healthy
+    
 
   minio:
     image: minio/minio
@@ -72,6 +91,8 @@ services:
       MINIO_ROOT_USER: ${MINIO_ACCESS_KEY}   
       MINIO_ROOT_PASSWORD: ${MINIO_SECRET_KEY}
     command: server /data --console-address ":9001"
+    volumes:
+      - minio_data:/data
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:9000/minio/health/live" ]
       interval: 5s
@@ -86,6 +107,13 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
       RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASS}
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq 
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 10s
+      timeout: 10s
+      retries: 5
 
   ocelot:
     build:
@@ -101,6 +129,7 @@ services:
     depends_on:
       - identity-service
       - fileapiservice
+      - filestorageservice
 
   pg-admin:
     image: dpage/pgadmin4
@@ -109,6 +138,8 @@ services:
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
     ports:
       - "5050:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
     depends_on:
       postgres:
         condition: service_started
@@ -122,6 +153,12 @@ services:
       - ES_JAVA_OPTS=-Xms1g -Xmx1g
     ports:
       - "9200:9200"
+    volumes:
+      - elastic_data:/usr/share/elasticsearch/data
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
 
   kibana:
     image: docker.elastic.co/kibana/kibana:8.11.1
@@ -132,3 +169,9 @@ services:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
     depends_on:
       - elasticsearch
+volumes:
+  postgres_data:
+  minio_data:
+  rabbitmq_data:
+  pgadmin_data:
+  elastic_data:
