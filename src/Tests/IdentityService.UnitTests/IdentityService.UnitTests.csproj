@@ -18,4 +18,9 @@
         <Using Include="Xunit"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\Services\IdentityService\IdentityService.Application\IdentityService.Application.csproj" />
+      <ProjectReference Include="..\..\Services\IdentityService\IdentityService.Domain\IdentityService.Domain.csproj" />
+    </ItemGroup>
+
 </Project>
