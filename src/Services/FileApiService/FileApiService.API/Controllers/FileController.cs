@@ -127,6 +127,7 @@ public class FileController : ControllerBase
             FileNotFoundError => NotFound(new { error.Message }),
             UnauthorizedAccessError => Unauthorized(new { error.Message }),
             InvalidOperationError => BadRequest(new { error.Message }),
+            InvalidParentError => BadRequest(new { error.Message }),
             _ => BadRequest(new { error.Message })
         };
     }

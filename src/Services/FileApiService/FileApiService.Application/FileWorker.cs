@@ -67,6 +67,14 @@ public class FileWorker : IFileWorker
         {
             return Result.Fail(new InvalidOperationError("Creating a folder in method createFile not allowed"));
         }
+
+        if (itemCreate.ParentId != null)// if not from root
+        {
+            var parent = await _itemRepository.GetByIdAsync((Guid)itemCreate.ParentId, cancellationToken);
+            if (parent == null)
+                return Result.Fail(new InvalidParentError("Invalid parent id"));
+        }//TODO add unit test
+        
         var file = Item.CreateFile(userId, itemCreate.Name, itemCreate.ParentId);
         await _itemRepository.AddAsync(file, cancellationToken);
         try
