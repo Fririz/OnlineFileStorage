@@ -83,7 +83,7 @@ public class FolderController : ControllerBase
         {
             DirectoryNotFoundError => NotFound(firstError.Message),               
             UnauthorizedAccessError => Unauthorized(firstError.Message),  
-            InvalidOperationError => BadRequest(firstError.Message),
+            InvalidTypeOfItemError => BadRequest(firstError.Message),
             _ => StatusCode(500, firstError.Message)                      
         };
     }

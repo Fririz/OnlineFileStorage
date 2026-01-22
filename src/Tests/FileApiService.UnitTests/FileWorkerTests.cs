@@ -122,7 +122,7 @@ public class FileWorkerTests
         var result = await _fileWorker.CreateFile(dto, userId);
 
         Assert.True(result.IsFailed);
-        Assert.IsType<InvalidOperationError>(result.Errors.First());
+        Assert.IsType<InvalidTypeOfItemError>(result.Errors.First());
     
         _itemRepositoryMock.Verify(repo => repo.AddAsync(It.IsAny<Item>(), It.IsAny<CancellationToken>()), Times.Never);
     }
@@ -206,7 +206,7 @@ public class FileWorkerTests
         var result = await _fileWorker.DeleteFile(fileId, userId);
         
         Assert.True(result.IsFailed);
-        Assert.IsType<InvalidOperationError>(result.Errors.First());
+        Assert.IsType<InvalidTypeOfItemError>(result.Errors.First());
     }
     [Fact]
     public async Task GetRootItems_Success_ShouldReturnMappedDtos()

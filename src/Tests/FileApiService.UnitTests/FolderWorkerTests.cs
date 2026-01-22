@@ -97,7 +97,7 @@ public class FolderWorkerTests
         var result = await _folderWorker.CreateFolder(dto, userId);
 
         Assert.True(result.IsFailed);
-        Assert.IsType<InvalidOperationError>(result.Errors.First());
+        Assert.IsType<InvalidTypeOfItemError>(result.Errors.First());
         
         _itemRepositoryMock.Verify(repo => repo.AddAsync(It.IsAny<Item>(), It.IsAny<CancellationToken>()), Times.Never);
     }
@@ -129,7 +129,7 @@ public class FolderWorkerTests
         var result = await _folderWorker.DeleteFolderWithAllChildren(folderId, userId);
 
         Assert.True(result.IsFailed);
-        Assert.IsType<InvalidOperationError>(result.Errors.First());
+        Assert.IsType<InvalidTypeOfItemError>(result.Errors.First());
     }
 
     [Fact]

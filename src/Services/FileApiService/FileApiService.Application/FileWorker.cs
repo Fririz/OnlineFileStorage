@@ -65,7 +65,7 @@ public class FileWorker : IFileWorker
     {
         if (itemCreate.Type != TypeOfItem.File)
         {
-            return Result.Fail(new InvalidOperationError("Creating a folder in method createFile not allowed"));
+            return Result.Fail(new InvalidTypeOfItemError("Invalid type of item"));
         }
 
         if (itemCreate.ParentId != null)// if not from root
@@ -105,7 +105,7 @@ public class FileWorker : IFileWorker
         }
         if (file.Type != TypeOfItem.File)
         {
-            return Result.Fail(new InvalidOperationError("Deleting a folder in method delete file not allowed"));
+            return Result.Fail(new InvalidTypeOfItemError("Deleting a folder in method delete file not allowed"));
         }
         file.MarkAsDeleted();
         await _publishEndpoint.Publish(new FileDeletionRequested()

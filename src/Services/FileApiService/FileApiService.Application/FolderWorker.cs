@@ -40,7 +40,7 @@ public class FolderWorker : IFolderWorker
     {
         if (itemCreate.Type != TypeOfItem.Folder)
         {
-            return Result.Fail(new InvalidOperationError("Creating a file in method CreateFolder is not allowed"));
+            return Result.Fail(new InvalidTypeOfItemError("Invalid type of item"));
         }
 
         var folder = Item.CreateFolder(ownerId, itemCreate.Name, itemCreate.ParentId);
@@ -60,7 +60,7 @@ public class FolderWorker : IFolderWorker
 
         if (folder.Type != TypeOfItem.Folder)
         {
-            return Result.Fail(new InvalidOperationError($"Item {folderId} is not a folder"));
+            return Result.Fail(new InvalidTypeOfItemError($"Item {folderId} is not a folder"));
         }
 
         if (folder.OwnerId != ownerId)

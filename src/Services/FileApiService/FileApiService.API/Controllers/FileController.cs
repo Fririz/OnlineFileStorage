@@ -21,6 +21,7 @@ public class FileController : ControllerBase
             {
                 return id;
             }
+
             throw new UnauthorizedAccessException();
         }
     }
@@ -136,7 +137,7 @@ public class FileController : ControllerBase
         {
             FileNotFoundError => NotFound(new { error.Message }),
             UnauthorizedAccessError => Unauthorized(new { error.Message }),
-            InvalidOperationError => BadRequest(new { error.Message }),
+            InvalidTypeOfItemError => BadRequest(new { error.Message }),
             InvalidParentError => BadRequest(new { error.Message }),
             _ => BadRequest(new { error.Message })
         };
