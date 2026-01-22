@@ -13,9 +13,21 @@ namespace FileApiService.API.Controllers;
 public class FileController : ControllerBase
 {
     private readonly IFileWorker _fileWorker;
+    protected Guid CurrentUserId
+    {
+        get
+        {
+            if (Guid.TryParse(Request.Headers["Id"].FirstOrDefault(), out var id))
+            {
+                return id;
+            }
+            throw new UnauthorizedAccessException();
+        }
+    }
     public FileController(IFileWorker fileWorker)
     {
         _fileWorker = fileWorker;
+        
     }
     /// <summary>
     /// Get parent of file
@@ -44,10 +56,9 @@ public class FileController : ControllerBase
     [HttpPost("uploadfile")]
     public async Task<ActionResult> UploadFile(
         [FromBody] ItemCreateDto itemCreate, 
-        [FromHeader(Name = "Id")] Guid userId, 
         CancellationToken cancellationToken)
     {
-        var result = await _fileWorker.CreateFile(itemCreate, userId, cancellationToken);
+        var result = await _fileWorker.CreateFile(itemCreate, CurrentUserId, cancellationToken);
         
         if (result.IsSuccess)
         {
@@ -66,10 +77,9 @@ public class FileController : ControllerBase
     [HttpGet("downloadfile/{id:guid}")]
     public async Task<ActionResult> DownloadFile(
         Guid id, 
-        [FromHeader(Name = "Id")] Guid userId, 
         CancellationToken cancellationToken)
     {
-        var result = await _fileWorker.DownloadFile(id, userId, cancellationToken);
+        var result = await _fileWorker.DownloadFile(id, CurrentUserId, cancellationToken);
         
         if (result.IsSuccess)
         {
@@ -85,9 +95,9 @@ public class FileController : ControllerBase
 /// <param name="userId"></param>
 /// <returns></returns>
     [HttpDelete("deletefile/{id:guid}")]
-    public async Task<ActionResult> DeleteFile(Guid id, [FromHeader(Name = "Id")] Guid userId)
+    public async Task<ActionResult> DeleteFile(Guid itemId)
     {
-        var result = await _fileWorker.DeleteFile(id, userId);
+        var result = await _fileWorker.DeleteFile(itemId, CurrentUserId);
             
         if (result.IsSuccess)
         {
@@ -102,9 +112,9 @@ public class FileController : ControllerBase
 /// <param name="userId">User id</param>
 /// <returns>list of items</returns>
     [HttpGet("getitemsfromroot")]
-    public async Task<ActionResult<List<ItemResponseDto>>> GetItemsFromRoot([FromHeader(Name = "Id")] Guid userId)
+    public async Task<ActionResult<List<ItemResponseDto>>> GetItemsFromRoot()
     {
-        var result = await _fileWorker.GetRootItems(userId);
+        var result = await _fileWorker.GetRootItems(CurrentUserId);
             
         if (result.IsSuccess)
         {
