@@ -95,7 +95,7 @@ public class FileController : ControllerBase
 /// <param name="fileId"></param>
 /// <param name="userId"></param>
 /// <returns></returns>
-    [HttpDelete("deletefile/{id:guid}")]
+    [HttpDelete("deletefile/{itemId:guid}")]
     public async Task<ActionResult> DeleteFile(Guid itemId)
     {
         var result = await _fileWorker.DeleteFile(itemId, CurrentUserId);

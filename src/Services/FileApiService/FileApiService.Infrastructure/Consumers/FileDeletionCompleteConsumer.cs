@@ -18,8 +18,8 @@ public class FileDeletionCompleteConsumer : IConsumer<FileDeletionComplete>
         public async Task Consume(ConsumeContext<FileDeletionComplete> context)
         {
             var message = context.Message;
-            var item = await _itemRepository.GetByIdAsync(message.FileId);
-            if (item is not null)
-                await _itemRepository.DeleteAsync(item);
+            _logger.LogInformation($"Start file deleting {message.FileId}");
+            await _itemRepository.DeleteByIdAsync(message.FileId);
+                
         }
 }

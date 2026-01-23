@@ -65,7 +65,15 @@ public class FileController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<string>> UploadFile(Guid id, CancellationToken cancellationToken = default)
     {
-        var result = await _fileManager.UploadFileCaseAsync(Request.Body, id, cancellationToken);
+        long length = Request.ContentLength ?? 0;
+        if (length <= 0)
+        {
+            return BadRequest("Content-Length header is missing or zero.");
+        }
+
+        string contentType = Request.ContentType ?? "application/octet-stream";
+
+        var result = await _fileManager.UploadFileCaseAsync(Request.Body, length, contentType, id, cancellationToken);
 
         if (result.IsSuccess)
         {

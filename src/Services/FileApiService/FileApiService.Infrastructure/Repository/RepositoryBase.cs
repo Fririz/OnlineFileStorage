@@ -49,15 +49,16 @@ public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : EntityBas
         _context.Set<T>().RemoveRange(entities);
         await _context.SaveChangesAsync(cancellationToken);
     }
-    /*public async Task DeleteByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<T?> DeleteByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var entity  =await _context.Set<T>().IgnoreQueryFilters().FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
         if (entity != null)
         {
             await DeleteAsync(entity, cancellationToken);
         }
+        return entity;
     }
-    public async Task DeleteRangeByIdsAsync(IEnumerable<Guid> idsToDelete, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<T?>> DeleteRangeByIdsAsync(IEnumerable<Guid> idsToDelete, CancellationToken cancellationToken = default)
     {
         var entities  = await _context.Set<T>()
             .IgnoreQueryFilters()
@@ -68,5 +69,6 @@ public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : EntityBas
             _context.Set<T>().RemoveRange(entities);
             await _context.SaveChangesAsync(cancellationToken);
         }
-    }*/
+        return entities;
+    }
 }

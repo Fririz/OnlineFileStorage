@@ -62,58 +62,19 @@ public class FileRepository : IFileRepository
             throw;  
         }
     }
-    public async Task UploadFileAsync(Stream stream,string contentType, Guid id, CancellationToken cancellationToken = default)
+    public async Task UploadFileAsync(Stream stream, long size, string contentType, Guid id, CancellationToken cancellationToken = default)
     {
         try
         {
-            
-            if (stream.CanSeek)
-            {
-                try { stream.Position = 0; } catch {  }
-            }
-
-            Stream payloadStream = stream;
-            long payloadLength;
-
-            if (stream.CanSeek)
-            {
-                payloadLength = stream.Length;
-            }
-            else
-            {
-                var ms = new MemoryStream();
-                await stream.CopyToAsync(ms, cancellationToken).ConfigureAwait(false);
-                ms.Position = 0;
-
-                if (ms.Length == 0)
-                {
-                    _logger.LogWarning("Attempted to upload empty stream for object {Object} to bucket {Bucket}.", id, _bucketName);
-                    ms.Dispose();
-                    throw new InvalidOperationException("Uploaded stream is empty.");
-                }
-
-                payloadStream = ms;
-                payloadLength = ms.Length;
-            }
-
-            try
-            {
-                var putObjectArgs = new PutObjectArgs()
-                    .WithBucket(_bucketName)
-                    .WithObject(id.ToString("N"))
-                    .WithStreamData(payloadStream)
-                    .WithObjectSize(payloadLength)
-                    .WithContentType(contentType);
-
-                await _minioClient.PutObjectAsync(putObjectArgs).ConfigureAwait(false);
-                _logger.LogInformation("Uploaded object {Object} to bucket {Bucket}, size {Size} bytes.", id, _bucketName, payloadLength);
-            }
-            finally
-            {
-
-                if (!ReferenceEquals(payloadStream, stream))
-                    await payloadStream.DisposeAsync().ConfigureAwait(false);
-            }
+            var putObjectArgs = new PutObjectArgs()
+                .WithBucket(_bucketName)
+                .WithObject(id.ToString("N"))
+                .WithStreamData(stream)       
+                .WithObjectSize(size)        
+                .WithContentType(contentType);
+            await _minioClient.PutObjectAsync(putObjectArgs, cancellationToken).ConfigureAwait(false);
+        
+            _logger.LogInformation("Uploaded object {Object} to bucket {Bucket}, size {Size} bytes.", id, _bucketName, size);
         }
         catch (Exception ex)
         {

@@ -149,7 +149,34 @@ public class CachedItemRepository : IItemRepository
         return itemsList;
     }
 
+    public async Task<Item?> DeleteByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        var deletedItem = await _innerRepo.DeleteByIdAsync(id, cancellationToken);
 
+        if (deletedItem != null)
+        {
+            await InvalidateEntityCacheAsync(deletedItem, cancellationToken);
+        }
+        else 
+        {
+            await _cache.RemoveAsync($"item:{id}", cancellationToken);
+        }
+        return deletedItem;
+    }
+    
+    public async Task<IEnumerable<Item?>> DeleteRangeByIdsAsync(IEnumerable<Guid> ids, CancellationToken cancellationToken = default)
+    {
+        var deletedItems = await _innerRepo.DeleteRangeByIdsAsync(ids, cancellationToken);
+        var deletedItemsList = deletedItems.ToList();
+
+        foreach (var item in deletedItemsList)
+        {
+            if(item != null)
+                await InvalidateEntityCacheAsync(item, cancellationToken);
+        }
+
+        return deletedItemsList;
+    }
     public async Task<Item> AddAsync(Item entity, CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Adding item {Name} to DB", entity.Name);
@@ -215,6 +242,7 @@ public class CachedItemRepository : IItemRepository
         
         await InvalidateListCacheAsync(entity, ct);
     }
+
 
     private async Task InvalidateListCacheAsync(Item entity, CancellationToken ct)
     {

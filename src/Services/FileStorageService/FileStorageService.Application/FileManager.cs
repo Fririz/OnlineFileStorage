@@ -29,26 +29,21 @@ public class FileManager : IFileManager
         _fileFormatInspector = fileFormatInspector;
     }
 
-    public async Task<Result> UploadFileCaseAsync(Stream stream, Guid id, CancellationToken cancellationToken = default)
+    public async Task<Result> UploadFileCaseAsync(Stream stream,long size, string contentType, Guid id, CancellationToken cancellationToken = default)
     {
-        _logger.LogInformation("Uploading file {FileId}", id);
+        _logger.LogInformation("Uploading file {FileId}, Size: {Size}", id, size);
         bool fileUploaded = false;
-
+        
         try
         {
-            var fileFormat = "application/octet-stream"; 
-            _logger.LogInformation("Detected MIME type for file {FileId}: {MimeType}", id, fileFormat);
-
-            await _fileRepository.UploadFileAsync(stream, fileFormat, id, cancellationToken);
+            await _fileRepository.UploadFileAsync(stream, size, contentType, id, cancellationToken);
             fileUploaded = true;
             
-            var fileInfo = await _fileRepository.GetInfoAboutFile(id, cancellationToken);
-
             await _publishEndpoint.Publish(new FileUploadComplete()
             {
-                FileId = fileInfo.FileId,
-                FileSize = fileInfo.FileSize,
-                MimeType = fileInfo.MimeType,
+                FileId = id,
+                FileSize = size,        
+                MimeType = contentType, 
             }, cancellationToken);
 
             return Result.Ok();

@@ -18,11 +18,6 @@ public class FilesDeletionCompleteConsumer : IConsumer<FilesDeletionComplete>
     public async Task Consume(ConsumeContext<FilesDeletionComplete> context)
     {
         var message = context.Message;
-        var items = await _itemRepository.GetByIdsAsync(message.DeletedIds);
-        if(items.Any())
-        {
-            await _itemRepository.DeleteAsync(items);
-        }
-        
+        await _itemRepository.DeleteRangeByIdsAsync(message.DeletedIds);
     }
 }

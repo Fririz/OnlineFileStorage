@@ -14,6 +14,7 @@ public class ItemRepository : RepositoryBase<Item>, IItemRepository
     {
         
     }
+    
     public async Task<IEnumerable<Item?>> GetAllChildrenAsync(Guid itemId, CancellationToken cancellationToken = default)
     {
         return await _context.Items.Where(i => i.ParentId == itemId).AsNoTracking().ToListAsync(cancellationToken: cancellationToken);
@@ -51,7 +52,7 @@ public class ItemRepository : RepositoryBase<Item>, IItemRepository
             .Where(f => f.Type == TypeOfItem.File && f.Status == UploadStatus.Pending && f.CreatedDate < oneHourAgo)
             .ExecuteDeleteAsync();
         //business logic leak but that is how it should be
-
         return rowsAffected;
     }
+    
 }
