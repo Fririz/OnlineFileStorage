@@ -1,20 +1,21 @@
 using FileStorageService.Application.Contracts;
-using FileStorageService.Infrastructure;
-using MassTransit;
-using Contracts.Shared;
-using FileStorageService.Application.Exceptions;
+using FileStorageService.Application.Errors;
+using FluentResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FileStorageService.API.Controllers;
+
 [ApiController]
 [Route("api")]
 public class FileController : ControllerBase
 {
     private readonly IFileManager _fileManager;
+
     public FileController(IFileManager fileManager)
     {
         _fileManager = fileManager;
     }
+
     /// <summary>
     /// Download file
     /// </summary>
@@ -31,23 +32,24 @@ public class FileController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetFile(Guid id, string filename, string? token, CancellationToken cancellationToken = default)
     {
-        try
+        var result = await _fileManager.DownloadFileCaseAsync(id, token, cancellationToken);
+
+        if (result.IsSuccess)
         {
-            var stream = await _fileManager.DownloadFileCaseAsync(id, token, cancellationToken);
-            return File(stream, "application/octet-stream", filename);
+            return File(result.Value, "application/octet-stream", filename);
         }
-        catch (UnauthorizedAccessException e)
+
+        if (result.HasError<UnauthorizedError>())
         {
             return Unauthorized();
         }
-        catch (FileNotFoundException e)
+
+        if (result.HasError<FileNotFoundError>())
         {
             return NotFound();
         }
-        catch (Exception e)
-        {
-            return StatusCode(500, e.Message);
-        }
+
+        return StatusCode(500, result.Errors.FirstOrDefault()?.Message);
     }
     
     /// <summary>
@@ -63,20 +65,18 @@ public class FileController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<string>> UploadFile(Guid id, CancellationToken cancellationToken = default)
     {
-        try
+        var result = await _fileManager.UploadFileCaseAsync(Request.Body, id, cancellationToken);
+
+        if (result.IsSuccess)
         {
-            await _fileManager.UploadFileCaseAsync(Request.Body, id, cancellationToken);
             return Ok("File uploaded successfully");
         }
-        catch (FileUploadFailedException e)
+
+        if (result.HasError<FileUploadError>())
         {
-            return StatusCode(400, e.Message);
-        }
-        catch (Exception e)
-        {
-            return StatusCode(500, e.Message);
+            return BadRequest(result.Errors.FirstOrDefault()?.Message);
         }
 
+        return StatusCode(500, result.Errors.FirstOrDefault()?.Message);
     }
-
 }

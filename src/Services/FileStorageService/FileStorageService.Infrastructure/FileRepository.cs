@@ -174,7 +174,7 @@ public class FileRepository : IFileRepository
         }
     }
     
-    private async Task EnsureBucketExistsAsync(CancellationToken cancellationToken = default)
+    public async Task EnsureBucketExistsAsync(CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrWhiteSpace(_bucketName))
         {

@@ -1,9 +1,10 @@
 using Contracts.Shared;
 using FileSignatures;
 using FileStorageService.Application.Contracts;
-using FileStorageService.Application.Exceptions;
+using FileStorageService.Application.Errors;
 using MassTransit;
 using Microsoft.Extensions.Logging;
+using FluentResults;
 
 namespace FileStorageService.Application;
 
@@ -14,12 +15,12 @@ public class FileManager : IFileManager
     private readonly ITokenManager _tokenManager;
     private readonly IPublishEndpoint _publishEndpoint;
     private readonly IFileFormatInspector _fileFormatInspector;
+
     public FileManager(ILogger<FileManager> logger, 
         IFileRepository fileRepository,
         ITokenManager tokenManager,
         IPublishEndpoint publishEndpoint,
-        IFileFormatInspector fileFormatInspector
-        )
+        IFileFormatInspector fileFormatInspector)
     {
         _logger = logger;
         _fileRepository = fileRepository;
@@ -28,17 +29,19 @@ public class FileManager : IFileManager
         _fileFormatInspector = fileFormatInspector;
     }
 
-    public async Task UploadFileCaseAsync(Stream stream, Guid id, CancellationToken cancellationToken = default)
+    public async Task<Result> UploadFileCaseAsync(Stream stream, Guid id, CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Uploading file {FileId}", id);
         bool fileUploaded = false;
+
         try
         {
-            var fileFormat = "application/octet-stream"; //TODO impove
+            var fileFormat = "application/octet-stream"; 
             _logger.LogInformation("Detected MIME type for file {FileId}: {MimeType}", id, fileFormat);
 
             await _fileRepository.UploadFileAsync(stream, fileFormat, id, cancellationToken);
             fileUploaded = true;
+            
             var fileInfo = await _fileRepository.GetInfoAboutFile(id, cancellationToken);
 
             await _publishEndpoint.Publish(new FileUploadComplete()
@@ -47,6 +50,8 @@ public class FileManager : IFileManager
                 FileSize = fileInfo.FileSize,
                 MimeType = fileInfo.MimeType,
             }, cancellationToken);
+
+            return Result.Ok();
         }
         catch (OperationCanceledException)
         {
@@ -58,9 +63,13 @@ public class FileManager : IFileManager
             {
                 try
                 {
-                    await DeleteFileCaseAsync(id);
+                    await _fileRepository.DeleteFileAsync(id); 
+                    await _publishEndpoint.Publish(new FileDeletionComplete { FileId = id }, CancellationToken.None);
                 }
-                catch{}
+                catch (Exception deleteEx)
+                {
+                    _logger.LogWarning(deleteEx, "Failed to rollback file upload for {FileId}", id);
+                }
             }
             
             _logger.LogError(ex, "Error uploading file {FileId}", id);
@@ -68,41 +77,69 @@ public class FileManager : IFileManager
             {
                 FileId = id
             }, CancellationToken.None); 
-
-            throw new FileUploadFailedException($"File upload failed for id {id}.");
+            return Result.Fail(new FileUploadError($"File upload failed for id {id}. Caused by: {ex.Message}"));
         }
     }
 
-    public async Task<Stream> DownloadFileCaseAsync(Guid objectId, string? token, CancellationToken cancellationToken = default)
+    public async Task<Result<Stream>> DownloadFileCaseAsync(Guid objectId, string? token, CancellationToken cancellationToken = default)
     {
         if (_tokenManager.ValidateToken(token) == false)
         {
-            throw new UnauthorizedAccessException();
+            return Result.Fail(new UnauthorizedError());
         }
-        var stream = await _fileRepository.DownloadFileAsync(objectId, cancellationToken);
-        if (stream == null)
+
+        try 
         {
-            throw new FileNotFoundException();
+            var stream = await _fileRepository.DownloadFileAsync(objectId, cancellationToken);
+            
+            if (stream == null)
+            {
+                return Result.Fail(new FileNotFoundError(objectId));
+            }
+
+            return Result.Ok(stream);
         }
-        return stream;
-    }
-    public async Task DeleteFileCaseAsync(Guid objectId)
-    {
-        await _fileRepository.DeleteFileAsync(objectId);
-        await _publishEndpoint.Publish(new FileDeletionComplete
+        catch (Exception ex)
         {
-            FileId = objectId
-        });
+            _logger.LogError(ex, "Error downloading file {FileId}", objectId);
+            return Result.Fail(new StorageError("Error accessing file storage."));
+        }
     }
 
-    public async Task DeleteFilesCaseAsync(IEnumerable<Guid> idsToDelete)
+    public async Task<Result> DeleteFileCaseAsync(Guid objectId)
     {
-        var deletedIds = idsToDelete.ToArray();
-        await _fileRepository.DeleteFilesAsync(deletedIds);
-        await _publishEndpoint.Publish(new FilesDeletionComplete
+        try
         {
-            DeletedIds = deletedIds
-        });
+            await _fileRepository.DeleteFileAsync(objectId);
+            await _publishEndpoint.Publish(new FileDeletionComplete
+            {
+                FileId = objectId
+            });
+            return Result.Ok();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error deleting file {FileId}", objectId);
+            return Result.Fail(new StorageError($"Failed to delete file {objectId}"));
+        }
     }
-    
+
+    public async Task<Result> DeleteFilesCaseAsync(IEnumerable<Guid> idsToDelete)
+    {
+        try
+        {
+            var deletedIds = idsToDelete.ToArray();
+            await _fileRepository.DeleteFilesAsync(deletedIds);
+            await _publishEndpoint.Publish(new FilesDeletionComplete
+            {
+                DeletedIds = deletedIds
+            });
+            return Result.Ok();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error deleting files batch");
+            return Result.Fail(new StorageError("Failed to delete files batch"));
+        }
+    }
 }
