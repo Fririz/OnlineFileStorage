@@ -14,19 +14,17 @@ public class FileManager : IFileManager
     private readonly IFileRepository _fileRepository;
     private readonly ITokenManager _tokenManager;
     private readonly IPublishEndpoint _publishEndpoint;
-    private readonly IFileFormatInspector _fileFormatInspector;
 
     public FileManager(ILogger<FileManager> logger, 
         IFileRepository fileRepository,
         ITokenManager tokenManager,
-        IPublishEndpoint publishEndpoint,
-        IFileFormatInspector fileFormatInspector)
+        IPublishEndpoint publishEndpoint)
     {
         _logger = logger;
         _fileRepository = fileRepository;
         _tokenManager = tokenManager;
         _publishEndpoint = publishEndpoint;
-        _fileFormatInspector = fileFormatInspector;
+
     }
 
     public async Task<Result> UploadFileCaseAsync(Stream stream,long size, string contentType, Guid id, CancellationToken cancellationToken = default)
