@@ -66,7 +66,6 @@ public class FileRepository : IFileRepository
     {
         try
         {
-            await EnsureBucketExistsAsync(cancellationToken).ConfigureAwait(false);
             
             if (stream.CanSeek)
             {

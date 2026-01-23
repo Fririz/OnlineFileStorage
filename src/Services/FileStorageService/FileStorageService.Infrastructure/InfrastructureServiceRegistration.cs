@@ -70,7 +70,7 @@ namespace FileStorageService.Infrastructure
             });
 
             services.AddScoped<IFileRepository, FileRepository>();
-                                       
+            services.AddHostedService<MinioBucketInitializer>();
             return services;
         }
     }
