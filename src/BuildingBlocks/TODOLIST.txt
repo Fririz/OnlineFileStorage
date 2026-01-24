@@ -5,8 +5,6 @@
 //TODO add notification microservice
 //TODO add pdfconvert microservice
 //TODO add userprofile microservice
-//TODO add unit test
-//TODO add mapping
 //TODO improve dockercompose and dockerfiles
 //TODO add logic for sharing files and viewing shared files
 //TODO add ASNOTRACKING

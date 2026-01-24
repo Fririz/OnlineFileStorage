@@ -7,6 +7,8 @@ using FileApiService.Application.Dto;
 using FileApiService.Application.Exceptions.FluentResultsErrors;
 using MassTransit;
 using FluentResults;
+using Microsoft.EntityFrameworkCore;
+using Npgsql;
 
 namespace FileApiService.Application;
 
@@ -67,7 +69,6 @@ public class FileWorker : IFileWorker
         {
             return Result.Fail(new InvalidTypeOfItemError("Invalid type of item"));
         }
-
         if (itemCreate.ParentId != null)// if not from root
         {
             var parent = await _itemRepository.GetByIdAsync((Guid)itemCreate.ParentId, cancellationToken);
@@ -75,8 +76,22 @@ public class FileWorker : IFileWorker
                 return Result.Fail(new InvalidParentError("Invalid parent id"));
         }//TODO add unit test
         
+        
         var file = Item.CreateFile(userId, itemCreate.Name, itemCreate.ParentId);
-        await _itemRepository.AddAsync(file, cancellationToken);
+        try
+        {
+            await _itemRepository.AddAsync(file, cancellationToken);
+        }
+        catch (DbUpdateException ex) when (ex.InnerException is PostgresException pgEx && pgEx.SqlState == "23505")
+        {
+            return Result.Fail(new FileAlreadyExistsError("File with the same name already exists"));
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error creating file"); 
+
+            throw;
+        }
         try
         {
             _logger.LogInformation($"Created file {file.Id}");
