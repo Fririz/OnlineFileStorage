@@ -4,12 +4,10 @@ using Microsoft.Extensions.Logging;
 using FileApiService.Domain.Entities;
 using FileApiService.Domain.Enums;
 using FileApiService.Application.Dto;
+using FileApiService.Application.Exceptions;
 using FileApiService.Application.Exceptions.FluentResultsErrors;
 using MassTransit;
 using FluentResults;
-using Microsoft.EntityFrameworkCore;
-using Npgsql;
-
 namespace FileApiService.Application;
 
 public class FileWorker : IFileWorker
@@ -82,16 +80,16 @@ public class FileWorker : IFileWorker
         {
             await _itemRepository.AddAsync(file, cancellationToken);
         }
-        catch (DbUpdateException ex) when (ex.InnerException is PostgresException pgEx && pgEx.SqlState == "23505")
+        catch(ItemAlreadyExistsException ex)
         {
             return Result.Fail(new FileAlreadyExistsError("File with the same name already exists"));
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error creating file"); 
-
             throw;
         }
+        
         try
         {
             _logger.LogInformation($"Created file {file.Id}");

@@ -3,6 +3,8 @@ using FileApiService.Domain.Common;
 using FileApiService.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using FileApiService.Application.Contracts;
+using FileApiService.Application.Exceptions;
+using Npgsql;
 
 namespace FileApiService.Infrastructure.Repository;
 
@@ -24,8 +26,15 @@ public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : EntityBas
     }
     public async Task<T> AddAsync(T entity, CancellationToken cancellationToken = default)
     {
-        _context.Set<T>().Add(entity);
-        await _context.SaveChangesAsync(cancellationToken);
+        try
+        {
+            _context.Set<T>().Add(entity);
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+        catch (DbUpdateException ex) when (ex.InnerException is PostgresException pgEx && pgEx.SqlState == "23505")
+        {
+            throw new ItemAlreadyExistsException("Item with this name already exists");
+        }
         return entity;
     }
     public async Task UpdateAsync(T entity, CancellationToken cancellationToken = default)
@@ -40,8 +49,8 @@ public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : EntityBas
         await _context.SaveChangesAsync(cancellationToken);
     }
     public async Task DeleteAsync(T entity, CancellationToken cancellationToken = default)
-    {
-        _context.Set<T>().Remove(entity);
+    { 
+        _context.Set<T>().Remove(entity); 
         await _context.SaveChangesAsync(cancellationToken);
     }
     public async Task DeleteAsync(IEnumerable<T> entities, CancellationToken cancellationToken = default)

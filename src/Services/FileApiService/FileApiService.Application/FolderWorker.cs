@@ -1,6 +1,7 @@
 using Contracts.Shared;
 using FileApiService.Application.Contracts;
 using FileApiService.Application.Dto;
+using FileApiService.Application.Exceptions;
 using FileApiService.Domain.Entities;
 using FileApiService.Domain.Enums;
 using MassTransit;
@@ -42,9 +43,15 @@ public class FolderWorker : IFolderWorker
         {
             return Result.Fail(new InvalidTypeOfItemError("Invalid type of item"));
         }
-
         var folder = Item.CreateFolder(ownerId, itemCreate.Name, itemCreate.ParentId);
-        await _itemRepository.AddAsync(folder);
+        try
+        {
+            await _itemRepository.AddAsync(folder);
+        }
+        catch (ItemAlreadyExistsException e)
+        {
+            return Result.Fail(new FolderAlreadyExistsError("Folder with the same name already exists"));
+        }
         
         return Result.Ok(folder.Id);
     }
