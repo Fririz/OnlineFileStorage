@@ -31,12 +31,6 @@ public abstract class BaseApiController : ControllerBase
             throw new UnauthorizedAccessException("User ID is missing or invalid");
         }
     }
-
-    protected async Task<ActionResult<List<ItemResponseDto>>> SearchItem(string searchQuery, CancellationToken cancellationToken)
-    {
-        var result = await _itemFinder.FindItem(searchQuery, CurrentUserId, cancellationToken);
-        return HandleResult(result);
-    }
     
     protected ActionResult HandleResult<T>(Result<T> result)
     {
