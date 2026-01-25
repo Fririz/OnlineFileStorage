@@ -18,7 +18,10 @@ public class Context : DbContext
         modelBuilder.AddOutboxStateEntity();
         modelBuilder.HasPostgresExtension("pg_trgm");
         
-
+        modelBuilder.Entity<Item>()
+            .HasIndex(i => i.Name)
+            .HasMethod("gin")
+            .HasOperators("gin_trgm_ops");
         
         //AccessRightsRepository
         modelBuilder.Entity<AccessRights>()
