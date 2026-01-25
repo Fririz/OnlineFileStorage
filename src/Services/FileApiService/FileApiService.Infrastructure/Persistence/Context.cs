@@ -19,7 +19,11 @@ public class Context : DbContext
         modelBuilder.HasPostgresExtension("pg_trgm");
         
         modelBuilder.Entity<Item>()
-            .HasIndex(i => i.Name)
+            .Property<string>("NameToLower")
+            .HasComputedColumnSql("lower(\"Name\")", stored: true);
+        
+        modelBuilder.Entity<Item>()
+            .HasIndex("NameToLower")
             .HasMethod("gin")
             .HasOperators("gin_trgm_ops");
         
@@ -29,6 +33,7 @@ public class Context : DbContext
             .IsUnique();
         //Item
         modelBuilder.Entity<Item>().HasQueryFilter(i => !i.IsDeleted);
+        
         
         modelBuilder.Entity<Item>()
             .HasIndex(i => new { i.OwnerId, i.ParentId, i.Name })

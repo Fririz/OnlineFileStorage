@@ -8,12 +8,12 @@ namespace FileApiService.API.Controllers;
 [Route("api/[controller]")]
 public class SearchController : BaseApiController
 {
-    public SearchController(IItemFinder itemFinder) : base(itemFinder)
+    public SearchController(IItemFinder itemFinder, ILogger<SearchController> logger) : base(itemFinder)
     {
     }
     
-    [HttpGet("searchItem")]
-    public async Task<ActionResult<List<ItemResponseDto>>> SearchItem([FromQuery] string searchQuery, CancellationToken cancellationToken)
+    [HttpGet("{searchQuery}")]
+    public async Task<ActionResult<List<ItemResponseDto>>> SearchItem([FromRoute] string searchQuery, CancellationToken cancellationToken)
     {
         var result = await _itemFinder.FindItem(searchQuery, CurrentUserId, cancellationToken);
         return HandleResult(result);

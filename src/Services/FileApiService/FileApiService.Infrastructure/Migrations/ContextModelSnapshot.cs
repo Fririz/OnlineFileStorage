@@ -85,6 +85,11 @@ namespace FileApiService.Infrastructure.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
 
+                    b.Property<string>("NameToLower")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("text")
+                        .HasComputedColumnSql("lower(\"Name\")", true);
+
                     b.Property<Guid>("OwnerId")
                         .HasColumnType("uuid");
 
@@ -100,10 +105,10 @@ namespace FileApiService.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Name");
+                    b.HasIndex("NameToLower");
 
-                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("Name"), "gin");
-                    NpgsqlIndexBuilderExtensions.HasOperators(b.HasIndex("Name"), new[] { "gin_trgm_ops" });
+                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("NameToLower"), "gin");
+                    NpgsqlIndexBuilderExtensions.HasOperators(b.HasIndex("NameToLower"), new[] { "gin_trgm_ops" });
 
                     b.HasIndex("ParentId");
 

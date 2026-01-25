@@ -40,6 +40,20 @@
     },
     //FileApiService
     {
+      "DownstreamPathTemplate": "/api/search/{searchQuery}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        { "Host": "fileapiservice", "Port": 8082 }
+      ],
+      "UpstreamPathTemplate": "/api/search/{searchQuery}",
+      "UpstreamHttpMethod": [ "GET", "OPTIONS" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    
+    {
       "DownstreamPathTemplate": "/api/file/uploadfile",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
