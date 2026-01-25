@@ -16,6 +16,9 @@ public class Context : DbContext
         modelBuilder.AddInboxStateEntity();
         modelBuilder.AddOutboxMessageEntity();
         modelBuilder.AddOutboxStateEntity();
+        modelBuilder.HasPostgresExtension("pg_trgm");
+        
+
         
         //AccessRightsRepository
         modelBuilder.Entity<AccessRights>()
