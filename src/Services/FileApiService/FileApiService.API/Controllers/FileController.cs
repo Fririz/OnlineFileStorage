@@ -1,35 +1,21 @@
 using FileApiService.Application.Contracts;
 using FileApiService.Application.Dto;
-using FileApiService.Application.Exceptions.FluentResultsErrors;
 using FileApiService.Domain.Entities;
-using FluentResults;
-using MassTransit;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FileApiService.API.Controllers;
+
 [ApiController]
 [Route("api/[controller]")]
-public class FileController : ControllerBase
+public class FileController : BaseApiController
 {
     private readonly IFileWorker _fileWorker;
-    protected Guid CurrentUserId
-    {
-        get
-        {
-            if (Guid.TryParse(Request.Headers["Id"].FirstOrDefault(), out var id))
-            {
-                return id;
-            }
 
-            throw new UnauthorizedAccessException();
-        }
-    }
-    public FileController(IFileWorker fileWorker)
+    public FileController(IFileWorker fileWorker, IItemFinder itemFinder) : base(itemFinder)
     {
         _fileWorker = fileWorker;
-        
     }
+
     /// <summary>
     /// Get parent of file
     /// </summary>
@@ -47,6 +33,7 @@ public class FileController : ControllerBase
 
         return Ok(parent);
     }
+
     /// <summary>
     /// Create file
     /// </summary>
@@ -66,8 +53,9 @@ public class FileController : ControllerBase
             return Ok(new { uploadUrl = result.Value });
         }
 
-        return HandleError(result.Errors);
+        return HandleResult(result);
     }
+
     /// <summary>
     /// Download file
     /// </summary>
@@ -87,14 +75,15 @@ public class FileController : ControllerBase
             return Ok(new { downloadUrl = result.Value });
         }
 
-        return HandleError(result.Errors);
+        return HandleResult(result);
     }
-/// <summary>
-/// Delete file
-/// </summary>
-/// <param name="fileId"></param>
-/// <param name="userId"></param>
-/// <returns></returns>
+
+    /// <summary>
+    /// Delete file
+    /// </summary>
+    /// <param name="fileId"></param>
+    /// <param name="userId"></param>
+    /// <returns></returns>
     [HttpDelete("deletefile/{itemId:guid}")]
     public async Task<ActionResult> DeleteFile(Guid itemId)
     {
@@ -105,43 +94,18 @@ public class FileController : ControllerBase
             return Ok();
         }
 
-        return HandleError(result.Errors);
+        return HandleResult(result);
     }
-/// <summary>
-/// Get all items from root
-/// </summary>
-/// <param name="userId">User id</param>
-/// <returns>list of items</returns>
+
+    /// <summary>
+    /// Get all items from root
+    /// </summary>
+    /// <param name="userId">User id</param>
+    /// <returns>list of items</returns>
     [HttpGet("getitemsfromroot")]
     public async Task<ActionResult<List<ItemResponseDto>>> GetItemsFromRoot()
     {
         var result = await _fileWorker.GetRootItems(CurrentUserId);
-            
-        if (result.IsSuccess)
-        {
-            return Ok(result.Value);
-        }
-
-        return HandleError(result.Errors);
+        return HandleResult(result);
     }
-    private ActionResult HandleError(IReadOnlyList<IError> errors)
-    {
-        var error = errors.FirstOrDefault();
-        
-        if (error is null)
-        {
-            return StatusCode(500);
-        }
-
-        return error switch
-        {
-            FileNotFoundError => NotFound(new { error.Message }),
-            UnauthorizedAccessError => Unauthorized(new { error.Message }),
-            FileAlreadyExistsError => Conflict(new { error.Message }),
-            InvalidTypeOfItemError => BadRequest(new { error.Message }),
-            InvalidParentError => BadRequest(new { error.Message }),
-            _ => BadRequest(new { error.Message })
-        };
-    }
-
 }

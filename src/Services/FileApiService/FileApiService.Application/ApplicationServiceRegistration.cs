@@ -14,6 +14,7 @@ public static class ApplicationServiceRegistration
         services.AddScoped<IFolderWorker, FolderWorker>();
         services.AddScoped<ISerializer, Serializer>();
         services.AddScoped<IMapper, Mapper>();
+        services.AddScoped<IItemFinder, ItemFinder>();
         services.AddHostedService<PendingFileCleaner>();
         return services;
     }

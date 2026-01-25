@@ -17,11 +17,13 @@ public class FileWorker : IFileWorker
     private readonly IPublishEndpoint _publishEndpoint;
     private readonly ILinkProvider _linkProvider;
     private readonly IMapper _mapper;
+    private readonly IItemFinder _itemFinder;
     public FileWorker(ILogger<FileWorker> logger, 
         IItemRepository itemRepository, 
         IPublishEndpoint publishEndpoint,
         IMapper mapper,
-        ILinkProvider linkProvider
+        ILinkProvider linkProvider,
+        IItemFinder itemFinder
         )
     {
         _logger = logger;
@@ -29,7 +31,7 @@ public class FileWorker : IFileWorker
         _publishEndpoint = publishEndpoint;
         _linkProvider = linkProvider;
         _mapper = mapper;
-        
+        _itemFinder = itemFinder;
     }
 
     public  Task<Item?> GetParent(Guid itemId)
@@ -128,4 +130,5 @@ public class FileWorker : IFileWorker
         await _itemRepository.UpdateAsync(file);
         return Result.Ok();
     }
+    
 }

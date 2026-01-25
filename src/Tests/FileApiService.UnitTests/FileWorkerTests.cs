@@ -20,7 +20,8 @@ public class FileWorkerTests
     private readonly Mock<ILinkProvider> _linkProviderMock;
     private readonly Mock<IMapper> _mapperMock;
     private readonly Mock<ILogger<FileWorker>> _loggerMock;
-
+    private readonly Mock<IItemFinder> _itemFinderMock;
+    
     private readonly FileWorker _fileWorker;
 
     public FileWorkerTests()
@@ -30,13 +31,14 @@ public class FileWorkerTests
         _linkProviderMock = new Mock<ILinkProvider>();
         _mapperMock = new Mock<IMapper>();
         _loggerMock = new Mock<ILogger<FileWorker>>();
-        
+        _itemFinderMock = new Mock<IItemFinder>();
         _fileWorker = new FileWorker(
             _loggerMock.Object,
             _itemRepositoryMock.Object,
             _publishEndpointMock.Object,
             _mapperMock.Object,
-            _linkProviderMock.Object
+            _linkProviderMock.Object,
+            _itemFinderMock.Object
         );
     }
     [Fact]

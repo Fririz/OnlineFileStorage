@@ -1,40 +1,26 @@
 using FileApiService.Application.Contracts;
 using FileApiService.Application.Dto;
-using FileApiService.Domain.Entities;
-using FileApiService.Application.Exceptions.FluentResultsErrors;
 using Microsoft.AspNetCore.Mvc;
-using FluentResults;
 
 namespace FileApiService.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class FolderController : ControllerBase
+public class FolderController : BaseApiController
 {
     private readonly IFolderWorker _folderWorker;
 
-    public FolderController(IFolderWorker fileWorker)
+    public FolderController(IFolderWorker folderWorker, IItemFinder itemFinder) : base(itemFinder)
     {
-        _folderWorker = fileWorker;
+        _folderWorker = folderWorker;
     }
 
     [HttpPost]
     [Route("createfolder")]
     public async Task<ActionResult> CreateFolder(ItemCreateDto itemCreate)
     {
-        if (!Guid.TryParse(Request.Headers["Id"].ToString(), out var ownerId))
-        {
-            return Unauthorized("User ID header is missing or invalid");
-        }
-
-        var result = await _folderWorker.CreateFolder(itemCreate, ownerId);
-
-        if (result.IsSuccess)
-        {
-            return Ok(result.Value);
-        }
-
-        return HandleErrors(result.Errors);
+        var result = await _folderWorker.CreateFolder(itemCreate, CurrentUserId);
+        return HandleResult(result);
     }
 
     [HttpGet]
@@ -42,49 +28,14 @@ public class FolderController : ControllerBase
     public async Task<ActionResult<List<ItemResponseDto>>> GetAllChildren(Guid id)
     {
         var result = await _folderWorker.GetChildrenAsync(id);
-
-        if (result.IsSuccess)
-        {
-            return Ok(result.Value);
-        }
-
-        return HandleErrors(result.Errors);
+        return HandleResult(result);
     }
 
     [HttpDelete]
     [Route("deletefolder/{id}/")]
     public async Task<ActionResult> DeleteFolderWithChildren(Guid id)
     {
-        if (!Guid.TryParse(Request.Headers["Id"].ToString(), out var ownerId))
-        {
-            return Unauthorized("User ID header is missing or invalid");
-        }
-
-        var result = await _folderWorker.DeleteFolderWithAllChildren(id, ownerId);
-
-        if (result.IsSuccess)
-        {
-            return Ok();
-        }
-
-        return HandleErrors(result.Errors);
-    }
-
-    private ActionResult HandleErrors(IReadOnlyList<IError> errors)
-    {
-        var firstError = errors.FirstOrDefault();
-
-        if (firstError == null)
-        {
-            return StatusCode(500, "Unknown error");
-        }
-
-        return firstError switch
-        {
-            DirectoryNotFoundError => NotFound(firstError.Message),               
-            UnauthorizedAccessError => Unauthorized(firstError.Message),  
-            InvalidTypeOfItemError => BadRequest(firstError.Message),
-            _ => StatusCode(500, firstError.Message)                      
-        };
+        var result = await _folderWorker.DeleteFolderWithAllChildren(id, CurrentUserId);
+        return HandleResult(result);
     }
 }
