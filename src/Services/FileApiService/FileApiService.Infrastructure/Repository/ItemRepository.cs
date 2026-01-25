@@ -54,5 +54,13 @@ public class ItemRepository : RepositoryBase<Item>, IItemRepository
         //business logic leak but that is how it should be
         return rowsAffected;
     }
+
+    public async Task<List<Item>> SearchItemsAsync(string searchQuery, Guid userId, CancellationToken cancellationToken = default)
+    {
+        var results = await _context.Items.Where(p => EF.Functions.TrigramsSimilarity(p.Name, searchQuery) > 0.3 && p.OwnerId == userId)
+            .OrderByDescending(p => EF.Functions.TrigramsSimilarity(p.Name, searchQuery))
+            .ToListAsync(cancellationToken: cancellationToken);
+        return results;
+    }
     
 }

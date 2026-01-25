@@ -228,6 +228,11 @@ public class CachedItemRepository : IItemRepository
         }
     }
 
+    public async Task<List<Item>> SearchItemsAsync(string searchQuery, Guid userId, CancellationToken cancellationToken = default)
+    {
+        return await _innerRepo.SearchItemsAsync(searchQuery, userId, cancellationToken);
+    }
+    
     public Task<int> DeleteFilesWithPendingExpired()
     {
         return _innerRepo.DeleteFilesWithPendingExpired();

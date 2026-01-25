@@ -128,6 +128,4 @@ public class FileWorker : IFileWorker
         await _itemRepository.UpdateAsync(file);
         return Result.Ok();
     }
-    
-    
 }
