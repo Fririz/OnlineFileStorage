@@ -10,20 +10,20 @@ using MassTransit;
 using FluentResults;
 namespace FileApiService.Application;
 
-public class FileWorker : IFileWorker
+public class FileService : IFileService
 {
-    private readonly ILogger<FileWorker> _logger;
+    private readonly ILogger<FileService> _logger;
     private readonly IItemRepository _itemRepository;
     private readonly IPublishEndpoint _publishEndpoint;
     private readonly ILinkProvider _linkProvider;
     private readonly IMapper _mapper;
-    private readonly IItemFinder _itemFinder;
-    public FileWorker(ILogger<FileWorker> logger, 
+    private readonly IItemService _itemService;
+    public FileService(ILogger<FileService> logger, 
         IItemRepository itemRepository, 
         IPublishEndpoint publishEndpoint,
         IMapper mapper,
         ILinkProvider linkProvider,
-        IItemFinder itemFinder
+        IItemService itemService
         )
     {
         _logger = logger;
@@ -31,21 +31,9 @@ public class FileWorker : IFileWorker
         _publishEndpoint = publishEndpoint;
         _linkProvider = linkProvider;
         _mapper = mapper;
-        _itemFinder = itemFinder;
+        _itemService = itemService;
     }
-
-    public  Task<Item?> GetParent(Guid itemId)
-    {
-        var parent = _itemRepository.GetParent(itemId);
-        return parent;
-    }
-    public async Task<Result<List<ItemResponseDto>>> GetRootItems(Guid userId)
-    {
-        var itemsEnum = await _itemRepository.GetRootItems(userId);
-        var items = itemsEnum.OfType<Item>().ToList();
-        var itemDtos = _mapper.Map(items);
-        return Result.Ok(itemDtos);
-    }
+    
     
     public async Task<Result<string>> DownloadFile(Guid id, Guid ownerId, CancellationToken cancellationToken = default)
     {

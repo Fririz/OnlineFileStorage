@@ -10,11 +10,11 @@ public static class ApplicationServiceRegistration
 {
     public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddScoped<IFileWorker, FileWorker>();
-        services.AddScoped<IFolderWorker, FolderWorker>();
+        services.AddScoped<IFileService, FileService>();
+        services.AddScoped<IFolderService, FolderService>();
         services.AddScoped<ISerializer, Serializer>();
         services.AddScoped<IMapper, Mapper>();
-        services.AddScoped<IItemFinder, ItemFinder>();
+        services.AddScoped<IItemService, ItemService>();
         services.AddHostedService<PendingFileCleaner>();
         return services;
     }

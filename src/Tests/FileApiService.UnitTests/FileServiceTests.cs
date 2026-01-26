@@ -13,26 +13,26 @@ using Xunit;
 
 namespace FileApiService.UnitTests;
 
-public class FileWorkerTests
+public class FileServiceTests
 {
     private readonly Mock<IItemRepository> _itemRepositoryMock;
     private readonly Mock<IPublishEndpoint> _publishEndpointMock;
     private readonly Mock<ILinkProvider> _linkProviderMock;
     private readonly Mock<IMapper> _mapperMock;
-    private readonly Mock<ILogger<FileWorker>> _loggerMock;
-    private readonly Mock<IItemFinder> _itemFinderMock;
+    private readonly Mock<ILogger<FileService>> _loggerMock;
+    private readonly Mock<IItemService> _itemFinderMock;
     
-    private readonly FileWorker _fileWorker;
+    private readonly FileService _fileService;
 
-    public FileWorkerTests()
+    public FileServiceTests()
     {
         _itemRepositoryMock = new Mock<IItemRepository>();
         _publishEndpointMock = new Mock<IPublishEndpoint>();
         _linkProviderMock = new Mock<ILinkProvider>();
         _mapperMock = new Mock<IMapper>();
-        _loggerMock = new Mock<ILogger<FileWorker>>();
-        _itemFinderMock = new Mock<IItemFinder>();
-        _fileWorker = new FileWorker(
+        _loggerMock = new Mock<ILogger<FileService>>();
+        _itemFinderMock = new Mock<IItemService>();
+        _fileService = new FileService(
             _loggerMock.Object,
             _itemRepositoryMock.Object,
             _publishEndpointMock.Object,
@@ -54,7 +54,7 @@ public class FileWorkerTests
         _linkProviderMock.Setup(lp => lp.GetDownloadLinkAsync(fileId, file.Name, It.IsAny<CancellationToken>()))
             .ReturnsAsync(expectedLink);
 
-        var result = await _fileWorker.DownloadFile(fileId, userId);
+        var result = await _fileService.DownloadFile(fileId, userId);
 
         Assert.True(result.IsSuccess);
         Assert.Equal(expectedLink, result.Value); 
@@ -68,7 +68,7 @@ public class FileWorkerTests
         _itemRepositoryMock.Setup(repo => repo.GetByIdAsync(fileId, It.IsAny<CancellationToken>()))
             .ReturnsAsync((Item?)null);
 
-        var result = await _fileWorker.DownloadFile(fileId, userId);
+        var result = await _fileService.DownloadFile(fileId, userId);
 
         Assert.True(result.IsFailed); 
         Assert.IsType<FileNotFoundError>(result.Errors.First()); 
@@ -86,7 +86,7 @@ public class FileWorkerTests
         _itemRepositoryMock.Setup(repo => repo.GetByIdAsync(fileId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(fileItem);
 
-        var result = await _fileWorker.DownloadFile(fileId, alienUserId);
+        var result = await _fileService.DownloadFile(fileId, alienUserId);
 
         Assert.True(result.IsFailed);
         Assert.IsType<UnauthorizedAccessError>(result.Errors.First());
@@ -103,7 +103,7 @@ public class FileWorkerTests
         _linkProviderMock.Setup(lp => lp.GetUploadLinkAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(expectedLink);
 
-        var result = await _fileWorker.CreateFile(dto, userId);
+        var result = await _fileService.CreateFile(dto, userId);
 
         Assert.True(result.IsSuccess);
         Assert.Equal(expectedLink, result.Value);
@@ -121,7 +121,7 @@ public class FileWorkerTests
         var userId = Guid.NewGuid();
         var dto = new ItemCreateDto { Name = "NewFolder", Type = TypeOfItem.Folder }; 
 
-        var result = await _fileWorker.CreateFile(dto, userId);
+        var result = await _fileService.CreateFile(dto, userId);
 
         Assert.True(result.IsFailed);
         Assert.IsType<InvalidTypeOfItemError>(result.Errors.First());
@@ -138,7 +138,7 @@ public class FileWorkerTests
         _linkProviderMock.Setup(lp => lp.GetUploadLinkAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
             .ThrowsAsync(new Exception("S3 Service Unavailable"));
 
-        await Assert.ThrowsAsync<Exception>(() => _fileWorker.CreateFile(dto, userId));
+        await Assert.ThrowsAsync<Exception>(() => _fileService.CreateFile(dto, userId));
 
         _itemRepositoryMock.Verify(repo => repo.DeleteAsync(It.IsAny<Item>(), It.IsAny<CancellationToken>()), Times.Once);
     }
@@ -155,7 +155,7 @@ public class FileWorkerTests
         _itemRepositoryMock.Setup(repo => repo.GetByIdAsync(fileId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(fileItem);
 
-        var result = await _fileWorker.DeleteFile(fileId, userId);
+        var result = await _fileService.DeleteFile(fileId, userId);
 
         Assert.True(result.IsSuccess);
         _publishEndpointMock.Verify(p => p.Publish(
@@ -175,7 +175,7 @@ public class FileWorkerTests
         _itemRepositoryMock.Setup(repo => repo.GetByIdAsync(fileId, It.IsAny<CancellationToken>()))
             .ReturnsAsync((Item?)null);
 
-        var result = await _fileWorker.DeleteFile(fileId, userId);
+        var result = await _fileService.DeleteFile(fileId, userId);
         
         Assert.True(result.IsFailed);
         Assert.IsType<FileNotFoundError>(result.Errors.First());
@@ -190,7 +190,7 @@ public class FileWorkerTests
         _itemRepositoryMock.Setup(repo => repo.GetByIdAsync(fileId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(file);
 
-        var result = await _fileWorker.DeleteFile(fileId, userId);
+        var result = await _fileService.DeleteFile(fileId, userId);
         
         Assert.True(result.IsFailed);
         Assert.IsType<UnauthorizedAccessError>(result.Errors.First());
@@ -205,7 +205,7 @@ public class FileWorkerTests
         _itemRepositoryMock.Setup(repo => repo.GetByIdAsync(fileId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(folder);
 
-        var result = await _fileWorker.DeleteFile(fileId, userId);
+        var result = await _fileService.DeleteFile(fileId, userId);
         
         Assert.True(result.IsFailed);
         Assert.IsType<InvalidTypeOfItemError>(result.Errors.First());
@@ -224,7 +224,7 @@ public class FileWorkerTests
 
         _mapperMock.Setup(m => m.Map(items)).Returns(dtos); 
 
-        var result = await _fileWorker.GetRootItems(userId);
+        var result = await _fileService.GetRootItems(userId);
 
         Assert.True(result.IsSuccess);
         Assert.Equal(dtos, result.Value);

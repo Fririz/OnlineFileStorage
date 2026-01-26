@@ -7,19 +7,33 @@ using Microsoft.Extensions.Logging;
 
 namespace FileApiService.Application;
 
-public class ItemFinder : IItemFinder
+public class ItemService : IItemService
 {
     private readonly IItemRepository _itemRepository;
     private readonly IMapper _mapper;
-    private readonly ILogger<ItemFinder> _logger;
-    private readonly int _displayLimit = 5;
-    public ItemFinder(IItemRepository itemRepository, IMapper mapper,  ILogger<ItemFinder> logger)
+    private readonly ILogger<ItemService> _logger;
+    private const int DisplayLimit = 5;
+    public ItemService(IItemRepository itemRepository, IMapper mapper,  ILogger<ItemService> logger)
     {
         _itemRepository = itemRepository;
         _mapper = mapper;
         _logger = logger;
     }
-
+    
+    public async Task<Result<List<ItemResponseDto>>> GetRootItems(Guid userId)
+    {
+        var itemsEnum = await _itemRepository.GetRootItems(userId);
+        var items = itemsEnum.OfType<Item>().ToList();
+        var itemDtos = _mapper.Map(items);
+        return Result.Ok(itemDtos);
+    }
+    
+    public  Task<Item?> GetParent(Guid itemId)
+    {
+        var parent = _itemRepository.GetParent(itemId);
+        return parent;
+    }
+    
     public async Task<Result<List<ItemResponseDto>>> FindItem(string searchQuery, Guid userId, CancellationToken cancellationToken = default)
     {
         if(string.IsNullOrEmpty(searchQuery))
@@ -35,6 +49,6 @@ public class ItemFinder : IItemFinder
     
     private List<Item> GetItemsSortedByMimeType(List<Item> items)
     {
-        return items.OrderByDescending(i => MimeTypeSearchWeight.Get(i.MimeType)).Take(_displayLimit).ToList();
+        return items.OrderByDescending(i => MimeTypeSearchWeight.Get(i.MimeType)).Take(DisplayLimit).ToList();
     }
 }

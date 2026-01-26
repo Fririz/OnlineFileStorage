@@ -9,11 +9,11 @@ namespace FileApiService.API.Controllers;
 [Route("api/[controller]")]
 public class FileController : BaseApiController
 {
-    private readonly IFileWorker _fileWorker;
+    private readonly IFileService _fileService;
 
-    public FileController(IFileWorker fileWorker, IItemFinder itemFinder) : base(itemFinder)
+    public FileController(IFileService fileService, IItemService itemService) : base(itemService)
     {
-        _fileWorker = fileWorker;
+        _fileService = fileService;
     }
 
     /// <summary>
@@ -24,7 +24,7 @@ public class FileController : BaseApiController
     [HttpGet("getparent/{id:guid}")]
     public async Task<ActionResult<Item>> GetParent(Guid id)
     {
-        var parent = await _fileWorker.GetParent(id);
+        var parent = await _fileService.GetParent(id);
         
         if (parent is null)
         {
@@ -46,7 +46,7 @@ public class FileController : BaseApiController
         [FromBody] ItemCreateDto itemCreate, 
         CancellationToken cancellationToken)
     {
-        var result = await _fileWorker.CreateFile(itemCreate, CurrentUserId, cancellationToken);
+        var result = await _fileService.CreateFile(itemCreate, CurrentUserId, cancellationToken);
         
         if (result.IsSuccess)
         {
@@ -68,7 +68,7 @@ public class FileController : BaseApiController
         Guid id, 
         CancellationToken cancellationToken)
     {
-        var result = await _fileWorker.DownloadFile(id, CurrentUserId, cancellationToken);
+        var result = await _fileService.DownloadFile(id, CurrentUserId, cancellationToken);
         
         if (result.IsSuccess)
         {
@@ -87,7 +87,7 @@ public class FileController : BaseApiController
     [HttpDelete("deletefile/{itemId:guid}")]
     public async Task<ActionResult> DeleteFile(Guid itemId)
     {
-        var result = await _fileWorker.DeleteFile(itemId, CurrentUserId);
+        var result = await _fileService.DeleteFile(itemId, CurrentUserId);
             
         if (result.IsSuccess)
         {
@@ -105,7 +105,7 @@ public class FileController : BaseApiController
     [HttpGet("getitemsfromroot")]
     public async Task<ActionResult<List<ItemResponseDto>>> GetItemsFromRoot()
     {
-        var result = await _fileWorker.GetRootItems(CurrentUserId);
+        var result = await _fileService.GetRootItems(CurrentUserId);
         return HandleResult(result);
     }
 }

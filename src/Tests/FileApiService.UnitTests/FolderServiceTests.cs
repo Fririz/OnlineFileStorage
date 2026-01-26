@@ -12,23 +12,23 @@ using Xunit.Abstractions;
 
 namespace FileApiService.UnitTests;
 
-public class FolderWorkerTests
+public class FolderServiceTests
 {
     private readonly Mock<IItemRepository> _itemRepositoryMock;
     private readonly Mock<IPublishEndpoint> _publishEndpointMock;
     private readonly Mock<IMapper> _mapperMock;
-    private readonly Mock<ILogger<FolderWorker>> _loggerMock;
+    private readonly Mock<ILogger<FolderService>> _loggerMock;
 
-    private readonly FolderWorker _folderWorker;
+    private readonly FolderService _folderService;
 
-    public FolderWorkerTests(ITestOutputHelper testOutputHelper)
+    public FolderServiceTests(ITestOutputHelper testOutputHelper)
     {
         _itemRepositoryMock = new Mock<IItemRepository>();
         _publishEndpointMock = new Mock<IPublishEndpoint>();
         _mapperMock = new Mock<IMapper>();
-        _loggerMock = new Mock<ILogger<FolderWorker>>();
+        _loggerMock = new Mock<ILogger<FolderService>>();
 
-        _folderWorker = new FolderWorker(
+        _folderService = new FolderService(
             _loggerMock.Object,
             _itemRepositoryMock.Object,
             _publishEndpointMock.Object,
@@ -65,7 +65,7 @@ public class FolderWorkerTests
         _mapperMock.Setup(m => m.Map(It.IsAny<IEnumerable<Item>>()))
             .Returns(dtos);
 
-        var result = await _folderWorker.GetChildrenAsync(userId);
+        var result = await _folderService.GetChildrenAsync(userId);
 
         Assert.True(result.IsSuccess);
         Assert.NotNull(result.Value); 
@@ -78,7 +78,7 @@ public class FolderWorkerTests
         var userId = Guid.NewGuid();
         var dto = new ItemCreateDto { Name = "NewFolder", Type = TypeOfItem.Folder };
 
-        var result = await _folderWorker.CreateFolder(dto, userId);
+        var result = await _folderService.CreateFolder(dto, userId);
 
         Assert.True(result.IsSuccess);
         Assert.NotEqual(Guid.Empty, result.Value);
@@ -94,7 +94,7 @@ public class FolderWorkerTests
         var userId = Guid.NewGuid();
         var dto = new ItemCreateDto { Name = "File.txt", Type = TypeOfItem.File };
 
-        var result = await _folderWorker.CreateFolder(dto, userId);
+        var result = await _folderService.CreateFolder(dto, userId);
 
         Assert.True(result.IsFailed);
         Assert.IsType<InvalidTypeOfItemError>(result.Errors.First());
@@ -110,7 +110,7 @@ public class FolderWorkerTests
         _itemRepositoryMock.Setup(repo => repo.GetByIdAsync(folderId, It.IsAny<CancellationToken>()))
             .ReturnsAsync((Item?)null);
 
-        var result = await _folderWorker.DeleteFolderWithAllChildren(folderId, Guid.NewGuid());
+        var result = await _folderService.DeleteFolderWithAllChildren(folderId, Guid.NewGuid());
 
         Assert.True(result.IsFailed);
         Assert.IsType<DirectoryNotFoundError>(result.Errors.First());
@@ -126,7 +126,7 @@ public class FolderWorkerTests
         _itemRepositoryMock.Setup(repo => repo.GetByIdAsync(folderId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(fileItem);
 
-        var result = await _folderWorker.DeleteFolderWithAllChildren(folderId, userId);
+        var result = await _folderService.DeleteFolderWithAllChildren(folderId, userId);
 
         Assert.True(result.IsFailed);
         Assert.IsType<InvalidTypeOfItemError>(result.Errors.First());
@@ -144,7 +144,7 @@ public class FolderWorkerTests
         _itemRepositoryMock.Setup(repo => repo.GetByIdAsync(folderId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(folder);
 
-        var result = await _folderWorker.DeleteFolderWithAllChildren(folderId, alienId);
+        var result = await _folderService.DeleteFolderWithAllChildren(folderId, alienId);
 
         Assert.True(result.IsFailed);
         Assert.IsType<UnauthorizedAccessError>(result.Errors.First());
@@ -172,7 +172,7 @@ public class FolderWorkerTests
         _itemRepositoryMock.Setup(repo => repo.GetAllChildrenAsync(childFolder.Id, It.IsAny<CancellationToken>()))
             .ReturnsAsync(new List<Item> { grandChildFile });
 
-        var result = await _folderWorker.DeleteFolderWithAllChildren(rootId, userId);
+        var result = await _folderService.DeleteFolderWithAllChildren(rootId, userId);
 
         Assert.True(result.IsSuccess);
 

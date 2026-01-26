@@ -13,11 +13,11 @@ namespace FileApiService.API.Controllers;
 [ApiController]
 public abstract class BaseApiController : ControllerBase
 {
-    protected readonly IItemFinder _itemFinder;
+    protected readonly IItemService ItemService;
 
-    public BaseApiController(IItemFinder itemFinder)
+    public BaseApiController(IItemService itemService)
     {
-        _itemFinder = itemFinder;
+        ItemService = itemService;
     }
     protected Guid CurrentUserId
     {
@@ -67,6 +67,7 @@ public abstract class BaseApiController : ControllerBase
             FileAlreadyExistsError => Conflict(new { error.Message }),
             
             InvalidTypeOfItemError => BadRequest(new { error.Message }),
+            
             InvalidParentError => BadRequest(new { error.Message }),
             
             _ => BadRequest(new { error.Message })

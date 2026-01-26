@@ -58,10 +58,10 @@ public class ItemRepository : RepositoryBase<Item>, IItemRepository
     public async Task<List<Item>> SearchItemsAsync(string searchQuery, Guid userId, CancellationToken cancellationToken = default)
     {
         var normalizedSearchQuery = searchQuery.ToLower();
-        var results = await _context.Items.Where(p => EF.Functions.TrigramsSimilarity(EF.Property<string>(p, "NameToLower"), normalizedSearchQuery) > 0.3 
+        var results = await _context.Items.Where(p => EF.Functions.TrigramsSimilarity(EF.Property<string>(p, "NameToLower"), normalizedSearchQuery) > 0.15 
                                                       && p.OwnerId == userId)
             .OrderByDescending(p => EF.Functions.TrigramsSimilarity(EF.Property<string>(p, "NameToLower"), normalizedSearchQuery))
-            .Take(50) //than we sort in item finder by mime type
+            .Take(50) //than we sort and in item finder by mime type
             .ToListAsync(cancellationToken: cancellationToken);
         return results;
     }

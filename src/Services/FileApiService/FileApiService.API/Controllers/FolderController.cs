@@ -8,18 +8,18 @@ namespace FileApiService.API.Controllers;
 [Route("api/[controller]")]
 public class FolderController : BaseApiController
 {
-    private readonly IFolderWorker _folderWorker;
+    private readonly IFolderService _folderService;
 
-    public FolderController(IFolderWorker folderWorker, IItemFinder itemFinder) : base(itemFinder)
+    public FolderController(IFolderService folderService, IItemService itemService) : base(itemService)
     {
-        _folderWorker = folderWorker;
+        _folderService = folderService;
     }
 
     [HttpPost]
     [Route("createfolder")]
     public async Task<ActionResult> CreateFolder(ItemCreateDto itemCreate)
     {
-        var result = await _folderWorker.CreateFolder(itemCreate, CurrentUserId);
+        var result = await _folderService.CreateFolder(itemCreate, CurrentUserId);
         return HandleResult(result);
     }
 
@@ -27,7 +27,7 @@ public class FolderController : BaseApiController
     [Route("getallchildren/{id}/")]
     public async Task<ActionResult<List<ItemResponseDto>>> GetAllChildren(Guid id)
     {
-        var result = await _folderWorker.GetChildrenAsync(id);
+        var result = await _folderService.GetChildrenAsync(id);
         return HandleResult(result);
     }
 
@@ -35,7 +35,7 @@ public class FolderController : BaseApiController
     [Route("deletefolder/{id}/")]
     public async Task<ActionResult> DeleteFolderWithChildren(Guid id)
     {
-        var result = await _folderWorker.DeleteFolderWithAllChildren(id, CurrentUserId);
+        var result = await _folderService.DeleteFolderWithAllChildren(id, CurrentUserId);
         return HandleResult(result);
     }
 }

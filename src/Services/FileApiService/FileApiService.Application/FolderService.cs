@@ -11,14 +11,14 @@ using FileApiService.Application.Exceptions.FluentResultsErrors;
 
 namespace FileApiService.Application;
 
-public class FolderWorker : IFolderWorker
+public class FolderService : IFolderService
 {
-    private readonly ILogger<FolderWorker> _logger;
+    private readonly ILogger<FolderService> _logger;
     private readonly IItemRepository _itemRepository;
     private readonly IPublishEndpoint _publishEndpoint;
     private readonly IMapper _mapper;
 
-    public FolderWorker(ILogger<FolderWorker> logger, 
+    public FolderService(ILogger<FolderService> logger, 
         IItemRepository itemRepository,
         IPublishEndpoint publishEndpoint,
         IMapper mapper)

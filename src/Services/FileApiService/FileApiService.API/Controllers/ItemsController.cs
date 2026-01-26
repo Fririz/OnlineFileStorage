@@ -6,16 +6,18 @@ namespace FileApiService.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class SearchController : BaseApiController
+public class ItemsController : BaseApiController
 {
-    public SearchController(IItemFinder itemFinder, ILogger<SearchController> logger) : base(itemFinder)
+    public ItemsController(IItemService itemService, ILogger<ItemsController> logger) : base(itemService)
     {
     }
     
     [HttpGet("{searchQuery}")]
     public async Task<ActionResult<List<ItemResponseDto>>> SearchItem([FromRoute] string searchQuery, CancellationToken cancellationToken)
     {
-        var result = await _itemFinder.FindItem(searchQuery, CurrentUserId, cancellationToken);
+        var result = await ItemService.FindItem(searchQuery, CurrentUserId, cancellationToken);
         return HandleResult(result);
     }
+    
+    
 }
