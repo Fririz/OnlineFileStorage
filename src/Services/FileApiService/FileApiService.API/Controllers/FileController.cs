@@ -15,24 +15,8 @@ public class FileController : BaseApiController
     {
         _fileService = fileService;
     }
+    
 
-    /// <summary>
-    /// Get parent of file
-    /// </summary>
-    /// <param name="id">fileId</param>
-    /// <returns></returns>
-    [HttpGet("getparent/{id:guid}")]
-    public async Task<ActionResult<Item>> GetParent(Guid id)
-    {
-        var parent = await _fileService.GetParent(id);
-        
-        if (parent is null)
-        {
-            return NotFound();
-        }
-
-        return Ok(parent);
-    }
 
     /// <summary>
     /// Create file
