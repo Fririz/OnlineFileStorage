@@ -10,7 +10,7 @@ public class FoldersController : BaseApiController
 {
     private readonly IFolderService _folderService;
 
-    public FoldersController(IFolderService folderService, IItemService itemService) : base(itemService)
+    public FoldersController(IFolderService folderService)
     {
         _folderService = folderService;
     }

@@ -11,13 +11,10 @@ public class FilesController : BaseApiController
 {
     private readonly IFileService _fileService;
 
-    public FilesController(IFileService fileService, IItemService itemService) : base(itemService)
+    public FilesController(IFileService fileService)
     {
         _fileService = fileService;
     }
-    
-
-
     /// <summary>
     /// Create file
     /// </summary>
@@ -25,7 +22,7 @@ public class FilesController : BaseApiController
     /// <param name="userId"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [HttpPost("uploadfile")]
+    [HttpPost]
     public async Task<ActionResult> UploadFile(
         [FromBody] ItemCreateDto itemCreate, 
         CancellationToken cancellationToken)
@@ -43,16 +40,15 @@ public class FilesController : BaseApiController
     /// <summary>
     /// Download file
     /// </summary>
-    /// <param name="id"></param>
-    /// <param name="userId"></param>
+    /// <param name="fileId"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [HttpGet("downloadfile/{id:guid}")]
+    [HttpGet("{fileId:guid}")]
     public async Task<ActionResult> DownloadFile(
-        Guid id, 
+        Guid fileId, 
         CancellationToken cancellationToken)
     {
-        var result = await _fileService.DownloadFile(id, CurrentUserId, cancellationToken);
+        var result = await _fileService.DownloadFile(fileId, CurrentUserId, cancellationToken);
         
         if (result.IsSuccess)
         {
@@ -66,12 +62,11 @@ public class FilesController : BaseApiController
     /// Delete file
     /// </summary>
     /// <param name="fileId"></param>
-    /// <param name="userId"></param>
     /// <returns></returns>
-    [HttpDelete("deletefile/{itemId:guid}")]
-    public async Task<ActionResult> DeleteFile(Guid itemId)
+    [HttpDelete("{fileId:guid}")]
+    public async Task<ActionResult> DeleteFile(Guid fileId)
     {
-        var result = await _fileService.DeleteFile(itemId, CurrentUserId);
+        var result = await _fileService.DeleteFile(fileId, CurrentUserId);
             
         if (result.IsSuccess)
         {

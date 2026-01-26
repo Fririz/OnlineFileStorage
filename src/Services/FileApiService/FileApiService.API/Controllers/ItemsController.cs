@@ -10,38 +10,36 @@ namespace FileApiService.API.Controllers;
 public class ItemsController : BaseApiController
 {
     private readonly IItemService _itemService;
-    public ItemsController(IItemService itemService) : base(itemService)
+    public ItemsController(IItemService itemService)
     {
         _itemService = itemService;
         
     }
     
-    [HttpGet("{searchQuery}")]
-    public async Task<ActionResult<List<ItemResponseDto>>> SearchItem([FromRoute] string searchQuery, CancellationToken cancellationToken)
-    {
-        var result = await ItemService.FindItem(searchQuery, CurrentUserId, cancellationToken);
-        return HandleResult(result);
-    }
-    /// <summary>
-    /// Get all items from root
-    /// </summary>
-    /// <param name="userId">User id</param>
-    /// <returns>list of items</returns>
+    //Search + get items from root
     [HttpGet]
-    public async Task<ActionResult<List<ItemResponseDto>>> GetItemsFromRoot()
+    public async Task<ActionResult<List<ItemResponseDto>>> GetItems(
+        [FromQuery] string? searchQuery, 
+        CancellationToken cancellationToken)
     {
-        var result = await _itemService.GetRootItems(CurrentUserId);
-        return HandleResult(result);
+        if (!string.IsNullOrEmpty(searchQuery))
+        {
+            var result = await _itemService.FindItem(searchQuery, CurrentUserId, cancellationToken);
+            return HandleResult(result);
+        }
+
+        var rootResult = await _itemService.GetRootItems(CurrentUserId);
+        return HandleResult(rootResult);
     }
     /// <summary>
     /// Get parent of file
     /// </summary>
-    /// <param name="fileId">fileId</param>
+    /// <param name="itemId">fileId</param>
     /// <returns></returns>
-    [HttpGet("{fileId:guid}/parent")]
-    public async Task<ActionResult<Item>> GetParent(Guid fileId)
+    [HttpGet("{itemId:guid}/parent")]
+    public async Task<ActionResult<Item>> GetParent(Guid itemId)
     {
-        var parent = await _itemService.GetParent(fileId);
+        var parent = await _itemService.GetParent(itemId);
         
         if (parent is null)
         {

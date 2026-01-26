@@ -13,11 +13,9 @@ namespace FileApiService.API.Controllers;
 [ApiController]
 public abstract class BaseApiController : ControllerBase
 {
-    protected readonly IItemService ItemService;
 
-    public BaseApiController(IItemService itemService)
+    public BaseApiController()
     {
-        ItemService = itemService;
     }
     protected Guid CurrentUserId
     {
