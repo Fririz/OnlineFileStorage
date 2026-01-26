@@ -1,52 +1,87 @@
 {
   "Routes": [
+    //Identity Service 
+
+    // Login
     {
-      //IdentityService
-      "DownstreamPathTemplate": "/api/auth/login",
+      "DownstreamPathTemplate": "/api/sessions",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         { "Host": "identity-service", "Port": 8080 }
       ],
-      "UpstreamPathTemplate": "/api/auth/login",
-      "UpstreamHttpMethod": [ "GET", "POST", "OPTIONS"]
+      "UpstreamPathTemplate": "/api/sessions",
+      "UpstreamHttpMethod": [ "POST", "OPTIONS" ]
     },
+    // Logout
     {
-      "DownstreamPathTemplate": "/api/auth/register",
+      "DownstreamPathTemplate": "/api/sessions",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         { "Host": "identity-service", "Port": 8080 }
       ],
-      "UpstreamPathTemplate": "/api/auth/register",
-      "UpstreamHttpMethod": ["POST", "OPTIONS"]
+      "UpstreamPathTemplate": "/api/sessions",
+      "UpstreamHttpMethod": [ "DELETE", "OPTIONS" ]
     },
+    // Register 
     {
-      "DownstreamPathTemplate": "/api/auth/logout",
+      "DownstreamPathTemplate": "/api/users",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         { "Host": "identity-service", "Port": 8080 }
       ],
-      "UpstreamPathTemplate": "/api/auth/logout",
-      "UpstreamHttpMethod": [ "GET" ]
+      "UpstreamPathTemplate": "/api/users",
+      "UpstreamHttpMethod": [ "POST", "OPTIONS" ]
     },
+    // Get Me
     {
-      "DownstreamPathTemplate": "/api/auth/GetCurrentUser",
+      "DownstreamPathTemplate": "/api/users/me",
       "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [{
-        "Host": "identity-service",
-        "Port": 8080
-      }],
-      "UpstreamPathTemplate": "/api/auth/GetCurrentUser",
-      "UpstreamHttpMethod": [ "GET" , "OPTIONS"]
+      "DownstreamHostAndPorts": [
+        { "Host": "identity-service", "Port": 8080 }
+      ],
+      "UpstreamPathTemplate": "/api/users/me",
+      "UpstreamHttpMethod": [ "GET", "OPTIONS" ]
     },
-    //FileApiService
+
+    //File API Service
+
+    // Files
     {
-      "DownstreamPathTemplate": "/api/search/{searchQuery}",
+      "DownstreamPathTemplate": "/api/files",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         { "Host": "fileapiservice", "Port": 8082 }
       ],
-      "UpstreamPathTemplate": "/api/search/{searchQuery}",
-      "UpstreamHttpMethod": [ "GET", "OPTIONS" ],
+      "UpstreamPathTemplate": "/api/files",
+      "UpstreamHttpMethod": [ "POST", "OPTIONS" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/files/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        { "Host": "fileapiservice", "Port": 8082 }
+      ],
+      "UpstreamPathTemplate": "/api/files/{id}",
+      "UpstreamHttpMethod": [ "GET", "DELETE", "OPTIONS" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+
+    // Folder
+    {
+      "DownstreamPathTemplate": "/api/folders",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        { "Host": "fileapiservice", "Port": 8082 }
+      ],
+      "UpstreamPathTemplate": "/api/folders",
+      "UpstreamHttpMethod": [ "POST", "OPTIONS" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
@@ -54,38 +89,40 @@
     },
     
     {
-      "DownstreamPathTemplate": "/api/file/uploadfile",
+      "DownstreamPathTemplate": "/api/folders/{id}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         { "Host": "fileapiservice", "Port": 8082 }
       ],
-      "UpstreamPathTemplate": "/api/file/uploadfile",
-      "UpstreamHttpMethod": [ "POST", "GET", "OPTIONS" ],
+      "UpstreamPathTemplate": "/api/folders/{id}",
+      "UpstreamHttpMethod": [ "DELETE", "OPTIONS" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       }
     },
     {
-      "DownstreamPathTemplate": "/api/file/downloadfile/{id}",
+      "DownstreamPathTemplate": "/api/folders/{id}/items",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         { "Host": "fileapiservice", "Port": 8082 }
       ],
-      "UpstreamPathTemplate": "/api/file/downloadfile/{id}",
-      "UpstreamHttpMethod": [ "POST", "GET", "OPTIONS" ],
+      "UpstreamPathTemplate": "/api/folders/{id}/items",
+      "UpstreamHttpMethod": [ "GET", "OPTIONS" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       }
     },
+
+    // Items
     {
-      "DownstreamPathTemplate": "/api/file/getitemsfromroot",
+      "DownstreamPathTemplate": "/api/items",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         { "Host": "fileapiservice", "Port": 8082 }
       ],
-      "UpstreamPathTemplate": "/api/file/getitemsfromroot",
+      "UpstreamPathTemplate": "/api/items",
       "UpstreamHttpMethod": [ "GET", "OPTIONS" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer",
@@ -93,117 +130,28 @@
       }
     },
     {
-      "DownstreamPathTemplate": "/api/folder/createfolder",
+      "DownstreamPathTemplate": "/api/items/{id}/parent",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
-        {
-          "Host": "fileapiservice",
-          "Port": 8082
-        }
+        { "Host": "fileapiservice", "Port": 8082 }
       ],
-      "UpstreamPathTemplate": "/api/folder/createfolder",
-      "UpstreamHttpMethod": [
-        "GET",
-        "OPTIONS",
-        "POST"
-      ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer",
-        "AllowedScopes": []
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/api/folder/getallchildren/{id}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "fileapiservice",
-          "Port": 8082
-        }
-      ],
-      "UpstreamPathTemplate": "/api/folder/getallchildren/{id}",
-      "UpstreamHttpMethod": [
-        "GET",
-        "OPTIONS",
-        "POST"
-      ],
+      "UpstreamPathTemplate": "/api/items/{id}/parent",
+      "UpstreamHttpMethod": [ "GET", "OPTIONS" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       }
     },
 
+    //File Storage Service
     {
-      "DownstreamPathTemplate": "/api/file/getparent/{id}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "fileapiservice",
-          "Port": 8082
-        }
-      ],
-      "UpstreamPathTemplate": "/api/file/getparent/{id}",
-      "UpstreamHttpMethod": [
-        "GET",
-        "OPTIONS",
-        "POST"
-      ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer",
-        "AllowedScopes": []
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/api/folder/deletefolder/{id}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "fileapiservice",
-          "Port": 8082
-        }
-      ],
-      "UpstreamPathTemplate": "/api/folder/deletefolder/{id}",
-      "UpstreamHttpMethod": [
-        "DELETE",
-        "OPTIONS"
-      ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer",
-        "AllowedScopes": []
-      }
-    },
-
-
-    {
-      "DownstreamPathTemplate": "/api/file/deletefile/{fileId}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "fileapiservice",
-          "Port": 8082
-        }
-      ],
-      "UpstreamPathTemplate": "/api/file/deletefile/{fileId}",
-      "UpstreamHttpMethod": [
-        "OPTIONS",
-        "DELETE"
-      ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer",
-        "AllowedScopes": []
-      }
-    },
-
-
-    //FileStorageService
-    {
-      "DownstreamPathTemplate": "/api/upload/{id}",
+      "DownstreamPathTemplate": "/api/files/{id}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         { "Host": "filestorageservice", "Port": 8083 }
       ],
-      "UpstreamPathTemplate": "/api/upload/{id}",
-      "UpstreamHttpMethod": [ "POST", "GET", "OPTIONS" ],
+      "UpstreamPathTemplate": "/api/storage/files/{id}",
+      "UpstreamHttpMethod": [ "PUT", "OPTIONS" ],
       "QoSOptions": {
         "TimeoutValue": 1800000
       },
@@ -213,14 +161,16 @@
       }
     },
     {
-      "DownstreamPathTemplate": "/api/download/{id}/{filename}/{token}",
+      "DownstreamPathTemplate": "/api/files/{id}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         { "Host": "filestorageservice", "Port": 8083 }
       ],
-      "UpstreamPathTemplate": "/api/download/{id}/{filename}/{token}",
-      "UpstreamHttpMethod": [ "POST", "GET", "OPTIONS" ],
-      "TimeoutValue": 1800000,
+      "UpstreamPathTemplate": "/api/storage/files/{id}",
+      "UpstreamHttpMethod": [ "GET", "OPTIONS" ],
+      "QoSOptions": { 
+        "TimeoutValue": 1800000
+      },
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
