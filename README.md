@@ -27,6 +27,7 @@
 * ASP.NET Core web API
 * Clean Architecture
 * REST API Principles
+* Search files using trigrams
 * Full implementation of result pattern in business logic
 * High perform GRPC communication with File storage service
 * Redis distributed caching for optimization
@@ -35,7 +36,7 @@
 * Secured API endpoints using JWT authentication passed via API Gateway
 * PostgreSQL database to store files metadata
 * Implemented Unit Tests using xUnit and Moq to ensure business logic reliability
-
+  
 ### File Storage Microservice
 * ASP.NET Core web API
 * Clean Architecture
