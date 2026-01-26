@@ -6,12 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 namespace FileStorageService.API.Controllers;
 
 [ApiController]
-[Route("api")]
-public class FileController : ControllerBase
+[Route("api/[controller]")]
+public class FilesController : ControllerBase
 {
     private readonly IFileManager _fileManager;
 
-    public FileController(IFileManager fileManager)
+    public FilesController(IFileManager fileManager)
     {
         _fileManager = fileManager;
     }
@@ -24,13 +24,15 @@ public class FileController : ControllerBase
     /// <param name="token">jwt token from link</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [HttpGet]
-    [Route("download/{id}/{filename:minlength(1)}/{token}")]
+    [HttpGet("{id:guid}")] 
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(FileStreamResult))]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> GetFile(Guid id, string filename, string? token, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> GetFile(
+        [FromRoute] Guid id, 
+        [FromQuery] string? token, 
+        [FromQuery] string filename,
+        CancellationToken cancellationToken = default)
     {
         var result = await _fileManager.DownloadFileCaseAsync(id, token, cancellationToken);
 
@@ -58,12 +60,12 @@ public class FileController : ControllerBase
     /// <param name="id">File id</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [HttpPost]
-    [Route("upload/{id}")]
+    [HttpPut("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<string>> UploadFile(Guid id, CancellationToken cancellationToken = default)
+    public async Task<ActionResult> UploadFile(
+        [FromRoute] Guid id, 
+        CancellationToken cancellationToken = default)
     {
         long length = Request.ContentLength ?? 0;
         if (length <= 0)
