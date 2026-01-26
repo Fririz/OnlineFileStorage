@@ -7,11 +7,11 @@ namespace FileApiService.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class FileController : BaseApiController
+public class FilesController : BaseApiController
 {
     private readonly IFileService _fileService;
 
-    public FileController(IFileService fileService, IItemService itemService) : base(itemService)
+    public FilesController(IFileService fileService, IItemService itemService) : base(itemService)
     {
         _fileService = fileService;
     }
@@ -81,15 +81,5 @@ public class FileController : BaseApiController
         return HandleResult(result);
     }
 
-    /// <summary>
-    /// Get all items from root
-    /// </summary>
-    /// <param name="userId">User id</param>
-    /// <returns>list of items</returns>
-    [HttpGet("getitemsfromroot")]
-    public async Task<ActionResult<List<ItemResponseDto>>> GetItemsFromRoot()
-    {
-        var result = await _fileService.GetRootItems(CurrentUserId);
-        return HandleResult(result);
-    }
+
 }

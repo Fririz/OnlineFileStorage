@@ -6,11 +6,11 @@ namespace FileApiService.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class FolderController : BaseApiController
+public class FoldersController : BaseApiController
 {
     private readonly IFolderService _folderService;
 
-    public FolderController(IFolderService folderService, IItemService itemService) : base(itemService)
+    public FoldersController(IFolderService folderService, IItemService itemService) : base(itemService)
     {
         _folderService = folderService;
     }

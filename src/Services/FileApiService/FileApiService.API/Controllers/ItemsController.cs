@@ -23,6 +23,17 @@ public class ItemsController : BaseApiController
         return HandleResult(result);
     }
     /// <summary>
+    /// Get all items from root
+    /// </summary>
+    /// <param name="userId">User id</param>
+    /// <returns>list of items</returns>
+    [HttpGet]
+    public async Task<ActionResult<List<ItemResponseDto>>> GetItemsFromRoot()
+    {
+        var result = await _itemService.GetRootItems(CurrentUserId);
+        return HandleResult(result);
+    }
+    /// <summary>
     /// Get parent of file
     /// </summary>
     /// <param name="fileId">fileId</param>
