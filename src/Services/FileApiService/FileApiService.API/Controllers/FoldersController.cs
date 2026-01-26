@@ -16,7 +16,6 @@ public class FoldersController : BaseApiController
     }
 
     [HttpPost]
-    [Route("createfolder")]
     public async Task<ActionResult> CreateFolder(ItemCreateDto itemCreate)
     {
         var result = await _folderService.CreateFolder(itemCreate, CurrentUserId);
@@ -24,18 +23,18 @@ public class FoldersController : BaseApiController
     }
 
     [HttpGet]
-    [Route("getallchildren/{id}/")]
-    public async Task<ActionResult<List<ItemResponseDto>>> GetAllChildren(Guid id)
+    [Route("{folderId}/items")]
+    public async Task<ActionResult<List<ItemResponseDto>>> GetAllChildren(Guid folderId)
     {
-        var result = await _folderService.GetChildrenAsync(id);
+        var result = await _folderService.GetChildrenAsync(folderId);
         return HandleResult(result);
     }
 
     [HttpDelete]
-    [Route("deletefolder/{id}/")]
-    public async Task<ActionResult> DeleteFolderWithChildren(Guid id)
+    [Route("{folderId}")]
+    public async Task<ActionResult> DeleteFolderWithChildren(Guid folderId)
     {
-        var result = await _folderService.DeleteFolderWithAllChildren(id, CurrentUserId);
+        var result = await _folderService.DeleteFolderWithAllChildren(folderId, CurrentUserId);
         return HandleResult(result);
     }
 }
