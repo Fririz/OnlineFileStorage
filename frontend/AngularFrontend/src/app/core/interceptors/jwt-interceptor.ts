@@ -1,13 +1,9 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 
 export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
-  const token = cookieStore.get('Token');
-
-  if (token) {
-    const cloned = req.clone({
-      setHeaders: { Authorization: `Bearer ${token}` }
+  const cloned = req.clone({
+      withCredentials: true
     });
-    return next(cloned);
-  }
-  return next(req);
+
+  return next(cloned);
 };
