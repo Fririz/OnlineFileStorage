@@ -86,6 +86,7 @@ export class Sidebar {
   onCreate() {
     const dialogRef = this.dialog.open(CreateDialogComponent, {
       width: '450px',
+      disableClose: true,
       data: {} 
     });
 

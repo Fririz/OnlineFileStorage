@@ -13,7 +13,7 @@
     <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="onOptionSelected($event)">
       @for (item of filteredOptions$ | async; track item.id) {
         <mat-option [value]="item">
-          <mat-icon>{{ item.type === 1 ? 'folder' : 'description' }}</mat-icon>
+          <mat-icon>{{ item.type === 1 ? 'description' : 'folder' }}</mat-icon>
           <span>{{ item.name }}</span>
         </mat-option>
       }
