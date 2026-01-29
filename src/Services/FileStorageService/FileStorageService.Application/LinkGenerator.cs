@@ -17,12 +17,12 @@ public class LinkGenerator : ILinkGenerator
     public string GenerateDownloadLink(Guid fileId, string filename)
     {
         var token = _tokenManager.GetToken();
-        var downloadLink = $"http://localhost:6002/api/download/{fileId}/{filename}/{token}";
+        var downloadLink = $"http://localhost:6002/api/storage/files/{fileId}/{filename}/{token}";
         return downloadLink;
     }
     public string GenerateUploadLink(Guid fileId)
     {
-        var uploadLink = $"http://localhost:6002/api/upload/{fileId}";
+        var uploadLink = $"http://localhost:6002/api/storage/files/{fileId}";
         return uploadLink;
     }
 }
