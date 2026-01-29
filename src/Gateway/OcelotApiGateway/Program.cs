@@ -36,7 +36,10 @@ public class Program
             policy.WithOrigins(
                     "http://localhost:5173",
                     "http://127.0.0.1:5173",
-                    "http://192.168.1.105:5173"
+                    "http://192.168.1.105:5173",
+                    "http://localhost:4200",
+                    "http://127.0.0.1:4200",
+                    "http://192.168.1.105:4200"
                 )
                 .AllowAnyMethod()   
                 .AllowAnyHeader()
