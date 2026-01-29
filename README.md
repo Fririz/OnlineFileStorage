@@ -21,7 +21,7 @@
   </details>
 
 ## Architecture Schema
-![Architecture Schema](./docs/ArchitectureSchema.png)
+![Architecture Schema](./docs/Architecture.png)
 
 ### Backend & Architecture:**
 * **Framework:** ASP.NET Core (.NET 9)
