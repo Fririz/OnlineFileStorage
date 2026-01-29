@@ -41,6 +41,7 @@ services:
     restart: unless-stopped
     environment:
       - ConnectionStrings__DefaultConnection=${ConnectionStrings__FileApiConnection}
+      - ConnectionStrings__Redis=redis:6379
       - JwtSecret=${JWT_SECRET}
       - RabbitMq__User=${RABBITMQ_USER}
       - RabbitMq__Pass=${RABBITMQ_PASS}
