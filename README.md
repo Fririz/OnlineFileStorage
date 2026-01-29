@@ -2,12 +2,23 @@
 
 ![.NET](https://img.shields.io/badge/.NET-9.0-purple)
 ![Docker](https://img.shields.io/badge/Docker-Compose-blue)
-![Vue.js](https://img.shields.io/badge/Vue.js-3-green)
+![Angular.js](https://img.shields.io/badge/Angular-DD0031)
+![Angular.js](https://img.shields.io/badge/%20-Angular%20Material-blue)
 ![Status](https://img.shields.io/badge/Status-Active-success)
 
 ## Screenshots
 ![Login Page](./docs/LoginPage.png)
 ![Files Page](./docs/FilesPage.png)
+<details>
+  <summary><h2>Other screenshots</h2></summary>
+  
+  <h3>Search</h3>
+  <img src="./docs/SearchPage.png" width="800">
+
+  <h3>Item creation page</h3>
+  <img src="/docs/CreateFilePage.png" width="800">
+  
+  </details>
 
 ## Architecture Schema
 ![Architecture Schema](./docs/ArchitectureSchema.png)
@@ -79,14 +90,15 @@
 * Environment variables and passwords in .env file
 
 ### Frontend
-* Vue.js
+* Angular
+* Meterial design
 
 ## Workflow Diagrams
 ### Upload File
 To optimize performance, the system uses a Direct Upload Pattern. The heavy file traffic bypasses the metadata service to reduce load.
 ```mermaid
 sequenceDiagram
-    actor User as Client (Vue.js)
+    actor User as Client (Agnular)
     participant Gateway as API Gateway
     participant FileApi as File API Service
     participant Storage as File Storage Service
@@ -110,7 +122,8 @@ sequenceDiagram
 ### Prerequisites
 * Docker & Docker Compose
 * .NET 9 SDK
-* Npm with vue
+* Node.js (Latest LTS version recommended)
+* Angular CLI (globally installed via `npm install -g @angular/cli`)
 
 ### Run with Docker
 
@@ -151,8 +164,9 @@ docker-compose up -d
 
 #### To start the frontend on vue:
 ```bash
-cd OnlineFileStorage/frontend/OnlineFileStorage
-npm run dev
+cd OnlineFileStorage/frontend/AngularFrontend
+npm install
+npm start
 ```
 
 ## Testing
