@@ -1,9 +1,23 @@
-<div class="app-container">
+@if(authService.isLoggedIn()) {
   
-  <app-navbar></app-navbar>
+  <app-navbar #drawer mode = "drawer"> </app-navbar>
 
-  <div class="content-wrapper">
-    <router-outlet></router-outlet>
-  </div>
+  <mat-sidenav-container class="app-container">
 
-</div>
+    <mat-sidenav #drawer mode="side" opened class="app-sidenav">
+      <app-sidebar></app-sidebar>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+      <div class="content-wrapper">
+        <router-outlet></router-outlet>
+      </div>
+    </mat-sidenav-content>
+
+  </mat-sidenav-container>
+
+} @else {
+    <app-navbar #drawer mode = "drawer"> </app-navbar>
+  <router-outlet></router-outlet>
+
+}

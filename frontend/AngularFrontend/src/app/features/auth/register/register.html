@@ -1,1 +1,41 @@
-<p>register works!</p>
+
+<h1 class="register-title">Register </h1>
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
+
+  <mat-form-field appearance="outline">
+    <mat-label>Username</mat-label>
+    
+    <input matInput formControlName="username" placeholder="Enter username">
+    
+    @if (registerForm.get('username')?.hasError('required')) {
+      <mat-error>Username required</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Password</mat-label>
+    
+    <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password">
+    
+    <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" type="button">
+      <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+    </button>
+
+    @if (registerForm.get('password')?.hasError('required')) {
+      <mat-error>Password required</mat-error>
+    }
+    @if (registerForm.get('password')?.hasError('minlength')) {
+      <mat-error>Minimum 8 characters</mat-error>
+    }
+  </mat-form-field>
+  @if (errorMessage) {
+  <div class="error-alert" role="alert">
+    <mat-icon color="warn" class="error">error</mat-icon>
+    <span class="error-text">{{ errorMessage }}</span>
+  </div>
+}
+  <button mat-flat-button color="primary" type="submit" [disabled]="registerForm.invalid">
+    Register
+  </button>
+
+</form>

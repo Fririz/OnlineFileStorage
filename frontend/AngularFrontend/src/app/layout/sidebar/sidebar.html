@@ -1,1 +1,43 @@
-<p>sidebar works!</p>
+<div class="sidebar-container">
+  
+  <mat-form-field appearance="outline" class="search-field">
+    <mat-icon matPrefix>search</mat-icon>
+    <mat-label>Search items...</mat-label>
+    
+    <input 
+      type="text"
+      matInput
+      [formControl]="searchControl"
+      [matAutocomplete]="auto">
+      
+    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="onOptionSelected($event)">
+      @for (item of filteredOptions$ | async; track item.id) {
+        <mat-option [value]="item">
+          <mat-icon>{{ item.type === 1 ? 'folder' : 'description' }}</mat-icon>
+          <span>{{ item.name }}</span>
+        </mat-option>
+      }
+    </mat-autocomplete>
+
+    @if (searchControl.value) {
+      <button mat-icon-button matSuffix (click)="searchControl.setValue('')">
+        <mat-icon>close</mat-icon>
+      </button>
+    }
+  </mat-form-field>
+
+    <mat-nav-list>
+    <mat-list-item (click)="onCreate()">
+      <mat-icon matListItemIcon>add</mat-icon>
+      <span matListItemTitle>Create New</span>
+    </mat-list-item>
+  </mat-nav-list>
+
+  <mat-nav-list>
+    <mat-list-item (click)="refresh()">
+      <mat-icon matListItemIcon>refresh</mat-icon>
+      <span matListItemTitle>Refresh</span>
+    </mat-list-item>
+  </mat-nav-list>
+
+</div>

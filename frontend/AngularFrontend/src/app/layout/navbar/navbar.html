@@ -1,1 +1,20 @@
-<p>navbar works!</p>
+<mat-toolbar color="primary" class ="navbar">
+    <div class="Logo">
+        <h1>Online File Storage</h1>
+    </div>
+    @if(authService.isLoggedIn()) {
+    <div class file-buttons>
+        <a mat-flat-button color="primary" routerLink="/items" routerLinkActive="active-link" class="file-link">My files</a>
+    </div>
+    <div class ="logout-button">
+        <button mat-flat-button color="primary" (click)="logout()" >Logout</button>
+    </div>
+    }
+    @else {
+    <div class ="nav-buttons">
+        <a mat-flat-button color="primary" routerLink="/login" routerLinkActive="active-link">Login</a>
+        <a mat-flat-button color="primary" routerLink="/register" routerLinkActive="active-link">Register</a>
+    </div>
+    }
+
+</mat-toolbar>
