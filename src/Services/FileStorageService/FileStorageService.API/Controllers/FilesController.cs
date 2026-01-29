@@ -24,14 +24,14 @@ public class FilesController : ControllerBase
     /// <param name="token">jwt token from link</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [HttpGet("{id:guid}")] 
+    [HttpGet("{id:guid}/{filename}/{token}")] 
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(FileStreamResult))]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetFile(
         [FromRoute] Guid id, 
-        [FromQuery] string? token, 
-        [FromQuery] string filename,
+        [FromRoute] string? token, 
+        [FromRoute] string filename,
         CancellationToken cancellationToken = default)
     {
         var result = await _fileManager.DownloadFileCaseAsync(id, token, cancellationToken);
