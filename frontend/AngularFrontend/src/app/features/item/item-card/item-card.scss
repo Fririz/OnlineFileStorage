@@ -1,0 +1,42 @@
+.file-card {
+  height: 100%;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+
+  &:hover {
+    transform: translateY(-4px); 
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  }
+}
+
+.card-icon-container {
+  display: flex;
+  justify-content: center;
+  padding-top: 20px;
+  
+  mat-icon {
+    transform: scale(2.5); 
+    width: auto;
+    height: auto;
+  }
+
+  .folder-icon { color: #FFC107; } 
+  .file-icon { color: #3F51B5; }   
+}
+
+mat-card-header {
+  margin-top: 10px;
+  
+  mat-card-title {
+    font-size: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; 
+  }
+}
+
+mat-card-actions {
+  margin-top: auto; 
+}

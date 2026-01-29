@@ -1,0 +1,38 @@
+<mat-card class="file-card" (click)="openFolderClick()">
+  
+  <div class="card-icon-container">
+    @if (item.type === TypeOfItem.Folder) {
+      <mat-icon class="folder-icon">folder</mat-icon>
+    } @else {
+      <mat-icon class="file-icon">description</mat-icon>
+    }
+  </div>
+
+  <mat-card-header>
+    <mat-card-title [title]="item.name">
+      {{ item.name }}
+    </mat-card-title>
+    
+    <mat-card-subtitle>
+      @if (item.type !== TypeOfItem.Folder) {
+        {{ (item.fileSize ?? 0) | filesize }}
+      } @else {
+        Folder
+      }
+    </mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-actions>
+    
+    @if (item.type !== TypeOfItem.Folder) {
+      <button mat-icon-button (click)="onDownloadClick($event)" matTooltip="download">
+        <mat-icon>download</mat-icon>
+      </button>
+    }
+
+    <button mat-icon-button color="warn" (click)="onDeleteClick($event)" matTooltip="delete">
+      <mat-icon>delete</mat-icon>
+    </button>
+    
+  </mat-card-actions>
+</mat-card>

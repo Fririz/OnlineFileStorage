@@ -1,0 +1,59 @@
+<div class="dialog-container">
+  <h2 mat-dialog-title>Create New</h2>
+
+  <mat-dialog-content>
+    
+    <div class="toggle-container">
+      <div 
+        class="toggle-option" 
+        [class.active]="selectedType === 'folder'"
+        (click)="selectedType = 'folder'">
+        Folder
+      </div>
+      <div 
+        class="toggle-option" 
+        [class.active]="selectedType === 'file'"
+        (click)="selectedType = 'file'">
+        File
+      </div>
+      <div class="slider" [class.right]="selectedType === 'file'"></div>
+    </div>
+
+    @if (selectedType === 'folder') {
+      <div class="input-group">
+        <label>Folder Name</label>
+        <mat-form-field appearance="outline" class="full-width">
+          <input matInput [(ngModel)]="folderName" placeholder="New Folder" cdkFocusInitial>
+        </mat-form-field>
+      </div>
+    }
+
+    @if (selectedType === 'file') {
+      <div class="input-group file-upload-group">
+        <label>Select File</label>
+        <div class="file-drop-area" (click)="fileInput.click()">
+          @if (selectedFile) {
+            <span class="file-name">{{ selectedFile.name }}</span>
+            <span class="file-size">{{ (selectedFile.size / 1024).toFixed(1) }} KB</span>
+          } @else {
+            <span>Click to browse...</span>
+          }
+          <input #fileInput type="file" style="display: none" (change)="onFileSelected($event)">
+        </div>
+      </div>
+    }
+
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <button mat-button class="btn-cancel" (click)="onCancel()">Cancel</button>
+    
+    <button 
+      mat-flat-button 
+      class="btn-create" 
+      (click)="onCreate()"
+      [disabled]="(selectedType === 'folder' && !folderName) || (selectedType === 'file' && !selectedFile)">
+      Create
+    </button>
+  </mat-dialog-actions>
+</div>

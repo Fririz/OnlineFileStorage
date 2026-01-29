@@ -1,0 +1,19 @@
+<button mat-flat-button (click)="goUp()">
+  <mat-icon>arrow_upward</mat-icon>
+  Up
+</button>
+
+<div class="file-grid">
+  @if (files$ | async; as items) {
+    
+    @for (item of items; track item.id) {
+      <app-item-card 
+        [item]="item"
+        (download)="downloadFile($event)"
+        (delete)="deleteItem($event)"
+        (openFolder)="openFolder($event)"
+        >
+      </app-item-card>
+    }
+}
+</div>

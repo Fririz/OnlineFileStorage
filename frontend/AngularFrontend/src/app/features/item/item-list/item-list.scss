@@ -1,0 +1,19 @@
+.file-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+  padding: 16px;
+}
+
+.empty-state, .loading-state {
+  grid-column: 1 / -1; 
+  text-align: center;
+  color: #757575;
+  margin-top: 50px;
+}
+:host {
+  display: block;
+  width: 100%;
+  margin: 5px;
+  overflow-x: hidden;
+}
