@@ -23,7 +23,7 @@
 ## Architecture Schema
 ![Architecture Schema](./docs/Architecture.png)
 
-### Backend & Architecture:**
+### Backend & Architecture
 * **Framework:** ASP.NET Core (.NET 9)
 * **Architecture** Clean Architecture, Microservices
 * **ORM:** Entity Framework
@@ -80,7 +80,7 @@
 * PgAdmin for postgreSQL
 * Swagger for every microservice
   
-### Observability & Logging:**
+### Observability & Logging
 * **Logging:** Serilog
 * **Monitoring Stack:** Elasticsearch, Kibana (ELK)
 
@@ -98,7 +98,7 @@
 To optimize performance, the system uses a Direct Upload Pattern. The heavy file traffic bypasses the metadata service to reduce load.
 ```mermaid
 sequenceDiagram
-    actor User as Client (Agnular)
+    actor User as Client (Angular)
     participant Gateway as API Gateway
     participant FileApi as File API Service
     participant Storage as File Storage Service
@@ -129,7 +129,7 @@ sequenceDiagram
 
 #### Environment file
 Before start create .env file in /OnlineFileStorage/src
-Example of .env file:
+<b>Example of .env file</b>:
 <details>
   <summary><b>Click to expand the example .env file</b></summary>
   
