@@ -38,19 +38,19 @@ jobs:
       matrix:
         service:
           - name: Identity Service
-            file: Services/IdentityService/IdentityService.API/Dockerfile
+            file: ./src/Services/IdentityService/IdentityService.API/Dockerfile
             image: myrepo/identity-service
 
           - name: File API Service
-            file: Services/FileApiService/FileApiService.API/Dockerfile
+            file: ./src/Services/FileApiService/FileApiService.API/Dockerfile
             image: myrepo/file-api-service
 
           - name: File Storage Service
-            file: Services/FileStorageService/FileStorageService.API/Dockerfile
+            file: ./src/Services/FileStorageService/FileStorageService.API/Dockerfile
             image: myrepo/file-storage-service
 
           - name: API Gateway
-            file: Gateway/OcelotApiGateway/Dockerfile
+            file: ./src/Gateway/OcelotApiGateway/Dockerfile
             image: myrepo/api-gateway
 
     steps:
