@@ -2,9 +2,9 @@ name: Global CI/CD Pipeline
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "master" ] 
   pull_request:
-    branches: [ "main" ]
+    branches: [ "main", "master" ]
   workflow_dispatch:
 
 jobs:
@@ -30,7 +30,7 @@ jobs:
         run: dotnet test ./src/OnlineFileStorage.sln --no-build --configuration Release --verbosity normal
 
   build-docker:
-    name:  Build ${{ matrix.service.name }}
+    name: Build ${{ matrix.service.name }}
     needs: test-solution
     runs-on: ubuntu-latest
     strategy:
@@ -62,9 +62,8 @@ jobs:
 
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v5
-        context: ./src
-        with: 
-          context: .  
+        with:
+          context: ./src      
           file: ${{ matrix.service.file }}
           push: false 
           tags: ${{ matrix.service.image }}:latest
