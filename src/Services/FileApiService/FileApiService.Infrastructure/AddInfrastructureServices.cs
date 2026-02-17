@@ -32,7 +32,7 @@ public static class InfrastructureServiceRegistration
         //GRPC
         services.AddGrpcClient<StorageService.StorageServiceClient>(o =>
             {
-                o.Address = new Uri("http://filestorageservice:8090");
+                o.Address = new Uri("http://filestorageservice:8090");// http 2 port
             }
         );
         //RabbitMq

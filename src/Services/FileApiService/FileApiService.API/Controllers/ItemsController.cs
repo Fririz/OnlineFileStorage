@@ -19,12 +19,13 @@ public class ItemsController : BaseApiController
     //Search + get items from root
     [HttpGet]
     public async Task<ActionResult<List<ItemResponseDto>>> GetItems(
-        [FromQuery] string? searchQuery, 
+        [FromQuery] string? search, 
         CancellationToken cancellationToken)
     {
-        if (!string.IsNullOrEmpty(searchQuery))
+
+        if (!string.IsNullOrEmpty(search))
         {
-            var result = await _itemService.FindItem(searchQuery, CurrentUserId, cancellationToken);
+            var result = await _itemService.FindItem(search, CurrentUserId, cancellationToken);
             return HandleResult(result);
         }
 

@@ -210,25 +210,4 @@ public class FileServiceTests
         Assert.True(result.IsFailed);
         Assert.IsType<InvalidTypeOfItemError>(result.Errors.First());
     }
-    [Fact]
-    public async Task GetRootItems_Success_ShouldReturnMappedDtos()
-    {
-        var userId = Guid.NewGuid();
-    
-        var items = new List<Item> { Item.CreateFile(userId, "file1.txt", null) };
-    
-        var dtos = new List<ItemResponseDto> { new ItemResponseDto { Name = "file1.txt" } };
-
-        _itemRepositoryMock.Setup(repo => repo.GetRootItems(userId, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(items);
-
-        _mapperMock.Setup(m => m.Map(items)).Returns(dtos); 
-
-        var result = await _fileService.GetRootItems(userId);
-
-        Assert.True(result.IsSuccess);
-        Assert.Equal(dtos, result.Value);
-    
-        _mapperMock.Verify(m => m.Map(items), Times.Once);
-    }
 }

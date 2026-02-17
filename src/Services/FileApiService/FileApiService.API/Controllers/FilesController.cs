@@ -54,7 +54,6 @@ public class FilesController : BaseApiController
         {
             return Ok(new { downloadUrl = result.Value });
         }
-
         return HandleResult(result);
     }
 

@@ -42,7 +42,6 @@ public class SessionsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public IActionResult Logout()
     {
-
         Response.Cookies.Delete("token");
         
         return NoContent(); 

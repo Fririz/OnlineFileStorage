@@ -47,7 +47,6 @@ public class FileService : IFileService
             return Result.Fail(new UnauthorizedAccessError("You are not allowed to download this file"));
         }
         var link = await _linkProvider.GetDownloadLinkAsync(item.Id, item.Name, cancellationToken);
-        
         return Result.Ok(link);
     }
     
