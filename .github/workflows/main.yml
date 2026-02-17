@@ -21,13 +21,13 @@ jobs:
           dotnet-version: 9.0.304
 
       - name: Restore Dependencies
-        run: dotnet restore
+        run: dotnet restore ./src/OnlineFileStrorage.sln
 
       - name: Build Solution
-        run: dotnet build --no-restore --configuration Release
+        run: dotnet build ./src/OnlineFileStrorage.sln --no-restore --configuration Release
 
       - name: Run All Unit Tests
-        run: dotnet test --no-build --configuration Release --verbosity normal
+        run: dotnet test ./src/OnlineFileStrorage.sln --no-build --configuration Release --verbosity normal
 
   build-docker:
     name:  Build ${{ matrix.service.name }}
